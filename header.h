@@ -49,10 +49,12 @@ public:
 	static Matrix div2(Matrix& m1,double d);
 	static Matrix div2(double d,Matrix& m2);
     double getDeterminant();
-    Matrix getMinor(int r, int c);
+	Matrix getInverse();
+	void Pivot_Form(int x,double& pivot,int& sign,int type);
+	void Approach_Triangular_Form(int x, double pivot,int type);
+   /* Matrix getMinor(int r, int c);
     Matrix get_Minors_Cofactor_Matrix() ;
-    Matrix getInverse();
-    Matrix operator *(double d);
+    Matrix operator *(double d);*/
     void mul (Matrix &m);
 	void operator *= (Matrix &m);
 	void operator *= (double d);
