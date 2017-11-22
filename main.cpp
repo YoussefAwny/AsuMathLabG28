@@ -418,11 +418,10 @@ int main (int argc, char *argv[]){
 
      }
         }//try
-
-       if(argc==2) infile.close();
+      catch(char const* x){cout<<x<<endl;}
 
     }//input loop
-    catch(string x){cout<<x<<endl;}
+      if(argc==2) infile.close();
 
 
 	return 0 ;
