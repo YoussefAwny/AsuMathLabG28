@@ -236,10 +236,12 @@ using namespace std;
 
 
 
-//inverse
 
 
-	double Matrix:: getDeterminant()
+/*
+
+//old inverse
+double Matrix:: getDeterminant()
 	{
 		if(this->rows==2 && this->columns==2)
 			return (values[0][0]*values[1][1]-values[0][1]*values[1][0]);
@@ -305,7 +307,7 @@ using namespace std;
 		if(this->getDeterminant()==0)throw("Invalid Matrix values");
 		return ((this->get_Minors_Cofactor_Matrix()).getTranspose())*(1.0/(this->getDeterminant()));
 	}
-	/*Matrix Matrix::operator *(double x)
+	Matrix Matrix::operator *(double x)
 	{
 		for(int i=0; i<this->rows; i++)
 		{
@@ -315,7 +317,8 @@ using namespace std;
 			}
 		}
 		return *this;
-	}*/
+	}
+	*/
 
 	Matrix Matrix:: getTranspose()
 {
