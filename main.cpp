@@ -5,7 +5,6 @@ using namespace std;
 
 
 int main (int argc, char *argv[]){
-    try{
 
     vector<string> matrix_names;
     vector<Matrix> matrix;
@@ -14,11 +13,11 @@ int main (int argc, char *argv[]){
     ifstream infile;
     if(argc==2){file_path=argv[1];
       infile.open(file_path.data());}
-    while(argc==1||argc==2){
+    while(argc==1||argc==2){ try{
     if(argc==2){if(!getline(infile, user_input)){break;}}
 	if(argc==1) getline(cin,user_input);
 	if(check_if_values(user_input))
-    {cout<<"ok1"<<endl;
+    {
         if(user_input.find(']')==-1)
         {
             string temp;
@@ -418,11 +417,11 @@ int main (int argc, char *argv[]){
          }
 
      }
-        }//line reading
+        }//try
 
        if(argc==2) infile.close();
 
-    }//try
+    }//input loop
     catch(string x){cout<<x<<endl;}
 
 
