@@ -33,13 +33,13 @@ void Matrix :: operator *= (double d)
      }
  }
 }
-Matrix Matrix :: operator * ( Matrix &m )
+Matrix Matrix::operator * ( Matrix &m )
 {
 	Matrix r = *this ;
 	r*=m ;
 	return r ;
 }
-Matrix Matrix :: operator * ( double d )
+Matrix Matrix::operator * ( double d )
 {
 	Matrix r = *this ;
 	r*=d ;

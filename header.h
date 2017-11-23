@@ -49,15 +49,17 @@ public:
 	static Matrix div2(Matrix& m1,double d);
 	static Matrix div2(double d,Matrix& m2);
     double getDeterminant();
-    Matrix getMinor(int r, int c);
-    Matrix get_Minors_Cofactor_Matrix() ;
-    Matrix getInverse();
+	Matrix getInverse();
+	void Pivot_Form(int x,double& pivot,int& sign,int type);
+	void Approach_Triangular_Form(int x, double pivot,int type);
+   /* Matrix getMinor(int r, int c);
+    Matrix get_Minors_Cofactor_Matrix() ;*/
     Matrix operator *(double d);
     void mul (Matrix &m);
 	void operator *= (Matrix &m);
 	void operator *= (double d);
-	Matrix operator * (Matrix &m);
-    void div (Matrix &m);
+	Matrix operator * ( Matrix &m );
+	void div (Matrix &m);
 	void operator /= (Matrix &m);
 	void operator /= (double d);
 	Matrix operator / (Matrix &m);
@@ -73,9 +75,10 @@ int get_matrix_number (string x, vector<string> y);
  string name_from_input (string x);
  string space_remover (string y);
  int check_if_number(string x);
+ int get_number_of_open_br (string x);
+ int get_number_of_close_br (string x);
 
 
 
 
 //endif // !MATRIX_H
-

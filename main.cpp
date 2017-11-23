@@ -18,7 +18,7 @@ int main (int argc, char *argv[]){
 	if(argc==1) getline(cin,user_input);
 	if(check_if_values(user_input))
     {
-        if(user_input.find(']')==-1)
+        if(get_number_of_open_br(user_input)>get_number_of_close_br(user_input))
         {
             string temp;
             if(user_input[user_input.length()-1]==13||user_input[user_input.length()-1]==10||user_input[user_input.length()-1]==12)user_input.erase(user_input.length()-1);
@@ -27,9 +27,10 @@ int main (int argc, char *argv[]){
                 if(argc==1){getline(cin,temp);}
                 else if(argc==2){getline(infile,temp);}
                 if(temp[temp.length()-1]==13||temp[temp.length()-1]==10||temp[temp.length()-1]==12)temp.erase(temp.length()-1);
+                if(temp[temp.length()-1]==']')temp+=",";
                 user_input+=temp;
 
-            }while(temp.find(']')==-1);
+            }while(get_number_of_open_br(user_input)>get_number_of_close_br(user_input));
         }
          if(get_matrix_number(name_from_input(user_input),matrix_names)==-1)   //if new matrix
             {

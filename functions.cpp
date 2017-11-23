@@ -148,5 +148,23 @@ int check_if_number(string x)
     }
    return flag;
 }
+int get_number_of_open_br (string x)
+{
+    int c=0;
+   for(int i=0;i<x.length();i++)
+   {
+      if(x[i]=='[') c++;
+   }
+   return c;
+}
+int get_number_of_close_br (string x)
+{
+    int c=0;
+   for(int i=0;i<x.length();i++)
+   {
+      if(x[i]==']') c++;
+   }
+   return c;
+}
 
 

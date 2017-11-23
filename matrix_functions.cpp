@@ -236,10 +236,9 @@ using namespace std;
 
 
 
-//inverse
-
-
-	double Matrix:: getDeterminant()
+/*
+//old inverse
+double Matrix:: getDeterminant()
 	{
 		if(this->rows==2 && this->columns==2)
 			return (values[0][0]*values[1][1]-values[0][1]*values[1][0]);
@@ -253,15 +252,11 @@ using namespace std;
 				sign*=-1;
 			}
 			return sum;
-
 		}
 	}
-
-
 	Matrix Matrix:: getMinor(int r, int c)     //Parameters are the index of the element to which we calculate the minor
 	{
 		Matrix Minor((this->rows)-1,(this->columns)-1, 0,0);
-
 		int i_Minor=0;
 		int j_Minor=0;
 		for(int i=0; i<this->rows; i++)
@@ -281,7 +276,6 @@ using namespace std;
 		}
 		return Minor;
 	}
-
 	Matrix Matrix:: get_Minors_Cofactor_Matrix()        //to return adjugate
 	{
 			Matrix Minors_Cofactor_Matrix(this->rows,this->columns, 0,0);
@@ -298,14 +292,13 @@ using namespace std;
 		}
 		return Minors_Cofactor_Matrix;
 	}
-
 	Matrix Matrix:: getInverse()
 	{
 		if(!rows==columns) throw("Invalid Matrix dimensions");
 		if(this->getDeterminant()==0)throw("Invalid Matrix values");
 		return ((this->get_Minors_Cofactor_Matrix()).getTranspose())*(1.0/(this->getDeterminant()));
 	}
-	/*Matrix Matrix::operator *(double x)
+	Matrix Matrix::operator *(double x)
 	{
 		for(int i=0; i<this->rows; i++)
 		{
@@ -315,7 +308,8 @@ using namespace std;
 			}
 		}
 		return *this;
-	}*/
+	}
+	*/
 
 	Matrix Matrix:: getTranspose()
 {
@@ -340,7 +334,6 @@ void Matrix::print()
             }
 
 }
-
 
 
 
