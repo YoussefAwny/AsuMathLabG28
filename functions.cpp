@@ -1,16 +1,14 @@
 #include "header.h"
 using namespace std;
 
-void remove (char * text , char c)
+string Remove (string x, string r)
 {
-	char*dest=text;
-	while (*text)
-	{
-		if(*text !=c)
-			*dest++=*text;
-		text++;
-	}
-	*dest='\0';
+	int l=r.length();
+        while(x.find(r)!=-1)
+      {
+        x.erase(x.find(r),x.find(r)+l);
+      }
+      return x;
 }
 
 double ** split (int nrows , int ncolumns , char* text)
@@ -74,6 +72,25 @@ int check_if_values (string input)
         }
         }
         return 0;
+}
+
+int check_if_values_adv(string x)
+{
+    x=x.substr(x.find('=')+1);
+    string exceptions[] ={"sin","cos","tan","sqrt"};
+    int c=2;
+    for(int i=0;i<4;i++)
+    {
+       i==3?c=3:c=2;
+      while(x.find(exceptions[i])!=-1)
+      {
+        x.erase(x.find(exceptions[i]),x.find(exceptions[i])+c);
+      }
+    }
+    int flag=check_if_number(x);
+    if (x.find('[')!=-1) flag=0;
+    if (flag==1)return 1;
+    else return 0;
 }
 
 int get_matrix_number (string x, vector<string> y)

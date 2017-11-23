@@ -4,10 +4,11 @@
 using namespace std;
 
 
+vector<string> matrix_names;
+vector<Matrix> matrix;
+
 int main (int argc, char *argv[]){
 
-    vector<string> matrix_names;
-    vector<Matrix> matrix;
     int x,y,vector_counter=0;
     string user_input,file_path;
     ifstream infile;
@@ -16,7 +17,34 @@ int main (int argc, char *argv[]){
     while(argc==1||argc==2){ try{
     if(argc==2){if(!getline(infile, user_input)){break;}}
 	if(argc==1) getline(cin,user_input);
-	if(check_if_values(user_input))
+	//if(user_input.find('=')==-1&&user_input.find(';')==-1){throw ("Error: No '=' operator was found");}
+	if(check_if_values_adv(user_input))
+        {
+            if(get_matrix_number(name_from_input(user_input),matrix_names)==-1)   //if new matrix
+            {
+                matrix_names.push_back(name_from_input(user_input));
+                vector_counter++;
+                double d=0;
+                matrix.push_back(Matrix(1,1,4,d));
+
+                if(user_input[user_input.length()-1]!=';'){
+                cout<<matrix_names[vector_counter-1]<<"="<<endl;
+                matrix[vector_counter-1].print();}
+
+
+        }
+        else
+        {
+                int i=get_matrix_number(name_from_input(user_input),matrix_names);
+                double d=0;
+                matrix[i]=Matrix(1,1,4,d);
+
+                if(user_input[user_input.length()-1]!=';'){
+                cout<<matrix_names[i]<<"="<<endl;
+                matrix[i].print();}
+        }
+        }
+    else if(check_if_values(user_input))
     {
         if(get_number_of_open_br(user_input)>get_number_of_close_br(user_input))
         {
@@ -286,6 +314,7 @@ int main (int argc, char *argv[]){
                  matrix_names.push_back(out);
                  matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)].getInverse()));
                  vector_counter++;
+                 cout<<matrix[vector_counter-1].getDeterminant()<<endl;
                 if(user_input[user_input.length()-1]!=';'){
                 cout<<matrix_names[vector_counter-1]<<"="<<endl;
                 matrix[vector_counter-1].print();}

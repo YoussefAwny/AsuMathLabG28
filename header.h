@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <sstream>
 //#ifndef MATRIX_H
 //#define MATRIX_H
 
@@ -65,18 +66,21 @@ public:
 	Matrix operator / (Matrix &m);
 	Matrix operator / (double d);
 	void print();
-};
- void remove (char * text , char c);
+	string get_string();
+	};
+ string Remove (string x, string r);
  double ** split (int nrows , int ncolumns , char* text);
  int no_rows (string input);
  int no_columns (string input);
  int check_if_values (string input);
-int get_matrix_number (string x, vector<string> y);
+ int check_if_values_adv(string x);
+ int get_matrix_number (string x, vector<string> y);
  string name_from_input (string x);
  string space_remover (string y);
  int check_if_number(string x);
  int get_number_of_open_br (string x);
  int get_number_of_close_br (string x);
+
 
 
 
