@@ -8,7 +8,8 @@
 #include <sstream>
 //#ifndef MATRIX_H
 //#define MATRIX_H
-
+#define Lower 13
+#define Upper 17
 using namespace std;
 
 class Matrix

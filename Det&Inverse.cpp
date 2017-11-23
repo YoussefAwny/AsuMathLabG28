@@ -1,11 +1,10 @@
 
 #include "header.h"
 using namespace std;
-#define Lower 0
-#define Upper 1
 
-void Matrix::Pivot_Form(int x,double& pivot,int& sign,int type)
+void Matrix::Pivot_Form(int x,double& pivot,int& sign, int type)
 {
+
 	if(type==Upper)
 	{
 		for(int i=x;i<rows;i++)
@@ -54,8 +53,9 @@ void Matrix::Pivot_Form(int x,double& pivot,int& sign,int type)
 	}
 }
 
-void Matrix:: Approach_Triangular_Form(int x, double pivot,int type)
+void Matrix:: Approach_Triangular_Form(int x, double pivot, int type)
 {
+
 	if(type==Upper)
 	{
 	     for(int i=x+1;i<rows;i++)
@@ -64,12 +64,13 @@ void Matrix:: Approach_Triangular_Form(int x, double pivot,int type)
 		     //use elementary row operations to make values[i][x] equals zero
 		     double factor=values[i][x]/pivot;
 		     for(int j=0;j<columns;j++)
-			     values[i][j]=values[i][j]-factor*values[x][j];
+                 values[i][j]=values[i][j]-factor*values[x][j];
+
 		 }
 	}
 	else if(type==Lower)
 	{
-		for(int i=x+1;i>=0;i--)
+		for(int i=x-1;i>=0;i--)
 	     {
 		     if(values[i][x]==0) continue;
 		     //use elementary row operations to make values[i][x] equals zero
@@ -108,15 +109,9 @@ Matrix Matrix:: getInverse()
 		for(int j=0;j<Big.get_columns();j++)
 		{
 			if(j>this->columns-1)
-			{
-				if(i==j-this->columns)
-				Big.values[i][j]=1;
-				else Big.values[i][j]=0;
-			}
+				Big.values[i][j]=(i==j-this->columns)?1:0;
 			else
-			{
 				Big.values[i][j]=this->values[i][j];
-			}
 		}
 	}
 
@@ -130,8 +125,9 @@ Matrix Matrix:: getInverse()
 	    Big.Approach_Triangular_Form(k,pivot,Upper);
 	}
 
+
 	//lower triangular form
-	for(int k=Big.get_rows()-1;k>=0;k--)
+	for(int k=Big.get_rows()-1;k>=1;k--)
 	{
 		double pivot=0;
 		Big.Pivot_Form(k,pivot,sign,Lower);
@@ -139,10 +135,14 @@ Matrix Matrix:: getInverse()
 	    Big.Approach_Triangular_Form(k,pivot,Lower);
 	}
 
+
 	//make Main Diagonal ones
-	for(int i=0;i<Big.get_rows()-1;i++)
-		for(int j=0;j<Big.get_columns();j++)
-			Big.values[i][j]=Big.values[i][j]/Big.values[i][i];
+	for(int i=0;i<Big.get_rows();i++)
+    {
+        double Diagonal_Element=Big.values[i][i];
+        for(int j=0;j<Big.get_columns();j++)
+            Big.values[i][j]=(Big.values[i][j])/Diagonal_Element;
+    }
 
 	//get the inverse from the big matrix
 	Matrix inverse(this->rows,this->columns,MI_ZEROS,0);
@@ -152,3 +152,4 @@ Matrix Matrix:: getInverse()
 
 	return inverse;
 }
+
