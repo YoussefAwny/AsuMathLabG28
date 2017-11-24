@@ -341,11 +341,15 @@ string Matrix::get_string()
     {
         for(int j=0; j<columns; j++)
         {
-          x=x+" "+ static_cast<ostringstream*>( &(ostringstream() <<values[i][j]) )->str();
+          if((i!=0&&i!=0))x+=" ";
+          x+=static_cast<ostringstream*>( &(ostringstream() <<values[i][j]) )->str();
+            //if(x[x.length()-1]==NULL)x.erase(x.length()-1);
+
         }
        if((!i==rows-1)) x+=";";
     }
     x+="]";
+
     return x;
 }
 

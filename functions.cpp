@@ -6,54 +6,52 @@ string Remove (string x, string r)
 	int l=r.length();
         while(x.find(r)!=-1)
       {
-        x.erase(x.find(r),x.find(r)+l);
+        x.erase(x.find(r),l);
       }
       return x;
 }
 
 double ** split (int nrows , int ncolumns , char* text)
 {
-    double ** array = new double * [nrows];
+    double ** a = new double * [nrows];
 	for (int i=0 ; i<nrows ; i++){
-		array[i] = new double [ncolumns];}
-	char * space = " ;";
+		a[i] = new double [ncolumns];}
+	char * space = " ;[]";
 	char * p =strtok(text,space);
 	int r =0;
 	int c =0 ;
 	while (p != NULL)
-    {
-		array[r][c] = atof(p);
+    {cout<<p<<endl;
+		a[r][c] = atof(p);
         p = strtok (NULL, space);
-		c++;
+        c++;
 		if (c==ncolumns)
 		{
 			r++;
 			c=0;
 		}
-    }
-	return array ;
+    }cout<<"done"<<endl;
+	return a ;
 }
 
 int no_rows (string input)
 {
 	int rows =1 ;
-	for (int i=0 ; i<input.length() ; i++)
+	for (int i=0 ; i<input.length()-1 ; i++)
 		{if (input[i]==';'&&!(input[i+1]==']'))
 			rows++;
-			if(input[i]==']') break;
+			//if(input[i]==']') break;
 			}
 	return rows ;
 }
 int no_columns (string input)
 {
 	int columns = 0 ;
-    input=input.substr(input.find('['),input.find(';')-input.find('[')-1);
+    input=input.substr(input.find('[')+1,input.find(';')-input.find('[')-1);
     char* in=new char[input.length()];
     strcpy(in,input.data());
-	char * space = " ;";
+	char * space = " ;[]";
 	char * p =strtok(in,space);
-	int r =0;
-	int c =0 ;
 	while (p != NULL)
     {
         columns++;
@@ -78,13 +76,13 @@ int check_if_values_adv(string x)
 {
     x=x.substr(x.find('=')+1);
     string exceptions[] ={"sin","cos","tan","sqrt"};
-    int c=2;
+    int c=3;
     for(int i=0;i<4;i++)
     {
-       i==3?c=3:c=2;
+       i==3?c=4:c=3;
       while(x.find(exceptions[i])!=-1)
       {
-        x.erase(x.find(exceptions[i]),x.find(exceptions[i])+c);
+        x.erase(x.find(exceptions[i]),c);
       }
     }
     int flag=check_if_number(x);

@@ -6,10 +6,11 @@ using namespace std;
 
 vector<string> matrix_names;
 vector<Matrix> matrix;
+int vector_counter=0;
 
 int main (int argc, char *argv[]){
 
-    int x,y,vector_counter=0;
+    int x,y;
     string user_input,file_path;
     ifstream infile;
     if(argc==2){file_path=argv[1];
@@ -46,19 +47,41 @@ int main (int argc, char *argv[]){
         }
     else if(check_if_values(user_input))
     {
+        if(user_input[user_input.length()-1]==13||user_input[user_input.length()-1]==10||user_input[user_input.length()-1]==12)user_input.erase(user_input.length()-1);
         if(get_number_of_open_br(user_input)>get_number_of_close_br(user_input))
         {
             string temp;
-            if(user_input[user_input.length()-1]==13||user_input[user_input.length()-1]==10||user_input[user_input.length()-1]==12)user_input.erase(user_input.length()-1);
             do
             {
                 if(argc==1){getline(cin,temp);}
                 else if(argc==2){getline(infile,temp);}
                 if(temp[temp.length()-1]==13||temp[temp.length()-1]==10||temp[temp.length()-1]==12)temp.erase(temp.length()-1);
-                if(temp[temp.length()-1]==']')temp+=",";
+                if(temp[temp.length()-1]==']')temp+=";";
                 user_input+=temp;
 
             }while(get_number_of_open_br(user_input)>get_number_of_close_br(user_input));
+        }
+
+
+        string temp=user_input.substr(user_input.find("=")+1);
+        for(int i=0;i<vector_counter;i++)
+        {
+            while(temp.find(matrix_names[i])!=-1)
+            {
+                int x=temp.find(matrix_names[i]);
+                temp.erase(x,matrix_names[i].length());
+                temp.insert(x,matrix[i].get_string());
+                cout<<temp<<endl;
+            }
+        }
+        user_input.erase(user_input.find("=")+1);
+        user_input+=temp;
+
+         if(get_number_of_open_br(user_input)>1)
+        {
+           temp=user_input.substr(user_input.find("[")+1);
+
+
         }
          if(get_matrix_number(name_from_input(user_input),matrix_names)==-1)   //if new matrix
             {
@@ -66,7 +89,9 @@ int main (int argc, char *argv[]){
                 vector_counter++;
                 x =no_rows(user_input);
                 y =no_columns(user_input);
-                string user_input2=user_input.substr(user_input.find('[')+1,user_input.find(']')-user_input.find('[')-1);
+                string user_input2=user_input.substr(user_input.find('[')+1);
+                user_input2=Remove(user_input2,"[");
+                user_input2=Remove(user_input2,"]");
                 char* input_to_split= new char[user_input2.length()];
                 strcpy(input_to_split, user_input2.c_str());
                 double ** dpointer = split(x,y,input_to_split);
