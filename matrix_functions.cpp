@@ -234,6 +234,20 @@ using namespace std;
 		return m1;
 	}
 
+    Matrix Matrix :: power (Matrix& m1 ,Matrix& m2)
+    {
+        if(m1.rows != m2.rows && m1.columns !=m2.columns)
+            throw("Invalid matrix dimension");
+        Matrix m = *this;
+        for (int i=0 ; i<m1.rows ; i++)
+        {
+            for (int j=0 ; j<m1.columns ; j++)
+            {
+                m[i][j]=pow(m1[i][j],m2[i][j]);
+            }
+        }
+        return m ;
+    }
 
 
 /*
