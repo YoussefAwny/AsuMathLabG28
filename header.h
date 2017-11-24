@@ -87,7 +87,6 @@ public:
  int get_number_of_open_br (string x);
  int get_number_of_close_br (string x);
  string ** split_string (int nrows , int ncolumns , char* text);
-
-
+string matrix_conc(string MatOne);
 
 //endif // !MATRIX_H
