@@ -234,6 +234,37 @@ using namespace std;
 		return m1;
 	}
 
+	Matrix Matrix::mul2(Matrix& m1,Matrix& m2)
+	{
+		if (m1.rows != m2.rows || m1.columns != m2.columns)
+			throw("Invalid matrix dimension");
+
+		for (int R = 0; R < m1.rows; R++)
+			{for (int C = 0; C < m1.columns; C++)
+				{m1.values[R][C] *= m2.values[R][C];}}
+        return m1;
+	}
+
+	Matrix Matrix::mul2(Matrix& m1,double d)
+	{
+	    Matrix m2 (m1.rows, m1.columns, MI_VALUE, d);
+
+		for (int R = 0; R < m1.rows; R++)
+			{for (int C = 0; C < m1.columns; C++)
+				{m1.values[R][C] *= m2.values[R][C];}}
+		return m1;
+	}
+
+	Matrix Matrix::mul2(double d,Matrix& m2)
+	{
+	    Matrix m1 (m2.rows, m2.columns, MI_VALUE, d);
+
+		for (int R = 0; R < m2.rows; R++)
+			{for (int C = 0; C < m2.columns; C++)
+				{m1.values[R][C] *= m2.values[R][C];}}
+		return m1;
+	}
+
   /* Matrix Matrix :: power (Matrix& m1 ,Matrix& m2)
     {
         if(m1.rows != m2.rows && m1.columns !=m2.columns)

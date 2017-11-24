@@ -139,6 +139,7 @@ int main (int argc, char *argv[]){
      {
          if(!(user_input.find('+')==-1))
          {
+             if(user_input[user_input.find('+')-1]=='.')user_input.erase(user_input.find('+')-1,1);
              string out,in1,in2;
              out=name_from_input(user_input);
              in1=space_remover(user_input.substr(user_input.find('=')+1,user_input.find('+')-user_input.find('=')-1));
@@ -195,7 +196,7 @@ int main (int argc, char *argv[]){
              }
          }
          else if(!(user_input.find('-')==-1))
-         {
+         {if(user_input[user_input.find('-')-1]=='.')user_input.erase(user_input.find('-')-1,1);
              string out,in1,in2;
              out=name_from_input(user_input);
              in1=space_remover(user_input.substr(user_input.find('=')+1,user_input.find('-')-user_input.find('=')-1));
@@ -253,7 +254,7 @@ int main (int argc, char *argv[]){
 
          }
          else if(!(user_input.find('\'')==-1))
-         {
+         {if(user_input[user_input.find('\'')-1]=='.')user_input.erase(user_input.find('\'')-1,1);
              string out,in1;
              out=name_from_input(user_input);
              in1=space_remover(user_input.substr(user_input.find('=')+1,user_input.find('\'')-user_input.find('=')-1));
@@ -340,6 +341,69 @@ int main (int argc, char *argv[]){
             }
 
             }
+            else if(!(user_input.find(".*")==-1))
+         {
+             string out,in1,in2;
+             out=name_from_input(user_input);
+             in1=space_remover(user_input.substr(user_input.find('=')+1,user_input.find(".*")-user_input.find('=')-1));
+             in2=space_remover(user_input.substr(user_input.find(".*")+2));
+             if(in2[in2.length()-1]==13||in2[in2.length()-1]==10||in2[in2.length()-1]==12)in2.erase(in2.length()-1);
+             if(in2[in2.length()-1]==';')in2.erase(in2.length()-1);
+
+             if(get_matrix_number(out,matrix_names)==-1)
+             {
+                 matrix_names.push_back(out);
+                 vector_counter++;
+
+                 if(check_if_number(in1))
+                 {
+                     matrix.push_back(Matrix(matrix[get_matrix_number(in2,matrix_names)].get_rows(),matrix[get_matrix_number(in2,matrix_names)].get_columns(),0,0));
+                     matrix[vector_counter-1]=Matrix::mul2(atof(in1.data()),matrix[get_matrix_number(in2,matrix_names)]);
+
+                 }
+                 else if(check_if_number(in2))
+                 {
+                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)].get_rows(),matrix[get_matrix_number(in1,matrix_names)].get_columns(),0,0));
+                     matrix[vector_counter-1]=Matrix::mul2(matrix[get_matrix_number(in1,matrix_names)],atof(in2.data()));
+
+                 }
+                 else
+                 {
+                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)].get_rows(),matrix[get_matrix_number(in1,matrix_names)].get_columns(),0,0));
+                     matrix[vector_counter-1]=Matrix::mul2(matrix[get_matrix_number(in1,matrix_names)],matrix[get_matrix_number(in2,matrix_names)]);
+
+                 }
+
+                if(user_input[user_input.length()-1]!=';'){
+                cout<<matrix_names[vector_counter-1]<<"="<<endl;
+                matrix[vector_counter-1].print();}
+            }
+
+            else
+            {
+                if(check_if_number(in1))
+                 {
+                    matrix[get_matrix_number(out,matrix_names)]=Matrix::mul2(atof(in1.data()),matrix[get_matrix_number(in2,matrix_names)]);
+
+                 }
+                 else if(check_if_number(in2))
+                 {
+                   matrix[get_matrix_number(out,matrix_names)]=Matrix::mul2(matrix[get_matrix_number(in1,matrix_names)],atof(in2.data()));
+
+                 }
+                 else
+                 {
+                    matrix[get_matrix_number(out,matrix_names)]=Matrix::mul2(matrix[get_matrix_number(in1,matrix_names)],matrix[get_matrix_number(in2,matrix_names)]);
+
+                 }
+
+                 if(user_input[user_input.length()-1]!=';'){
+                cout<<matrix_names[get_matrix_number(out,matrix_names)]<<"="<<endl;
+                matrix[get_matrix_number(out,matrix_names)].print();}
+            }
+
+            }
+
       else if(!(user_input.find("inv(")==-1))
        {
            string out,in1;
@@ -368,7 +432,7 @@ int main (int argc, char *argv[]){
              }
 
        }
-       if(!(user_input.find('*')==-1))
+       if((!(user_input.find('*')==-1)&&(user_input.find('.')==-1)))
          {
              string out,in1,in2;
              out=name_from_input(user_input);

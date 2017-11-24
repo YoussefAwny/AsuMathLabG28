@@ -50,6 +50,9 @@ public:
 	static Matrix div2(Matrix& m1,Matrix& m2);
 	static Matrix div2(Matrix& m1,double d);
 	static Matrix div2(double d,Matrix& m2);
+	static Matrix mul2(Matrix& m1,Matrix& m2);
+	static Matrix mul2(Matrix& m1,double d);
+	static Matrix mul2(double d,Matrix& m2);
 	//static Matrix power(Matrix& m1, Matrix& m2);
     double getDeterminant();
 	Matrix getInverse();
