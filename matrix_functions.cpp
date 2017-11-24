@@ -234,7 +234,7 @@ using namespace std;
 		return m1;
 	}
 
-    Matrix Matrix :: power (Matrix& m1 ,Matrix& m2)
+  /* Matrix Matrix :: power (Matrix& m1 ,Matrix& m2)
     {
         if(m1.rows != m2.rows && m1.columns !=m2.columns)
             throw("Invalid matrix dimension");
@@ -350,19 +350,22 @@ void Matrix::print()
 }
 string Matrix::get_string()
 {
-    string x="[";
+    string x;
+    int flag=0;
+    if(rows!=1&&columns!=1)x="[";
     for(int i=0; i<rows;i++)
     {
         for(int j=0; j<columns; j++)
         {
-          if((i!=0&&i!=0))x+=" ";
+          if ((i==0)&&(j==0)) flag=1;
+          if(flag==0)x+=" ";
           x+=static_cast<ostringstream*>( &(ostringstream() <<values[i][j]) )->str();
             //if(x[x.length()-1]==NULL)x.erase(x.length()-1);
-
+        flag=0;
         }
-       if((!i==rows-1)) x+=";";
+       if(!(i==rows-1)) x+=";";
     }
-    x+="]";
+    if(rows!=1&&columns!=1)x+="]";
 
     return x;
 }

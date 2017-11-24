@@ -50,7 +50,7 @@ public:
 	static Matrix div2(Matrix& m1,Matrix& m2);
 	static Matrix div2(Matrix& m1,double d);
 	static Matrix div2(double d,Matrix& m2);
-	static Matrix power(Matrix& m1, Matrix& m2);
+	//static Matrix power(Matrix& m1, Matrix& m2);
     double getDeterminant();
 	Matrix getInverse();
 	void Pivot_Form(int x,double& pivot,int& sign,int type);
@@ -82,8 +82,7 @@ public:
  int check_if_number(string x);
  int get_number_of_open_br (string x);
  int get_number_of_close_br (string x);
-
-
+ string ** split_string (int nrows , int ncolumns , char* text);
 
 
 

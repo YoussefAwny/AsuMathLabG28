@@ -17,12 +17,37 @@ double ** split (int nrows , int ncolumns , char* text)
 	for (int i=0 ; i<nrows ; i++){
 		a[i] = new double [ncolumns];}
 	char * space = " ;[]";
-	char * p =strtok(text,space);
+	//char* context	= NULL;
+	char * p =strtok(text,space);//,&context);
 	int r =0;
 	int c =0 ;
 	while (p != NULL)
     {
 		a[r][c] = atof(p);
+        p = strtok (NULL, space);//,&context);
+        c++;
+		if (c==ncolumns)
+		{
+			r++;
+			c=0;
+		}
+    }
+	return a ;
+}
+
+
+string ** split_string (int nrows , int ncolumns , char* text)
+{
+    string ** a = new string * [nrows];
+	for (int i=0 ; i<nrows ; i++){
+		a[i] = new string [ncolumns];}
+	char * space = " ;[]";
+	char * p =strtok(text,space);
+	int r =0;
+	int c =0 ;
+	while (p != NULL)
+    {
+		a[r][c] = p;
         p = strtok (NULL, space);
         c++;
 		if (c==ncolumns)

@@ -18,7 +18,7 @@ int main (int argc, char *argv[]){
     while(argc==1||argc==2){ try{
     if(argc==2){if(!getline(infile, user_input)){break;}}
 	if(argc==1) getline(cin,user_input);
-	//if(user_input.find('=')==-1&&user_input.find(';')==-1){throw ("Error: No '=' operator was found");}
+	//if(user_input.find('=')==-1&&user_input.find(';')==-1){cout<<"Error: Wrong Input"<<endl;continue;}
 	if(check_if_values_adv(user_input))
         {
             if(get_matrix_number(name_from_input(user_input),matrix_names)==-1)   //if new matrix
@@ -56,11 +56,13 @@ int main (int argc, char *argv[]){
                 if(argc==1){getline(cin,temp);}
                 else if(argc==2){getline(infile,temp);}
                 if(temp[temp.length()-1]==13||temp[temp.length()-1]==10||temp[temp.length()-1]==12)temp.erase(temp.length()-1);
+                while((temp[temp.length()-2]==' ')&&(temp[temp.length()-1]==' '))temp.erase(temp.length()-2,1);
+                while((temp[1]==' ')&&(temp[0]==' '))temp.erase(0,1);
                 if(temp[temp.length()-1]==']')temp+=";";
                 user_input+=temp;
 
             }while(get_number_of_open_br(user_input)>get_number_of_close_br(user_input));
-        }
+        }cout<<user_input<<endl;
 
 
         string temp=user_input.substr(user_input.find("=")+1);
@@ -71,16 +73,28 @@ int main (int argc, char *argv[]){
                 int x=temp.find(matrix_names[i]);
                 temp.erase(x,matrix_names[i].length());
                 temp.insert(x,matrix[i].get_string());
-                cout<<temp<<endl;
             }
         }
         user_input.erase(user_input.find("=")+1);
         user_input+=temp;
 
-         if(get_number_of_open_br(user_input)>1)
+         while(get_number_of_open_br(user_input)>1)
         {
-           temp=user_input.substr(user_input.find("[")+1);
-
+           int pos_of_first_brc=user_input.find('[',user_input.find('[')+1);
+           int pos_of_last_brc;
+           if(user_input.find('[',pos_of_first_brc+1)>user_input.find(']',pos_of_first_brc+1))
+           {
+             pos_of_last_brc= user_input.find(']',user_input.find(']')+1);
+           }
+           else
+            {
+             pos_of_last_brc= user_input.find(']',user_input.find(']',user_input.find(']')+1)+1);
+            }
+             string to_merge=user_input.substr(pos_of_first_brc,pos_of_last_brc-pos_of_first_brc+1);
+             if(vector_counter!=1)user_input.erase(pos_of_first_brc,pos_of_last_brc-pos_of_first_brc+1);
+             //user_input.insert(pos_of_first_brc ,to_merge);
+            cout<<user_input<<endl;
+            cout<<pos_of_first_brc<<endl<<pos_of_last_brc<<endl;break;
 
         }
          if(get_matrix_number(name_from_input(user_input),matrix_names)==-1)   //if new matrix
