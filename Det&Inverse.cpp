@@ -160,17 +160,9 @@ Matrix Matrix:: getInverse()
                         test=0;
                 }
 
-    try{
         if(test==1)
                 return inverse;
         else if(test==0)
                 throw("has no inverse");
-       }
-
-
-catch(string s)
-{
-    cout<<s<<endl;
-}
 
 }

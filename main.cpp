@@ -53,12 +53,12 @@ int main (int argc, char *argv[]){
             string temp;
             do
             {
+                if(user_input[user_input.length()-1]==']')temp+=";";
                 if(argc==1){getline(cin,temp);}
                 else if(argc==2){getline(infile,temp);}
                 if(temp[temp.length()-1]==13||temp[temp.length()-1]==10||temp[temp.length()-1]==12)temp.erase(temp.length()-1);
                 while((temp[temp.length()-2]==' ')&&(temp[temp.length()-1]==' '))temp.erase(temp.length()-2,1);
                 while((temp[1]==' ')&&(temp[0]==' '))temp.erase(0,1);
-                if(temp[temp.length()-1]==']')temp+=";";
                 user_input+=temp;
 
             }while(get_number_of_open_br(user_input)>get_number_of_close_br(user_input));
@@ -102,7 +102,7 @@ int main (int argc, char *argv[]){
                 matrix_names.push_back(name_from_input(user_input));
                 vector_counter++;
                 x =no_rows(user_input);
-                y =no_columns(user_input);
+                y =no_columns(user_input);cout<<x<<endl<<y<<endl;
                 string user_input2=user_input.substr(user_input.find('[')+1);
                 user_input2=Remove(user_input2,"[");
                 user_input2=Remove(user_input2,"]");
