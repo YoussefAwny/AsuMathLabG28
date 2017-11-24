@@ -3,21 +3,21 @@ using namespace std;
 
 string matrix_conc(string MatOne)
 {
-  int rows = 1, cols = 1;
+  int rows = 1, cols = 1, nR1 = 1, nR2 =1 , nC1 = 1, nC2 = 1;
   bool Space = 0; //to elimenate spaces to only 1
   bool semicolon = 0;//to ensure that no spaces before or after semicolon is used to increment no of COLs
   bool eom = 0; //is HIGH when ']' is reached
   int j = 0, k = 0; // j is index for rows and k index for coloumns 
-  string final=NULL;
+  string final;
   
   //this loop to know no of rows and no of cols
   for (int i = 0; i < MatOne.length(); i++)
   {
     switch (MatOne[i])
     {
-    case ' ': if ((!Space) && (!semicolon)) { cols++; } Space = 1; semicolon = 0;  break;
-    case ';':semicolon = 1; rows++; if (!eom) { cols = 1; }; Space = 0; break;
-    case '[':rows = 1; Space = 0; semicolon = 0; break;
+    case ' ': if ((!Space) && (!semicolon)) { cols++; } if (eom) { nC2++; }if (!eom) { nC1++; }  Space = 1; semicolon = 0;  break;
+    case ';':semicolon = 1; rows++; if (eom) { nR2++; } if (!eom) { cols = 1; nC1 = 1; nR1++; }; Space = 0; break;
+    case '[':rows = 1; if (eom) {} Space = 0; semicolon = 0; break;
     case ']':if (!eom) { cols++; }; eom = 1; Space = 1; semicolon = 0; break;
 
     default: semicolon = 0; Space = 0; break;
@@ -25,6 +25,10 @@ string matrix_conc(string MatOne)
   }
 
   eom = 0, Space = 0; semicolon = 0;
+  if ( nR1 != nR2 ) 
+  {
+    cout << "Matrix Dimensions error";
+  }
 
 
   string **array = new string*[rows];
