@@ -1,4 +1,3 @@
-
 #include "header.h"
 using namespace std;
 
@@ -150,6 +149,28 @@ Matrix Matrix:: getInverse()
 		for(int j=0;j<this->columns;j++)
 			inverse.values[i][j]=Big.values[i][j+this->columns];
 
-	return inverse;
+    //check if matrix is inversable
+			int test =1;
+			Matrix inverse_complementary(this->rows,this->columns,MI_ZEROS,0);
+			for(int i=0;i<this->rows;i++)
+                for(int j=0;j<this->columns;j++)
+			    {
+                    inverse_complementary.values[i][j]=Big.values[i][j];
+			        if(!((inverse_complementary.values[i][j]==1&&i==j )|| (inverse_complementary.values[i][j]<0.00001 && i!=j)))
+                        test=0;
+                }
+
+    try{
+        if(test==1)
+                return inverse;
+        else if(test==0)
+                throw("has no inverse");
+       }
+
+
+catch(string s)
+{
+    cout<<s<<endl;
 }
 
+}
