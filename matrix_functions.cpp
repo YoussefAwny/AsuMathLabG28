@@ -479,6 +479,246 @@ Matrix Matrix :: operator / ( double d )
 	r/=d ;
 	return r ;
 }
+Matrix Matrix::sinm(Matrix& m)
+ {
+     Matrix r (m.rows, m.columns,MI_ZEROS,0);
+     int flag =0;
+   for (int iR = 0; iR < m.rows; iR++)
+	{
+		for (int iC = 0; iC < m.columns; iC++)
+			{
+			   /* if ( m.values[iR][iC]==(1/0))
+                  {
+                      cout << "please enter valid numbers in the matrix." <<endl;
+               //    flag = 1;
+                  break;
+
+                  }
+                else
+                {*/
+                    r.values[iR][iC] = sin(m.values[iR][iC]);
+
+
+			}
+			// if ( flag == 1)
+              //  break;
+	}
+	//if (flag != 1 )
+	return r;
+ }
+
+Matrix Matrix::cosm(Matrix& m)
+ {
+     Matrix r (m.rows, m.columns,MI_ZEROS,0);
+     int flag =0 ;
+   for (int iR = 0; iR < m.rows; iR++)
+    {
+		for (int iC = 0; iC < m.columns; iC++)
+			{
+			/*    if ( m.values[iR][iC]==(1/0))
+                {
+
+                    cout << "please enter valid numbers in the matrix." <<endl;
+                    flag=1;
+                    break;
+
+                }*/
+                //else
+                 //{
+                    r.values[iR][iC] = cos(m.values[iR][iC]);
+                //}
+			}
+            //   if ( flag == 1)
+              //   break;
+    }
+   // if (flag == 1 )
+    return r;
+ }
+ Matrix Matrix::tanm(Matrix& m)
+ {
+  Matrix r (m.rows, m.columns,MI_ZEROS,0);
+              int flag = 0 ;
+
+   for (int iR = 0; iR < m.rows; iR++)
+	{
+		for (int iC = 0; iC < m.columns; iC++)
+            {
+
+
+     //           if ( m.values[iR][iC]==(1/0))
+       //         {
+         //           cout << "please enter valid numbers in the matrix." <<endl;
+           //        flag = 1 ;
+             //       break;
+
+               // }
+                //else
+                //{
+                   r.values[iR][iC] = tan(m.values[iR][iC]);
+
+                //}
+            }
+             //if(flag == 1)
+             //{
+               //  break;
+             //}
+
+	}
+//	if (flag != 1 )
+    return r;
+ }
+
+
+ Matrix Matrix::cosecm(Matrix& m)
+ {
+     Matrix r (m.rows, m.columns,MI_ZEROS,0);
+     		int flag =0 ;
+   for (int iR = 0; iR < m.rows; iR++)
+		{
+		for (int iC = 0; iC < m.columns; iC++)
+			{
+			    if (  m.values[iR][iC]==(0))
+                  {
+                      cout << "Matrix is a singular to working precision" << endl ;
+                   flag =1;
+                  break;
+
+                  }
+                else
+                {
+                    r.values[iR][iC] = (1/sin(m.values[iR][iC]));
+                }
+			}
+        if ( flag == 1)
+        break;
+        }
+        if (flag != 1 )
+         return r;
+ }
+
+Matrix Matrix::secm(Matrix& m)
+ {
+      Matrix r (m.rows, m.columns,MI_ZEROS,0);
+      int flag = 0  ;
+   for (int iR = 0; iR < m.rows; iR++)
+    {
+        for (int iC = 0; iC < m.columns; iC++)
+			{
+			    //if ( m.values[iR][iC]==(1/0))
+                //{
+
+                  //  cout << "please enter valid numbers in the matrix." <<endl;
+                    //flag =1;
+                //    break;
+                //}
+                //else
+                //{
+                      r.values[iR][iC] = (1/cos(m.values[iR][iC]));
+                //}
+			}
+               //if ( flag == 1)
+                //break;
+    }
+   // if (flag != 1 )
+    return r;
+ }
+
+Matrix Matrix::cotanm(Matrix& m)
+{
+     Matrix r (m.rows, m.columns,MI_ZEROS,0);
+     int flag =0;
+   for (int iR = 0; iR < m.rows; iR++)
+	{
+		for (int iC = 0; iC < m.columns; iC++)
+            {
+                if ( m.values[iR][iC]==(0) )
+                {
+                    cout << "Matrix is a singular to working precision" << endl ;
+                flag=1;
+                    break;
+                }
+                else
+                {
+                   r.values[iR][iC] = (1/tan(m.values[iR][iC]));
+
+                }
+            }
+            if(  flag == 1 )
+               {
+                   break;
+               }
+
+	}
+            if (flag != 1 )
+            return r;
+ }
+
+    Matrix Matrix::logm(Matrix& m)
+{
+     Matrix r (m.rows, m.columns,MI_ZEROS,0);
+     int flag =0;
+         for (int iR = 0; iR < m.rows; iR++)
+        {
+
+            for (int iC = 0; iC < m.columns; iC++)
+            {
+
+                if (m.values[iR][iC] > 0 )
+                {
+                    r.values[iR][iC] = log(m.values[iR][iC]);
+
+                }
+
+     else
+     {
+         cout << "Matrix is a singular to working precision" << endl ;
+        flag =1;
+        break;
+     }
+            }
+
+	if (flag == 1 )
+	break;
+        }
+        if (flag != 1 )
+        return r;
+}
+
+
+  Matrix Matrix::expm(Matrix& m)
+{
+    Matrix r (m.rows, m.columns,MI_ZEROS,0);
+    int flag =0 ;
+         for (int iR = 0; iR < m.rows; iR++)
+	{
+		for (int iC = 0; iC < m.columns; iC++)
+        {
+              //  if (m.values[iR][iC] != (1/0) )
+                //{
+                    r.values[iR][iC] = exp(m.values[0][0]);
+                //}
+
+//     else
+  //          {
+    //            cout << "Please enter a matrix containing valid numbers only!" << endl ;
+      //          flag = 1;
+        //        break;
+          //  }
+        }
+
+	//if (flag == 1 )
+	//break;
+
+	}
+//if (flag != 1 )
+    return r;
+}
+
+
+
+
+
+
 
 
 
