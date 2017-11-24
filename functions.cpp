@@ -21,7 +21,7 @@ double ** split (int nrows , int ncolumns , char* text)
 	int r =0;
 	int c =0 ;
 	while (p != NULL)
-    {cout<<p<<endl;
+    {
 		a[r][c] = atof(p);
         p = strtok (NULL, space);
         c++;
@@ -30,7 +30,7 @@ double ** split (int nrows , int ncolumns , char* text)
 			r++;
 			c=0;
 		}
-    }cout<<"done"<<endl;
+    }
 	return a ;
 }
 
