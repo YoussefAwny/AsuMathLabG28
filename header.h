@@ -73,6 +73,14 @@ public:
 	Matrix operator / (double d);
 	void print();
 	string get_string();
+	static Matrix sinm(Matrix& m );
+	static Matrix cosm(Matrix& m);
+	static Matrix tanm(Matrix& m);
+	static Matrix cosecm(Matrix& m);
+	static Matrix secm(Matrix& m);
+	static Matrix cotanm(Matrix& m);
+    	static Matrix logm(Matrix& m);
+    	static Matrix expm(Matrix& m);
 	};
  string Remove (string x, string r);
  double ** split (int nrows , int ncolumns , char* text);
