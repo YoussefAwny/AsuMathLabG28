@@ -100,11 +100,11 @@ int check_if_values (string input)
 int check_if_values_adv(string x)
 {
     x=x.substr(x.find('=')+1);
-    string exceptions[] ={"sin","cos","tan","sqrt"};
-    int c=3;
-    for(int i=0;i<4;i++)
+    string exceptions[] ={"sin(","cos(","tan(","cot(","csc(","sec(","log(","exp(","sqrt("};
+    int c=4;
+    for(int i=0;i<9;i++)
     {
-       i==3?c=4:c=3;
+       i==8?c=5:c=4;
       while(x.find(exceptions[i])!=-1)
       {
         x.erase(x.find(exceptions[i]),c);
@@ -205,6 +205,17 @@ int get_number_of_close_br (string x)
       if(x[i]==']') c++;
    }
    return c;
+}
+
+int check_if_math_op (string x)
+{
+    int flag=0;
+    string r[]={"+","-","*","/","sin(","cos(","tan(","cot(","csc(","sec(","sqrt(","log(","exp("};
+    for(int i=0;i<13;i++)
+    {
+        if((x.find(r[i]))!=-1) flag=1;
+    }
+    return flag;
 }
 
 

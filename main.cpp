@@ -108,7 +108,19 @@ int main (int argc, char *argv[]){
                 user_input2=Remove(user_input2,"]");
                 char* input_to_split= new char[user_input2.length()];
                 strcpy(input_to_split, user_input2.c_str());
+
                 double ** dpointer = split(x,y,input_to_split);
+             /*   string ** dpointer_s = split(x,y,input_to_split);
+                for(int i=0;i<x;i++)
+                {
+                    for(int j=0;j<y;j++)
+                    {
+                        if(check_if_math_op(dpointer_s[i][j]))
+                           dpointer=..(dpointer_s[i][j]);
+                        else dpointer=atof(dpointer_s[i][j]);
+                    }
+                }*/
+
                 matrix.push_back(Matrix(x,y,dpointer));
 
                 if(user_input[user_input.length()-1]!=';'){
