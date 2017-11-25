@@ -280,6 +280,70 @@ using namespace std;
         return m ;
     }
 
+    Matrix Matrix :: power (Matrix& m1 ,Matrix& m2)
+    {
+        if(m1.rows != m2.rows && m1.columns !=m2.columns)
+            throw("Invalid matrix dimension");
+        Matrix m (m1.rows,m1.columns);
+        for (int i=0 ; i<m1.rows ; i++)
+        {
+            for (int j=0 ; j<m1.columns ; j++)
+            {
+                m.values[i][j]=pow(m1.values[i][j],m2.values[i][j]);
+            }
+        }
+        return m ;
+    }
+    Matrix Matrix :: IMatrix (Matrix&m)
+    {
+        for (int i=0 ;i<m.rows ; i++)
+        {
+            for (int j=0 ; j<m.columns ; j++)
+            {
+                if (i=j)
+                    m.values[i][j]=1;
+                else
+                    m.values[i][j]=0;
+            }
+        }
+        return m ;
+    }
+    Matrix Matrix :: power (Matrix&m ,double d)
+    {
+        if(m.rows !=m.columns) // this type applies for square matrix only
+            throw("Invalid matrix dimension");
+        Matrix c =*this;
+        if (d==0)
+        {
+            c=IMatrix(m);
+            return c ;
+        }
+        if (d==1)
+        {
+            c=m;
+            return c ;
+        }
+        if (d==2)
+        {
+            c=m*m;
+            return c;
+        }
+        if (d==3)
+        {
+            c=m*m;
+            c*=m;
+            return c ;
+        }
+        if (d>3)
+        {
+            c=m*m;
+            for (int i=0 ;i<d-2 ; i++)
+            {
+                c=c*m;
+            }
+            return c ;
+        }
+    }
 
 /*
 //old inverse

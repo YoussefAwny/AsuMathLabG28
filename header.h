@@ -55,6 +55,8 @@ public:
 	static Matrix mul2(Matrix& m1,double d);
 	static Matrix mul2(double d,Matrix& m2);
 	static Matrix power(Matrix& m1, Matrix& m2);
+	Matrix power (Matrix&m ,double d);
+	Matrix IMatrix (Matrix& m);
     double getDeterminant();
 	Matrix getInverse();
 	void Pivot_Form(int x,double& pivot,int& sign,int type);
