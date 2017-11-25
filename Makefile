@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-c -Wall
 LDFLAGS=
-SOURCES=main.cpp i.cpp functions.cpp muldiv.cpp
+SOURCES=main.cpp matrix_functions.cpp functions.cpp muldiv.cpp Det&Inverse.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=matrix
 
