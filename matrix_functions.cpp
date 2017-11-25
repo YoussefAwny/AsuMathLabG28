@@ -265,7 +265,7 @@ using namespace std;
 		return m1;
 	}
 
-   Matrix Matrix :: power (Matrix& m1 ,Matrix& m2)
+   Matrix Matrix :: power2 (Matrix& m1 ,Matrix& m2)
     {
         if(m1.rows != m2.rows && m1.columns !=m2.columns)
             throw("Invalid matrix dimension");
@@ -280,20 +280,7 @@ using namespace std;
         return m ;
     }
 
-    Matrix Matrix :: power (Matrix& m1 ,Matrix& m2)
-    {
-        if(m1.rows != m2.rows && m1.columns !=m2.columns)
-            throw("Invalid matrix dimension");
-        Matrix m (m1.rows,m1.columns);
-        for (int i=0 ; i<m1.rows ; i++)
-        {
-            for (int j=0 ; j<m1.columns ; j++)
-            {
-                m.values[i][j]=pow(m1.values[i][j],m2.values[i][j]);
-            }
-        }
-        return m ;
-    }
+
     Matrix Matrix :: IMatrix (Matrix&m)
     {
         for (int i=0 ;i<m.rows ; i++)
@@ -312,7 +299,7 @@ using namespace std;
     {
         if(m.rows !=m.columns) // this type applies for square matrix only
             throw("Invalid matrix dimension");
-        Matrix c =*this;
+        Matrix c (m.rows,m.columns,MI_ZEROS,0);
         if (d==0)
         {
             c=IMatrix(m);
@@ -344,7 +331,7 @@ using namespace std;
             return c ;
         }
     }
-    Matrix :: Matrix squareRoot (Matrix& m)
+    Matrix Matrix::squareRoot (Matrix& m)
     {
         int flag =0;
         for (int i=0 ; i<m.rows ; i++)
@@ -360,7 +347,7 @@ using namespace std;
         }
         if (flag==1)
             throw("can't compute square root for negative values");
-        Matrix c = *this ;
+        Matrix c (m.rows,m.columns,MI_ZEROS,0);
         for (int i=0 ; i<m.rows ; i++)
         {
             for (int j=0 ; j<m.columns ; j++)
