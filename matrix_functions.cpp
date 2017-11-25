@@ -344,6 +344,32 @@ using namespace std;
             return c ;
         }
     }
+    Matrix :: Matrix squareRoot (Matrix& m)
+    {
+        int flag =0;
+        for (int i=0 ; i<m.rows ; i++)
+        {
+            for (int j=0 ; j<m.columns ; j++)
+            {
+               if (m.values[i][j]<0)
+               {
+                   flag=1;
+                   break;
+               }
+            }
+        }
+        if (flag==1)
+            throw("can't compute square root for negative values");
+        Matrix c = *this ;
+        for (int i=0 ; i<m.rows ; i++)
+        {
+            for (int j=0 ; j<m.columns ; j++)
+            {
+               c.values[i][j]=sqrt(m.values[i][j]);
+            }
+        }
+        return c ;
+    }
 
 /*
 //old inverse

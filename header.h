@@ -57,6 +57,7 @@ public:
 	static Matrix power(Matrix& m1, Matrix& m2);
 	Matrix power (Matrix&m ,double d);
 	Matrix IMatrix (Matrix& m);
+	Matrix squareRoot (Matrix& m);
     double getDeterminant();
 	Matrix getInverse();
 	void Pivot_Form(int x,double& pivot,int& sign,int type);
