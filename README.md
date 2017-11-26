@@ -3,6 +3,7 @@
 ==========
 ASU-MathsLab is a project aimed at providing a well defined enviroment for running airethmatic operations on matrices,
 It supports a wide range of operations including: summation,subtraction,multiplication,division,inversion,determinant and transpose calculation.
+
 It can be considered as a full C++ version of Matlab.
 
 **Developers**
@@ -26,7 +27,8 @@ The students are:
 **Operating System**
 =======================
 ASU-MathsLab is made to run perfectly on linux based systems.
-GCC compiler was at work 
+
+GCC compiler is used.
 
 
 **Syntax**
