@@ -15,7 +15,7 @@ The students are:
 
 -Paula Magdy
 
--Mark Maged
+-Mark Maged Morcos
 
 -Youssef Awny
 
@@ -23,7 +23,7 @@ The students are:
 
 -George Mohsen
 
--Kirollos Wadie
+-Kirollos Sherif Wadie
 
 
 
