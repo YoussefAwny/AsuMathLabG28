@@ -8,11 +8,11 @@ It can be considered as a full C++ version of Matlab.
 
 **Specifications**
 ====================
-*Using C++.
+*Using C++.*
 
-*Development under Linux, it is made to run perfectly under unix based systems.
+*Development under Linux, it is made to run perfectly under unix based systems.*
 
-*g++ compiler is used.
+*g++ compiler is used.*
 
 
 
@@ -21,17 +21,17 @@ It can be considered as a full C++ version of Matlab.
 This project is written by a group of engineering students at Ain Shams university.
 The students are:
 
--Paula Magdy
+*-Paula Magdy*
 
--Mark Maged Morcos
+*-Mark Maged*
 
--Youssef Awny
+*-Youssef Awny*
 
--Youssef Adel
+*-Youssef Adel*
 
--George Mohsen
+*-George Mohsen*
 
--Kirollos Sherif Wadie
+*-Kirollos Sherif Wadie*
 
 
 
