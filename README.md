@@ -39,7 +39,7 @@ The students are:
 =======================
 AsuMathsLab is made to run perfectly on linux based systems.
 
-GCC compiler is used.
+g++ compiler is used.
 
 
 
@@ -50,7 +50,7 @@ Project execution is divided into three phases.
 
 Phase.1 is ready to use and we still have another 2 to do.
 
-## Phase.1
+## Phase 1
 
 targets core operations:
 
