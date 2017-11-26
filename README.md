@@ -1,10 +1,18 @@
-# ASU-MathsLab
+# AsuMathsLab
 **Intro**
 ==========
-ASU-MathsLab is a project aimed at providing a well defined enviroment for running airethmatic operations on matrices,
+AsuMathsLab is a project aimed at providing a well defined enviroment for running airethmatic operations on matrices,
 It supports a wide range of operations including: summation,subtraction,multiplication,division,inversion,determinant and transpose calculation.
 
 It can be considered as a full C++ version of Matlab.
+
+**Specifications**
+====================
+*Using C++.
+
+*Development under Linux, it is made to run perfectly under unix based systems.
+
+*g++ compiler is used.
 
 
 
@@ -29,10 +37,44 @@ The students are:
 
 **Operating System**
 =======================
-ASU-MathsLab is made to run perfectly on linux based systems.
+AsuMathsLab is made to run perfectly on linux based systems.
 
 GCC compiler is used.
 
+
+
+
+# Project phases
+
+Project execution is divided into three phases.
+
+Phase.1 is ready to use and we still have another 2 to do.
+
+## Phase.1
+
+targets core operations:
+
+  *Support dynamic creation and destruction of matrices.*
+
+  *Support addition, subtraction, division, multiplication, Transpose, and inversion.* 
+ 
+  *Process input user commands as well as file inputs.*
+
+## Phase 2
+
+targets advanced operations and tuning.
+
+*Support trignometric functions, logarithmic functions, roots and powers.*
+
+*Support mathematical expressions either with dot or not.*
+
+*Support flexible matrix parser.*
+
+*Support error handling.*
+
+## Phase 3
+
+more advanced system operations.
 
 
 **Syntax**
@@ -59,6 +101,8 @@ F = A / B
 
 L=inv(A)
 
+**For the second phase:**
+
   A = 5.5 + 12 * sin(0.4) + 2.2^4;
   
   B = [1.2 2.3 A;[1.3 2.4;4.6 1.3],[3.2;7.8]];
@@ -79,3 +123,4 @@ L = (1.2 + 3.4 - 5.6)/(2.1*3.2 + 4.6) - 12.1*3.1 + (1.2 + 5.2)^(4/(3.2+5.6))
 X = ((C*D .+ 4)./2.1 + sqrt(D))./C.^2
 
 Y = (C^3 * sin(1./D))^(0.1)
+
