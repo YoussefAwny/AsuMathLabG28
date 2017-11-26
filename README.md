@@ -23,7 +23,7 @@ The students are:
 
 -George Mohsen
 
--Kiro Wadie
+-Kirollos Wadie
 
 
 
