@@ -7,6 +7,7 @@
 #include <vector>
 #include <sstream>
 #include<math.h>
+#include <cstdlib>
 //#ifndef MATRIX_H
 //#define MATRIX_H
 #define Lower 13
