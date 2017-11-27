@@ -14,7 +14,7 @@
 using namespace std;
 
 class Matrix
-{
+{  //
 private:
     int rows, columns;
 
