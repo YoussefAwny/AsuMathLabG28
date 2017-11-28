@@ -9,7 +9,10 @@ vector<Matrix> matrix;
 int vector_counter=0;
 
 int main (int argc, char *argv[]){
-
+/*cout<<"input:[1.3 2.4;4.6 1.3],[3.2;7.8]\n output: "<<matrix_conc("[1.3 2.4;4.6 1.3],[3.2;7.8]\n")<<endl;
+cout<<"input:[1.3 2.4;4.6 1.3] [3.2;7.8]\n output: "<<matrix_conc("[1.3 2.4;4.6 1.3] [3.2;7.8]\n")<<endl;
+cout<<"input:[[1.3 2.4;4.6 1.3] [3.2;7.8]]\n output: "<<matrix_conc("[[1.3 2.4;4.6 1.3] [3.2;7.8]]\n")<<endl;
+cout<<"input:[[1.3 2.4;4.6 1.3],[3.2;7.8]]\n output: "<<matrix_conc("[[1.3 2.4;4.6 1.3],[3.2;7.8]]")<<endl;*/
     int x,y;
     string user_input,file_path;
     ifstream infile;
@@ -18,8 +21,8 @@ int main (int argc, char *argv[]){
     while(argc==1||argc==2){ try{
     if(argc==2){if(!getline(infile, user_input)){break;}}
 	if(argc==1) getline(cin,user_input);
-	//if(user_input.find('=')==-1&&user_input.find(';')==-1){cout<<"Error: Wrong Input"<<endl;continue;}
-	if(check_if_values_adv(user_input))
+    //if(user_input.find('=')==-1&&user_input.find(';')==-1){throw("Error: Wrong Input");}
+	/*if(check_if_values_adv(user_input))
         {
             if(get_matrix_number(name_from_input(user_input),matrix_names)==-1)   //if new matrix
             {
@@ -44,8 +47,8 @@ int main (int argc, char *argv[]){
                 cout<<matrix_names[i]<<"="<<endl;
                 matrix[i].print();}
         }
-        }
-    else if(check_if_values(user_input))
+        }*/
+     if(check_if_values(user_input))
     {
         if(user_input[user_input.length()-1]==13||user_input[user_input.length()-1]==10||user_input[user_input.length()-1]==12)user_input.erase(user_input.length()-1);
         if(get_number_of_open_br(user_input)>get_number_of_close_br(user_input))
@@ -62,7 +65,7 @@ int main (int argc, char *argv[]){
                 user_input+=temp;
 
             }while(get_number_of_open_br(user_input)>get_number_of_close_br(user_input));
-        }cout<<user_input<<endl;
+        }
 
 
         string temp=user_input.substr(user_input.find("=")+1);
@@ -102,7 +105,7 @@ int main (int argc, char *argv[]){
                 matrix_names.push_back(name_from_input(user_input));
                 vector_counter++;
                 x =no_rows(user_input);
-                y =no_columns(user_input);cout<<x<<endl<<y<<endl;
+                y =no_columns(user_input);
                 string user_input2=user_input.substr(user_input.find('[')+1);
                 user_input2=Remove(user_input2,"[");
                 user_input2=Remove(user_input2,"]");
@@ -429,7 +432,7 @@ int main (int argc, char *argv[]){
                  matrix_names.push_back(out);
                  matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)].getInverse()));
                  vector_counter++;
-                 cout<<matrix[vector_counter-1].getDeterminant()<<endl;
+                //cout<<matrix[vector_counter-1].getDeterminant()<<endl;
                 if(user_input[user_input.length()-1]!=';'){
                 cout<<matrix_names[vector_counter-1]<<"="<<endl;
                 matrix[vector_counter-1].print();}

@@ -7,6 +7,7 @@
 #include <vector>
 #include <sstream>
 #include<math.h>
+#include <cstdlib>
 //#ifndef MATRIX_H
 //#define MATRIX_H
 #define Lower 13
@@ -14,7 +15,7 @@
 using namespace std;
 
 class Matrix
-{
+{  //
 private:
     int rows, columns;
 
@@ -54,7 +55,10 @@ public:
 	static Matrix mul2(Matrix& m1,Matrix& m2);
 	static Matrix mul2(Matrix& m1,double d);
 	static Matrix mul2(double d,Matrix& m2);
-	static Matrix power(Matrix& m1, Matrix& m2);
+	static Matrix power2(Matrix& m1, Matrix& m2);
+	static Matrix power (Matrix&m ,double d);
+	static Matrix IMatrix (Matrix& m);
+	static Matrix squareRoot (Matrix& m);
     double getDeterminant();
 	Matrix getInverse();
 	void Pivot_Form(int x,double& pivot,int& sign,int type);
@@ -79,8 +83,8 @@ public:
 	static Matrix cosecm(Matrix& m);
 	static Matrix secm(Matrix& m);
 	static Matrix cotanm(Matrix& m);
-    	static Matrix logm(Matrix& m);
-    	static Matrix expm(Matrix& m);
+    static Matrix logm(Matrix& m);
+    static Matrix expm(Matrix& m);
 	};
  string Remove (string x, string r);
  double ** split (int nrows , int ncolumns , char* text);

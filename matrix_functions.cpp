@@ -265,7 +265,7 @@ using namespace std;
 		return m1;
 	}
 
-   Matrix Matrix :: power (Matrix& m1 ,Matrix& m2)
+   Matrix Matrix :: power2 (Matrix& m1 ,Matrix& m2)
     {
         if(m1.rows != m2.rows && m1.columns !=m2.columns)
             throw("Invalid matrix dimension");
@@ -280,6 +280,83 @@ using namespace std;
         return m ;
     }
 
+
+    Matrix Matrix :: IMatrix (Matrix&m)
+    {
+        for (int i=0 ;i<m.rows ; i++)
+        {
+            for (int j=0 ; j<m.columns ; j++)
+            {
+                if (i=j)
+                    m.values[i][j]=1;
+                else
+                    m.values[i][j]=0;
+            }
+        }
+        return m ;
+    }
+    Matrix Matrix :: power (Matrix&m ,double d)
+    {
+        if(m.rows !=m.columns) // this type applies for square matrix only
+            throw("Invalid matrix dimension");
+        Matrix c (m.rows,m.columns,MI_ZEROS,0);
+        if (d==0)
+        {
+            c=IMatrix(m);
+            return c ;
+        }
+        if (d==1)
+        {
+            c=m;
+            return c ;
+        }
+        if (d==2)
+        {
+            c=m*m;
+            return c;
+        }
+        if (d==3)
+        {
+            c=m*m;
+            c*=m;
+            return c ;
+        }
+        if (d>3)
+        {
+            c=m*m;
+            for (int i=0 ;i<d-2 ; i++)
+            {
+                c=c*m;
+            }
+            return c ;
+        }
+    }
+    Matrix Matrix::squareRoot (Matrix& m)
+    {
+        int flag =0;
+        for (int i=0 ; i<m.rows ; i++)
+        {
+            for (int j=0 ; j<m.columns ; j++)
+            {
+               if (m.values[i][j]<0)
+               {
+                   flag=1;
+                   break;
+               }
+            }
+        }
+        if (flag==1)
+            throw("can't compute square root for negative values");
+        Matrix c (m.rows,m.columns,MI_ZEROS,0);
+        for (int i=0 ; i<m.rows ; i++)
+        {
+            for (int j=0 ; j<m.columns ; j++)
+            {
+               c.values[i][j]=sqrt(m.values[i][j]);
+            }
+        }
+        return c ;
+    }
 
 /*
 //old inverse
