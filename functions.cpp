@@ -47,7 +47,7 @@ string matrix_conc(string MatOne)
     case ';':semicolon = 1; j++; if (!eom) { k = 0; }; Space = 0; break;
     case '[':j = 0; Space = 0; semicolon = 0; break;
     case ']':if (!eom) {k++; }; eom = 1; Space = 1; semicolon = 0; break;
-
+    case',':break;
     default: semicolon = 0; Space = 0; array[j][k] += MatOne[i]; break;
     }
 
