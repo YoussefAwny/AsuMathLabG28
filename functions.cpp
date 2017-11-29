@@ -7,9 +7,9 @@ string matrix_conc(string MatOne)
   bool Space = 0; //to elimenate spaces to only 1
   bool semicolon = 0;//to ensure that no spaces before or after semicolon is used to increment no of COLs
   bool eom = 0; //is HIGH when ']' is reached
-  int j = 0, k = 0; // j is index for rows and k index for coloumns 
+  int j = 0, k = 0; // j is index for rows and k index for coloumns
   string final;
-  
+
   //this loop to know no of rows and no of cols
   for (int i = 0; i < MatOne.length(); i++)
   {
@@ -25,7 +25,7 @@ string matrix_conc(string MatOne)
   }
 
   eom = 0, Space = 0; semicolon = 0;
-  if ( nR1 != nR2 ) 
+  if ( nR1 != nR2 )
   {
     cout << "Matrix Dimensions error";
   }
@@ -36,7 +36,7 @@ string matrix_conc(string MatOne)
   {
     array[row] = new string[cols];
   }
-  
+
 
   //this loop if input is 1 string
   for (int i = 0; i < MatOne.length(); i++)
@@ -53,24 +53,24 @@ string matrix_conc(string MatOne)
 
   }
 
-  
 
 
-  for (int j = 0; j < rows; j++)//putting the array into a string so it can be returned 
+
+  for (int j = 0; j < rows; j++)//putting the array into a string so it can be returned
   {
     for (int k = 0; k < cols; k++)
     {
       final += array[j][k];
       final += ' ';
-      
+
     }
-    if ((rows-j) != 1) 
+    if ((rows-j) != 1)
     {
       final += ';';
     }
   }
 
-  
+
   for (int row = 0; row < rows; row++)
   {
     delete[] array[row];
@@ -299,4 +299,268 @@ int check_if_math_op (string x)
     return flag;
 }
 
+
+
+string bracket_operation(string s)
+{
+    int bracket_count=0;
+    vector <int> init;
+    //cout<<"max size is: "<<init.max_size()<<endl;
+    string s_sub="";
+    string s_sub_done="";
+    for(int i=0;i<s.length();i++)
+    {
+        if(s[i]=='(')
+            {bracket_count++; init.push_back(i);}
+        else if(s[i]==')')
+            {
+                bracket_count--;
+                s_sub=s.substr(init.back()+1,i-init.back()-1);
+                s_sub_done=normal_operation(s_sub);
+                s.erase(init.back(),i-init.back()+1);
+                s.insert(init.back(),s_sub_done);
+                i=init.back()+s_sub_done.length()-1;
+                init.pop_back();
+            }
+    }
+          //unclosed open brackets
+    if(bracket_count!=0)
+        throw("Syntax Error");
+
+        return s;
+}
+
+
+string normal_operation(string s)
+{
+    for(int i=0;i<s.length();i++)
+    {
+        switch(s[i])
+        {
+
+    case's':
+        if(s[i+1]=='i')
+        {
+            string s_sub_num=Find_First_Number(s,i+3);
+            double sin_out_d=sin(atof(s_sub_num.c_str()));
+            string sin_out_str=to_string(sin_out_d);
+            s.erase(i,3+s_sub_num.length());
+            s.insert(i,sin_out_str);
+            i+=sin_out_str.length()-1;
+        }
+        else if(s[i+1]=='e')
+        {
+            string s_sub_num=Find_First_Number(s,i+3);
+            double sin_out_d=1/cos(atof(s_sub_num.c_str()));
+            string sin_out_str=to_string(sin_out_d);
+            s.erase(i,3+s_sub_num.length());
+            s.insert(i,sin_out_str);
+            i+=sin_out_str.length()-1;
+        }
+        else if(s[i+1]=='q')
+        {
+            string s_sub_num=Find_First_Number(s,i+4);
+            double sin_out_d=sqrt(atof(s_sub_num.c_str()));
+            string sin_out_str=to_string(sin_out_d);
+            s.erase(i,4+s_sub_num.length());
+            s.insert(i,sin_out_str);
+            i+=sin_out_str.length()-1;
+        }
+
+        case 'e':
+
+        if(s[i+1]=='x')
+        {
+            string s_sub_num=Find_First_Number(s,i+3);
+            double sin_out_d=exp(atof(s_sub_num.c_str()));
+            string sin_out_str=to_string(sin_out_d);
+            s.erase(i,3+s_sub_num.length());
+            s.insert(i,sin_out_str);
+            i+=sin_out_str.length()-1;
+        }
+
+    case 'c':
+        if(s[i+1]=='o')
+        {
+            if(s[i+2]=='s')
+            {
+                string s_sub_num=Find_First_Number(s,i+3);
+                double sin_out_d=cos(atof(s_sub_num.c_str()));
+                string sin_out_str=to_string(sin_out_d);
+                s.erase(i,3+s_sub_num.length());
+                s.insert(i,sin_out_str);
+                i+=sin_out_str.length()-1;
+            }
+            else if(s[i+2]=='t')
+            {
+                string s_sub_num=Find_First_Number(s,i+3);
+                double sin_out_d=1/tan(atof(s_sub_num.c_str()));
+                string sin_out_str=to_string(sin_out_d);
+                s.erase(i,3+s_sub_num.length());
+                s.insert(i,sin_out_str);
+                i+=sin_out_str.length()-1;
+            }
+        }
+        else if(s[i+1]=='s')
+        {
+            string s_sub_num=Find_First_Number(s,i+3);
+            double sin_out_d=1/sin(atof(s_sub_num.c_str()));
+            string sin_out_str=to_string(sin_out_d);
+            s.erase(i,3+s_sub_num.length());
+            s.insert(i,sin_out_str);
+            i+=sin_out_str.length()-1;
+        }
+    case 't':
+        if(s[i+1]=='a')
+        {
+            string s_sub_num=Find_First_Number(s,i+3);
+            double sin_out_d=tan(atof(s_sub_num.c_str()));
+            string sin_out_str=to_string(sin_out_d);
+            s.erase(i,3+s_sub_num.length());
+            s.insert(i,sin_out_str);
+            i+=sin_out_str.length()-1;
+        }
+    case 'l':
+        if(s[i+1]=='o')
+        {
+            string s_sub_num=Find_First_Number(s,i+3);
+            double sin_out_d=log(atof(s_sub_num.c_str()));
+            string sin_out_str=to_string(sin_out_d);
+            s.erase(i,3+s_sub_num.length());
+            s.insert(i,sin_out_str);
+            i+=sin_out_str.length()-1;
+        }
+
+    }
+    }
+
+    /*vector <string> number;
+    vector <char> op;
+    for(int i=0; i<op.size();i++)
+    {
+        switch(op[i])
+    case'*':
+        double product_d=atof(number[i])*atof(number[i+1]);
+            string product_str=to_string(product_d);
+            s.erase(i,s_sub_num.length()+s_sub_num_2.length());
+            s.insert(i,sin_out_str);
+            i+=s_sub_num.length()-1;
+
+    }*/
+    string s_sub_num="";
+    string s_sub_num_2="";
+
+    for(int i=0;i<s.length();i++)
+    {
+        s_sub_num=Find_First_Number(s,i);
+        double result_d;
+        if(s[i+s_sub_num.length()]=='^')
+        {
+            s_sub_num_2=Find_First_Number(s,i+s_sub_num.length()+1);
+            result_d=pow(atof(s_sub_num.c_str()),atof(s_sub_num_2.c_str()));
+            string result_str=to_string(result_d);
+            s.erase(i,s_sub_num.length()+s_sub_num_2.length()+1);
+            s.insert(i,result_str);
+            i--;
+        }
+    }
+
+
+    for(int i=0;i<s.length();i++)
+    {
+        if(s[i]=='-') continue;
+        s_sub_num=Find_First_Number(s,i);
+        double result_d;
+        if(s[i+s_sub_num.length()]=='*')
+        {
+            s_sub_num_2=Find_First_Number(s,i+s_sub_num.length()+1);
+            result_d=atof(s_sub_num.c_str())*atof(s_sub_num_2.c_str());
+            string result_str=to_string(result_d);
+            s.erase(i,s_sub_num.length()+s_sub_num_2.length()+1);
+            s.insert(i,result_str);
+            i--;
+        }
+        else if(s[i+s_sub_num.length()]=='/')
+        {
+            s_sub_num_2=Find_First_Number(s,i+s_sub_num.length()+1);
+            result_d=atof(s_sub_num.c_str())/atof(s_sub_num_2.c_str());
+            string result_str=to_string(result_d);
+            s.erase(i,s_sub_num.length()+s_sub_num_2.length()+1);
+            s.insert(i,result_str);
+            i--;
+        }
+
+     }
+
+
+     for(int i=0;i<s.length();i++)
+     {
+        double result_d;
+        s_sub_num=Find_First_Number(s,i);
+
+        if(s[i+s_sub_num.length()]=='+')
+        {
+            s_sub_num_2=Find_First_Number(s,i+s_sub_num.length()+1);
+            result_d=atof(s_sub_num.c_str())+atof(s_sub_num_2.c_str());
+            string result_str=to_string(result_d);
+            s.erase(i,s_sub_num.length()+s_sub_num_2.length()+1);
+            s.insert(i,result_str);
+            i--;
+        }
+        else if(s[i+s_sub_num.length()]=='-')
+        {
+            s_sub_num_2=Find_First_Number(s,i+s_sub_num.length()+1);
+            result_d=atof(s_sub_num.c_str())-atof(s_sub_num_2.c_str());
+            string result_str=to_string(result_d);
+            s.erase(i,s_sub_num.length()+s_sub_num_2.length()+1);
+            s.insert(i,result_str);
+            i--;
+        }
+     }
+     return s;
+}
+
+string Find_First_Number(string s, int index)
+{
+    string s_num="";
+    for(int i=index;i<s.length();i++)
+    {
+        if(i==index)
+        {
+            while(s[i]==' '||s[i]=='-')
+            {
+                s_num+=s[i];
+                if(!(s_num.find("--",0)==-1))
+                   s_num.erase(s_num.find("--",0),2);
+                i++;
+            }
+
+        }
+
+        if((s[i]<=57 && s[i]>=48) || (s[i]=='.') || (s[i]==' ')|| (s[i]=='-'&&s[i-1]=='e') || (s[i]=='e' && ( (s[i+1]<=57 && s[i+1]>=48)||s[i+1]=='-' ) ))
+            s_num+=s[i];
+        else break;
+    }
+        return s_num;
+}
+
+
+double string_operation(string s)
+{
+    string final_result;
+    final_result=bracket_operation(s);
+    final_result=normal_operation(final_result);
+    if(!(final_result.find("--",0)==-1))
+                   final_result.erase(final_result.find("--",0),2);
+    return atof(final_result.c_str());
+}
+
+
+//needs includesstrem statement
+string to_string(double value)
+{
+    stringstream sstr;
+    sstr << value;
+    return sstr.str();
+}
 

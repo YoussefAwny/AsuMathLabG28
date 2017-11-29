@@ -100,5 +100,9 @@ public:
  int get_number_of_close_br (string x);
  string ** split_string (int nrows , int ncolumns , char* text);
 string matrix_conc(string MatOne);
-
+string bracket_operation(string s);
+ string normal_operation(string s);
+ string Find_First_Number(string s, int index);
+ string to_string(double value);
+ double string_operation(string s);
 //endif // !MATRIX_H
