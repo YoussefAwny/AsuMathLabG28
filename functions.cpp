@@ -61,12 +61,12 @@ string matrix_conc(string MatOne)
     for (int k = 0; k < cols; k++)
     {
       final += array[j][k];
-      final += ' ';
+      if ((cols - k) != 1)final += ' ';
       
     }
     if ((rows-j) != 1) 
     {
-      final += ';';
+      final += "; ";
     }
   }
 
