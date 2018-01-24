@@ -1,4 +1,6 @@
 #include "header.h"
+#include <vector>
+#include <string>
 using namespace std;
 
 string matrix_conc(string MatOne)
@@ -565,3 +567,16 @@ string to_string(double value)
     return sstr.str();
 }
 
+vector <string> names ;
+vector <Matrix> matrices ;
+
+string putMatrixInString (string x , Matrix &m ,int index1 , int index2)
+{
+    static int Count = 0 ;
+    matrices.push_back(m);
+    names.push_back("temp"+to_string(Count));
+    x.erase(index1,index2-index1);
+    x.insert(index1,names[Count]);
+    Count++;
+    return x ;
+}
