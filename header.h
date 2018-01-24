@@ -105,4 +105,5 @@ string bracket_operation(string s);
  string Find_First_Number(string s, int index);
  string to_string(double value);
  double string_operation(string s);
+ string putMatrixInString (string x , Matrix &m ,int index1 , int index2);
 //endif // !MATRIX_H
