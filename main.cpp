@@ -9,10 +9,6 @@ vector<Matrix> matrix;
 int vector_counter=0;
 
 int main (int argc, char *argv[]){
-/*cout<<"input:[1.3 2.4;4.6 1.3],[3.2;7.8]\n output: "<<matrix_conc("[1.3 2.4;4.6 1.3],[3.2;7.8]\n")<<endl;
-cout<<"input:[1.3 2.4;4.6 1.3] [3.2;7.8]\n output: "<<matrix_conc("[1.3 2.4;4.6 1.3] [3.2;7.8]\n")<<endl;
-cout<<"input:[[1.3 2.4;4.6 1.3] [3.2;7.8]]\n output: "<<matrix_conc("[[1.3 2.4;4.6 1.3] [3.2;7.8]]\n")<<endl;
-cout<<"input:[[1.3 2.4;4.6 1.3],[3.2;7.8]]\n output: "<<matrix_conc("[[1.3 2.4;4.6 1.3],[3.2;7.8]]")<<endl;*/
     int x,y;
     string user_input,file_path;
     ifstream infile;
@@ -21,14 +17,22 @@ cout<<"input:[[1.3 2.4;4.6 1.3],[3.2;7.8]]\n output: "<<matrix_conc("[[1.3 2.4;4
     while(argc==1||argc==2){ try{
     if(argc==2){if(!getline(infile, user_input)){break;}}
 	if(argc==1) getline(cin,user_input);
-    //if(user_input.find('=')==-1&&user_input.find(';')==-1){throw("Error: Wrong Input");}
-	/*if(check_if_values_adv(user_input))
+    if(user_input.find('=')==-1)
+        { if(user_input.find(';')==-1)
+            {
+              if (check_if_blank(user_input)) continue;
+              else if(get_matrix_number(user_input,matrix_names)==-1) throw("ERROR: Matrix not defined");
+              else {matrix[get_matrix_number(user_input,matrix_names)].print();}}
+              else continue;
+        }
+
+    else if(check_if_values_adv(user_input))
         {
             if(get_matrix_number(name_from_input(user_input),matrix_names)==-1)   //if new matrix
             {
                 matrix_names.push_back(name_from_input(user_input));
                 vector_counter++;
-                double d=0;
+                double d=string_operation(user_input.substr(user_input.find("="+1)));
                 matrix.push_back(Matrix(1,1,4,d));
 
                 if(user_input[user_input.length()-1]!=';'){
@@ -47,8 +51,8 @@ cout<<"input:[[1.3 2.4;4.6 1.3],[3.2;7.8]]\n output: "<<matrix_conc("[[1.3 2.4;4
                 cout<<matrix_names[i]<<"="<<endl;
                 matrix[i].print();}
         }
-        }*/
-     if(check_if_values(user_input))
+        }
+     else if(check_if_values(user_input))
     {
         if(user_input[user_input.length()-1]==13||user_input[user_input.length()-1]==10||user_input[user_input.length()-1]==12)user_input.erase(user_input.length()-1);
         if(get_number_of_open_br(user_input)>get_number_of_close_br(user_input))
@@ -65,11 +69,11 @@ cout<<"input:[[1.3 2.4;4.6 1.3],[3.2;7.8]]\n output: "<<matrix_conc("[[1.3 2.4;4
                 user_input+=temp;
 
             }while(get_number_of_open_br(user_input)>get_number_of_close_br(user_input));
-        }
+        } //getting all the strings in one line
 
 
         string temp=user_input.substr(user_input.find("=")+1);
-        for(int i=0;i<vector_counter;i++)
+        for(int i=0;i<vector_counter;i++)//putting the values of matrix in input
         {
             while(temp.find(matrix_names[i])!=-1)
             {
@@ -94,8 +98,11 @@ cout<<"input:[[1.3 2.4;4.6 1.3],[3.2;7.8]]\n output: "<<matrix_conc("[[1.3 2.4;4
              pos_of_last_brc= user_input.find(']',user_input.find(']',user_input.find(']')+1)+1);
             }
              string to_merge=user_input.substr(pos_of_first_brc,pos_of_last_brc-pos_of_first_brc+1);
-             if(vector_counter!=1)user_input.erase(pos_of_first_brc,pos_of_last_brc-pos_of_first_brc+1);
-             //user_input.insert(pos_of_first_brc ,to_merge);
+             //if(vector_counter!=1)
+             user_input.erase(pos_of_first_brc,pos_of_last_brc-pos_of_first_brc+1);
+             to_merge=matrix_conc(to_merge);
+             cout<<user_input<<endl<<to_merge<<endl;
+             user_input.insert(pos_of_first_brc ,to_merge);
             cout<<user_input<<endl;
             cout<<pos_of_first_brc<<endl<<pos_of_last_brc<<endl;break;
 
@@ -129,8 +136,6 @@ cout<<"input:[[1.3 2.4;4.6 1.3],[3.2;7.8]]\n output: "<<matrix_conc("[[1.3 2.4;4
                 if(user_input[user_input.length()-1]!=';'){
                 cout<<matrix_names[vector_counter-1]<<"="<<endl;
                 matrix[vector_counter-1].print();}
-
-
         }
         else
         {
@@ -149,7 +154,6 @@ cout<<"input:[[1.3 2.4;4.6 1.3],[3.2;7.8]]\n output: "<<matrix_conc("[[1.3 2.4;4
                 matrix[i].print();}
         }
       }
-
      else //if operation
      {
          if(!(user_input.find('+')==-1))

@@ -181,7 +181,7 @@ int check_if_values (string input)
         return 0;
 }
 
-int check_if_values_adv(string x)
+int check_if_values_adv(string x)//to check if the input is matrix values or operations
 {
     x=x.substr(x.find('=')+1);
     string exceptions[] ={"sin(","cos(","tan(","cot(","csc(","sec(","log(","exp(","sqrt("};
@@ -270,6 +270,20 @@ int check_if_number(string x)
         if(x[j]==i) {flag=0;}
       }
     }
+   return flag;
+}
+int check_if_blank(string x)
+{
+    int flag=1;
+
+    for(int i=33;i<127;i++)
+    {
+      for(int j=0;j<x.length();j++)
+      {
+        if(x[j]==i) {flag=0;}
+      }
+    }
+
    return flag;
 }
 int get_number_of_open_br (string x)

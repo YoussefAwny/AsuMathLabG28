@@ -106,4 +106,5 @@ string bracket_operation(string s);
  string to_string(double value);
  double string_operation(string s);
  string putMatrixInString (string x , Matrix &m ,int index1 , int index2);
+ int check_if_blank(string x);
 //endif // !MATRIX_H
