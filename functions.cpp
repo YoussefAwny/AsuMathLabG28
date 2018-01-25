@@ -593,3 +593,30 @@ string putMatrixInString (string x , Matrix &m ,int index1 , int index2)
     Count++;
     return x ;
 }
+int* index_finder (string s, string s1, int &count)
+
+{
+    int* pos;
+string t = s;    count = 0;
+    int pos1 ;
+ do {  pos1 = t.find (s1);
+  t=t.substr(pos1+1);
+  if ( pos1 >= 0 )
+    count ++ ;
+ }
+ while (pos1 >= 0);
+     pos = new int [count];
+int base = 0;
+for ( int i=0; i<count;i++)
+{
+int pos2 = s.find (s1);
+if (i!=0)
+base=base+pos2+1;
+else base=base+pos2;
+pos[i]=base;
+
+s=s.substr(pos2+1);
+}
+return pos ;
+}
+
