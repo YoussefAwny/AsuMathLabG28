@@ -299,4 +299,41 @@ int check_if_math_op (string x)
     return flag;
 }
 
+string Matrix::modify(char* s)
+{
+    if( s == NULL) return (string)s;
+    char * modified_s=new double [s.length()+1];
+    for(int i=0;s[i]!= "\0" ;i++)
+    {
+      if (s[i]== " ")
+      {   if(s[i-1] == "+" ||s[i-1] == "-" ||s[i-1] == "^" ||s[i-1] == "*" ||s[i-1] == "/")
+                continue;
+          if((s[i+1] == "+" ||s[i+1] == "-" ||s[i+1] == "^" ||s[i+1] == "*" ||s[i+1] == "/") && (s[i+2]== " "))
+                continue;
+      }
+        modified_s[i]=s[i];
+
+    }
+    return (string)modified_s;
+}
+string  Matrix::first_operation(string s/*,int* opened_parentheses,int* closed_parentheses*/ )
+    {
+         int opened_parenthese_location;
+        char* mystring = new char[s.length()+1];
+        strcpy(mystring,s.c_str());
+    //    if(opened_parentheses.length() != closed_parentheses )
+      //      {
+        //    throw("please enter same number of opened and closed parentheses in the matrix. \n ");
+          //  return (string) s;
+            //}
+        for(int i=0;i<s.length()+1;i++)
+            {
+            if(mystring[i] == "(")
+                opened_parenthese_location = i ;
+            else if(mystring[i] == ")")
+                return substr((opened_parenthese_location+1),(i-(opened_parenthese_location+1)));
+            else
+                continue;
+            }
+	}
 
