@@ -32,7 +32,7 @@ int main (int argc, char *argv[]){
             {
                 matrix_names.push_back(name_from_input(user_input));
                 vector_counter++;
-                double d=string_operation(user_input.substr(user_input.find("="+1)));
+                double d=string_operation(user_input.substr(user_input.find("=")+1));
                 matrix.push_back(Matrix(1,1,4,d));
 
                 if(user_input[user_input.length()-1]!=';'){
@@ -44,7 +44,7 @@ int main (int argc, char *argv[]){
         else
         {
                 int i=get_matrix_number(name_from_input(user_input),matrix_names);
-                double d=0;
+                double d=string_operation(user_input.substr(user_input.find("=")+1));
                 matrix[i]=Matrix(1,1,4,d);
 
                 if(user_input[user_input.length()-1]!=';'){
@@ -82,13 +82,15 @@ int main (int argc, char *argv[]){
                 temp.insert(x,matrix[i].get_string());
             }
         }
+        if(check_if_values_adv(temp.substr(temp.find("[")+1,temp.find("]")-temp.find("[")-1))) throw("Undefined Matrix");
+        if(vector_counter==0 && check_if_values_adv(user_input.substr(user_input.find("[")+1))==0) throw("Undefined Matrix");
         user_input.erase(user_input.find("=")+1);
-        user_input+=temp;
+        user_input+=temp;cout<<user_input<<endl;
 
-         while(get_number_of_open_br(user_input)>1)
+         while(get_number_of_open_br(user_input)>1)//matrix_conc
         {
            int pos_of_first_brc=user_input.find('[',user_input.find('[')+1);
-           int pos_of_last_brc;
+           int pos_of_last_brc,semicolon_flag=0;
            if(user_input.find('[',pos_of_first_brc+1)>user_input.find(']',pos_of_first_brc+1))
            {
              pos_of_last_brc= user_input.find(']',user_input.find(']')+1);
@@ -98,15 +100,13 @@ int main (int argc, char *argv[]){
              pos_of_last_brc= user_input.find(']',user_input.find(']',user_input.find(']')+1)+1);
             }
              string to_merge=user_input.substr(pos_of_first_brc,pos_of_last_brc-pos_of_first_brc+1);
+             if(user_input[pos_of_last_brc+1]==';')semicolon_flag=1;
              //if(vector_counter!=1)
              user_input.erase(pos_of_first_brc,pos_of_last_brc-pos_of_first_brc+1);
              to_merge=matrix_conc(to_merge);
-             cout<<user_input<<endl<<to_merge<<endl;
+             if(!semicolon_flag)to_merge+=";";
              user_input.insert(pos_of_first_brc ,to_merge);
-            cout<<user_input<<endl;
-            cout<<pos_of_first_brc<<endl<<pos_of_last_brc<<endl;break;
-
-        }
+         }
          if(get_matrix_number(name_from_input(user_input),matrix_names)==-1)   //if new matrix
             {
                 matrix_names.push_back(name_from_input(user_input));
@@ -119,17 +119,19 @@ int main (int argc, char *argv[]){
                 char* input_to_split= new char[user_input2.length()];
                 strcpy(input_to_split, user_input2.c_str());
 
-                double ** dpointer = split(x,y,input_to_split);
-             /*   string ** dpointer_s = split(x,y,input_to_split);
+                double ** dpointer=new double*[x] ;//= split(x,y,input_to_split);
+                string ** dpointer_s = split_string(x,y,input_to_split);
                 for(int i=0;i<x;i++)
                 {
+                    dpointer[i]=new double[y];
                     for(int j=0;j<y;j++)
                     {
-                        if(check_if_math_op(dpointer_s[i][j]))
-                           dpointer=..(dpointer_s[i][j]);
-                        else dpointer=atof(dpointer_s[i][j]);
+                        if(check_if_math_op((dpointer_s[i][j])))
+                          dpointer[i][j]=string_operation((dpointer_s[i][j]));
+
+                         else dpointer[i][j]=atof((dpointer_s[i][j]).data());
                     }
-                }*/
+                }
 
                 matrix.push_back(Matrix(x,y,dpointer));
 

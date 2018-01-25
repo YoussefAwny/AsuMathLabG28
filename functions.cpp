@@ -18,7 +18,7 @@ string matrix_conc(string MatOne)
     switch (MatOne[i])
     {
     case ' ': if ((!Space) && (!semicolon)) { cols++; } if (eom) { nC2++; }if (!eom) { nC1++; }  Space = 1; semicolon = 0;  break;
-    case ';':semicolon = 1; rows++; if (eom) { nR2++; } if (!eom) { cols = 1; nC1 = 1; nR1++; }; Space = 0; break;
+    case ';':semicolon = 1; rows++; if (eom) { nR2++; } if (!eom) {if(MatOne[i+1]!=']'){cols = 1; nC1 = 1; nR1++; }}; Space = 0; break;
     case '[':rows = 1; if (eom) {} Space = 0; semicolon = 0; break;
     case ']':if (!eom) { cols++; }; eom = 1; Space = 1; semicolon = 0; break;
 
@@ -46,7 +46,7 @@ string matrix_conc(string MatOne)
     switch (MatOne[i])
     {
     case ' ': if ((!Space)&&(!semicolon)) { k++; } Space = 1; semicolon = 0;  break;
-    case ';':semicolon = 1; j++; if (!eom) { k = 0; }; Space = 0; break;
+    case ';':if(MatOne[i+1]!=']'){semicolon = 1; j++; if (!eom) { k = 0; };} Space = 0; break;
     case '[':j = 0; Space = 0; semicolon = 0; break;
     case ']':if (!eom) {k++; }; eom = 1; Space = 1; semicolon = 0; break;
     case',':break;
@@ -63,16 +63,15 @@ string matrix_conc(string MatOne)
     for (int k = 0; k < cols; k++)
     {
       final += array[j][k];
-	  if ((cols - k) != 1)final += ' ';
+	  if (k!=cols-1)final += ' ';
     }
 
 
-    if ((rows-j) != 1)
+    if (j!= rows-1)
     {
       final += "; ";
     }
   }
-
 
   for (int row = 0; row < rows; row++)
   {

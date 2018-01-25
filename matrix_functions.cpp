@@ -396,7 +396,7 @@ string Matrix::get_string()
             //if(x[x.length()-1]==NULL)x.erase(x.length()-1);
         flag=0;
         }
-       if(!(i==rows-1)) x+=";";
+       if(!(rows==1&&columns==1)) x+=";";
     }
     if(rows!=1&&columns!=1)x+="]";
 
