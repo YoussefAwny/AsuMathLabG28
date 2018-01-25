@@ -99,5 +99,7 @@ public:
  int get_number_of_close_br (string x);
  string ** split_string (int nrows , int ncolumns , char* text);
 string matrix_conc(string MatOne);
+string first_operation(string s/*,int* opened_parentheses,int* closed_parentheses*/ );
+string modify(char* s);
 
 //endif // !MATRIX_H
