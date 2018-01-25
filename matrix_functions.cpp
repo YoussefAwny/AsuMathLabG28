@@ -56,7 +56,7 @@ using namespace std;
 				case MI_ZEROS: values[iR][iC] = 0; break;
 				case MI_ONES: values[iR][iC] = 1; break;
 				case MI_EYE: values[iR][iC] = (iR == iC) ? 1 : 0; break;
-				case MI_RAND: values[iR][iC] = (rand() % 1000000) / 1000000.0; break;
+				case MI_RAND: values[iR][iC] = (rand() % 100) / 100.0; break;
 				case MI_VALUE: values[iR][iC] = initializationValue; break;
 				}
 			}
@@ -715,6 +715,8 @@ Matrix Matrix::cotanm(Matrix& m)
 //if (flag != 1 )
     return r;
 }
+
+
 
 /*
 //old inverse

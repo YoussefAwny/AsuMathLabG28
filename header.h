@@ -85,7 +85,7 @@ public:
 	static Matrix cotanm(Matrix& m);
     static Matrix logm(Matrix& m);
     static Matrix expm(Matrix& m);
-	};
+   	};
  string Remove (string x, string r);
  double ** split (int nrows , int ncolumns , char* text);
  int no_rows (string input);

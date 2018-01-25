@@ -25,7 +25,48 @@ int main (int argc, char *argv[]){
               else {matrix[get_matrix_number(user_input,matrix_names)].print();}}
               else continue;
         }
+    else if((user_input.find("rand(")!=-1) ||(user_input.find("eye(")!=-1)||(user_input.find("zeros(")!=-1)||(user_input.find("ones(")!=-1))
+    {
+        if(get_matrix_number(name_from_input(user_input),matrix_names)==-1)   //if new matrix
+            {
+                matrix_names.push_back(name_from_input(user_input));
+                vector_counter++;
+                int x =atof(user_input.substr(user_input.find('(')+1,user_input.find(',')-user_input.find('(')-1).data());
+                int y =atof(user_input.substr(user_input.find(',')+1,user_input.find(')')-user_input.find(',')-1).data());
+                if(user_input.find("rand(")!=-1)
+                matrix.push_back(Matrix(x,y,3,0));
+                else if(user_input.find("eye(")!=-1)
+                matrix.push_back(Matrix(x,y,2,0));
+                else if(user_input.find("zeros(")!=-1)
+                matrix.push_back(Matrix(x,y,0,0));
+                else if(user_input.find("ones(")!=-1)
+                matrix.push_back(Matrix(x,y,1,1));
 
+                if(user_input[user_input.length()-1]!=';'){
+                cout<<matrix_names[vector_counter-1]<<"="<<endl;
+                matrix[vector_counter-1].print();}
+        }
+        else
+        {
+                int i=get_matrix_number(name_from_input(user_input),matrix_names);
+                int x =atof(user_input.substr(user_input.find('(')+1,user_input.find(',')-user_input.find('(')-1).data());
+                int y =atof(user_input.substr(user_input.find(',')+1,user_input.find(')')-user_input.find(',')-1).data());
+
+                if(user_input.find("rand(")!=-1)
+                matrix[i]=Matrix(x,y,3,0);
+                else if(user_input.find("eye(")!=-1)
+                matrix[i]=Matrix(x,y,2,0);
+                else if(user_input.find("zeros(")!=-1)
+                matrix[i]=Matrix(x,y,0,0);
+                else if(user_input.find("ones(")!=-1)
+                matrix[i]=Matrix(x,y,1,1);
+
+
+                if(user_input[user_input.length()-1]!=';'){
+                cout<<matrix_names[i]<<"="<<endl;
+                matrix[i].print();}
+        }
+    }
     else if(check_if_values_adv(user_input))
         {
             if(get_matrix_number(name_from_input(user_input),matrix_names)==-1)   //if new matrix
@@ -85,7 +126,7 @@ int main (int argc, char *argv[]){
         if(check_if_values_adv(temp.substr(temp.find("[")+1,temp.find("]")-temp.find("[")-1))) throw("Undefined Matrix");
         if(vector_counter==0 && check_if_values_adv(user_input.substr(user_input.find("[")+1))==0) throw("Undefined Matrix");
         user_input.erase(user_input.find("=")+1);
-        user_input+=temp;cout<<user_input<<endl;
+        user_input+=temp;
 
          while(get_number_of_open_br(user_input)>1)//matrix_conc
         {
