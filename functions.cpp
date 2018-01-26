@@ -84,6 +84,28 @@ string matrix_conc(string MatOne)
 }
 
 
+void Operation(string x, int& index, int& flag)
+{ 
+    bool pow, mult, div, plus, minus;
+    int powIndex, mulltIndex, divIndex, plusIndex, minusIndex;
+    for (int i = 0; i < x.length; i++)
+    {
+        if (x[i] == '^') { pow = true; powIndex = i; }
+        else if (x[i] == '*') { mult = true; mulltIndex = i; }
+        else if (x[i] == '/') { div = true; divIndex = i; }
+        else if (x[i] == '+') { plus = true; plusIndex = i; }
+        else if (x[i] == '-') { minus = true; minusIndex=i; }
+    }
+
+    if (pow) { flag = 1; index = powIndex; return; }
+    else if (mult) { flag = 2; index = mulltIndex; return; }
+    else if (div) { flag = 3; index = divIndex; return; }
+    else if (plus) { flag = 4; index = plusIndex; return; }
+    else if (minus) { flag = 5; index = minusIndex; return; }
+
+}
+
+
 string Remove (string x, string r)
 {
 	int l=r.length();
