@@ -227,8 +227,10 @@ int main (int argc, char *argv[]){
           while(no_open_brac!=1 && no_close_brac!=1)
           {
              string current_brackets=first_operation(user_input);
+             int current_brackets_index=user_input.find(current_brackets);
+             int current_brackets_length=current_brackets.length();
              int current_operator_index,current_operator,first,last;
-             do{
+             do{cout<<current_brackets<<endl;
              Operation(current_brackets,current_operator_index,current_operator);
              LimitsIndex(current_brackets,current_operator_index,first,last);
              cout<<current_brackets<<" "<<current_operator_index<<" "<<current_operator<<" "<<first<<" "<<last<<endl;
@@ -251,7 +253,20 @@ int main (int argc, char *argv[]){
              Matrix temp(1,1,0,0);
 
              switch(current_operator)
-             {case 1://^
+             {
+                 case 0:
+                     {
+                         if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                         {
+                             temp=matrix[get_matrix_number(current_brackets,matrix_names)];
+                         }
+                         else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                         {
+                             temp=matrix[get_matrix_number(current_brackets,temp_names)];
+                         }
+                         else throw("Matrix Not Defined");
+                     }
+                 case 1://^
                  {
                      if(int_flag1) throw("Can't power a variable by a matrix");
                      if(temp_flag1)
@@ -425,11 +440,138 @@ int main (int argc, char *argv[]){
 
                  }break;}
 
-            int_flag1=0;int_flag2=0;temp_flag1=0;temp_flag2=0;
-             } while(current_operator!=0);
+             current_brackets=putMatrixInString(current_brackets, temp, first, last);
 
-break;
-          }
+             int_flag1=0;int_flag2=0;temp_flag1=0;temp_flag2=0;
+             } while(current_operator!=0);//bracket finished
+
+             Matrix temp(1,1,0,0);
+
+             if(current_brackets_index>3){
+              if(user_input[current_brackets_index-4]=='s'&&user_input[current_brackets_index-3]=='i'&&user_input[current_brackets_index-2]=='n')
+              {
+                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                         {
+                             temp=Matrix::sinm(matrix[get_matrix_number(current_brackets,matrix_names)]);
+                         }
+                 else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                         {
+                             temp=Matrix::sinm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                         }
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+
+              }
+              else if(user_input[current_brackets_index-4]=='c'&&user_input[current_brackets_index-3]=='o'&&user_input[current_brackets_index-2]=='s')
+              {
+                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                         {
+                             temp=Matrix::cosm(matrix[get_matrix_number(current_brackets,matrix_names)]);
+                         }
+                 else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                         {
+                             temp=Matrix::cosm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                         }
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+              }
+              else if(user_input[current_brackets_index-4]=='t'&&user_input[current_brackets_index-3]=='a'&&user_input[current_brackets_index-2]=='n')
+              {
+                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                         {
+                             temp=Matrix::tanm(matrix[get_matrix_number(current_brackets,matrix_names)]);
+                         }
+                 else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                         {
+                             temp=Matrix::tanm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                         }
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+              }
+              else if(user_input[current_brackets_index-4]=='s'&&user_input[current_brackets_index-3]=='e'&&user_input[current_brackets_index-2]=='c')
+              {
+                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                         {
+                             temp=Matrix::secm(matrix[get_matrix_number(current_brackets,matrix_names)]);
+                         }
+                 else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                         {
+                             temp=Matrix::secm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                         }
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+              }
+              else if(user_input[current_brackets_index-4]=='c'&&user_input[current_brackets_index-3]=='s'&&user_input[current_brackets_index-2]=='c')
+              {
+                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                         {
+                             temp=Matrix::cosecm(matrix[get_matrix_number(current_brackets,matrix_names)]);
+                         }
+                 else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                         {
+                             temp=Matrix::cosecm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                         }
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+              }
+              else if(user_input[current_brackets_index-4]=='c'&&user_input[current_brackets_index-3]=='o'&&user_input[current_brackets_index-2]=='t')
+              {
+                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                         {
+                             temp=Matrix::cotanm(matrix[get_matrix_number(current_brackets,matrix_names)]);
+                         }
+                 else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                         {
+                             temp=Matrix::cotanm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                         }
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+              }
+              else if(user_input[current_brackets_index-4]=='l'&&user_input[current_brackets_index-3]=='o'&&user_input[current_brackets_index-2]=='g')
+              {
+                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                         {
+                             temp=Matrix::logm(matrix[get_matrix_number(current_brackets,matrix_names)]);
+                         }
+                 else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                         {
+                             temp=Matrix::logm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                         }
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+              }
+              else if(user_input[current_brackets_index-4]=='e'&&user_input[current_brackets_index-3]=='x'&&user_input[current_brackets_index-2]=='p')
+              {
+                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                         {
+                             temp=Matrix::expm(matrix[get_matrix_number(current_brackets,matrix_names)]);
+                         }
+                 else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                         {
+                             temp=Matrix::expm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                         }
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+              }}
+              else if((current_brackets_index>4)){
+               if(user_input[current_brackets_index-5]=='s'&&user_input[current_brackets_index-4]=='q'&&user_input[current_brackets_index-3]=='r'&&user_input[current_brackets_index-2]=='t')
+              {
+                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                         {
+                             temp=Matrix::squareRoot(matrix[get_matrix_number(current_brackets,matrix_names)]);
+                         }
+                 else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                         {
+                             temp=Matrix::squareRoot(matrix[get_matrix_number(current_brackets,temp_names)]);
+                         }
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-5, current_brackets_index+current_brackets_length+1);
+              }}
+              else
+              {
+                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                         {
+                             temp=matrix[get_matrix_number(current_brackets,matrix_names)];
+                         }
+                 else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                         {
+                             temp=matrix[get_matrix_number(current_brackets,temp_names)];
+                         }
+    user_input=putMatrixInString(user_input, temp, current_brackets_index-1, current_brackets_index+current_brackets_length+1);
+
+              }
+          }//all brackets is done
 
 if(0){
          /*if(!(user_input.find('+')==-1))
@@ -843,8 +985,7 @@ if(0){
                 matrix[get_matrix_number(out,matrix_names)].print();}
              }
          }*/}
-
-     }
+}
         }//try
       catch(char const* x){cout<<x<<endl;}
 
