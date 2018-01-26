@@ -16,7 +16,7 @@ int main (int argc, char *argv[]){
       infile.open(file_path.data());}
     while(argc==1||argc==2){ try{
     if(argc==2){if(!getline(infile, user_input)){break;}}
-	if(argc==1) getline(cin,user_input);
+	if(argc==1) getline(cin,user_input);cout<<first_operation(user_input)<<endl;
     if(user_input.find('=')==-1)
         { if(user_input.find(';')==-1)
             {
@@ -199,6 +199,8 @@ int main (int argc, char *argv[]){
       }
      else //if operation
      {
+        if(user_input[user_input.length()-1]==13||user_input[user_input.length()-1]==10||user_input[user_input.length()-1]==12)user_input.erase(user_input.length()-1);
+
           int no_open_brac,no_close_brac;
           int* pos_open_brac=index_finder(user_input,"(",no_open_brac);
           int* pos_close_brac=index_finder(user_input,")",no_open_brac);
@@ -211,12 +213,23 @@ int main (int argc, char *argv[]){
           int* pos_sec=index_finder(user_input,"sec(",no_sec);
           int* pos_pow=index_finder(user_input,"^",no_pow);
           int* pos_sqrt=index_finder(user_input,"sqrt(",no_sqrt);
-          int* pos_log=index_finder(user_input,"log(",no_log;
+          int* pos_log=index_finder(user_input,"log(",no_log);
           int* pos_exp=index_finder(user_input,"exp(",no_exp);
           int* pos_multi=index_finder(user_input,"*",no_multi);
           int* pos_div=index_finder(user_input,"/",no_div);
           int* pos_plus=index_finder(user_input,"+",no_plus);
           int* pos_minus=minus_index_finder(user_input,no_minus);
+
+          string out=name_from_input(user_input);
+          user_input=user_input.substr(user_input.find("=")+1);
+          while(no_open_brac!=1 && no_close_brac!=1)
+          {
+             string current_brackets=first_operation(user_input);
+             int current_operator_index,current_operator,first,last;
+             (current_brackets);
+             (current_brackets,first,last);
+
+          }
 
 
          if(!(user_input.find('+')==-1))
