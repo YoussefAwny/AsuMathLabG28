@@ -85,7 +85,7 @@ public:
 	static Matrix cotanm(Matrix& m);
     static Matrix logm(Matrix& m);
     static Matrix expm(Matrix& m);
-   	};
+	};
  string Remove (string x, string r);
  double ** split (int nrows , int ncolumns , char* text);
  int no_rows (string input);
@@ -104,18 +104,7 @@ string bracket_operation(string s);
  string normal_operation(string s);
  string Find_First_Number(string s, int index);
  string to_string(double value);
- /////Paula//////
  double string_operation(string s);
- void LimitsIndex(string s,int oprtr, int& start, int& finish);
- ////////////////
- int FindStart(string s, int index);
- string putMatrixInString (string x , Matrix &m ,int index1 , int index2);
- int check_if_blank(string x);
- int check_if_math_op (string x);
 //endif // !MATRIX_H
-int* index_finder (string s, string s1, int &count);
-int* minus_index_finder (string s, int&c);
-string first_operation(string s/*,int* opened_parentheses,int* closed_parentheses*/ );
-string modify(char* s);
-
-
+void LimitsIndex(string s,int oprtr, int& start, int& finish);
+int FindLimit(string s, int index,int select);
