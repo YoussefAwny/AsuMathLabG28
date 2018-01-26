@@ -18,7 +18,7 @@ string matrix_conc(string MatOne)
     switch (MatOne[i])
     {
     case ' ': if ((!Space) && (!semicolon)) { cols++; } if (eom) { nC2++; }if (!eom) { nC1++; }  Space = 1; semicolon = 0;  break;
-    case ';':semicolon = 1; rows++; if (eom) { nR2++; } if (!eom) {if(MatOne[i+1]!=']'){cols = 1; nC1 = 1; nR1++; }}; Space = 0; break;
+    case ';':semicolon = 1; rows++; if (eom) { nR2++; } if (!eom) { cols = 1; nC1 = 1; nR1++; }; Space = 0; break;
     case '[':rows = 1; if (eom) {} Space = 0; semicolon = 0; break;
     case ']':if (!eom) { cols++; }; eom = 1; Space = 1; semicolon = 0; break;
 
@@ -46,7 +46,7 @@ string matrix_conc(string MatOne)
     switch (MatOne[i])
     {
     case ' ': if ((!Space)&&(!semicolon)) { k++; } Space = 1; semicolon = 0;  break;
-    case ';':if(MatOne[i+1]!=']'){semicolon = 1; j++; if (!eom) { k = 0; };} Space = 0; break;
+    case ';':semicolon = 1; j++; if (!eom) { k = 0; }; Space = 0; break;
     case '[':j = 0; Space = 0; semicolon = 0; break;
     case ']':if (!eom) {k++; }; eom = 1; Space = 1; semicolon = 0; break;
     case',':break;
@@ -63,15 +63,16 @@ string matrix_conc(string MatOne)
     for (int k = 0; k < cols; k++)
     {
       final += array[j][k];
-	  if (k!=cols-1)final += ' ';
+	  if ((cols - k) != 1)final += ' ';
     }
 
 
-    if (j!= rows-1)
+    if ((rows-j) != 1)
     {
       final += "; ";
     }
   }
+
 
   for (int row = 0; row < rows; row++)
   {
@@ -204,7 +205,7 @@ int check_if_values (string input)
         return 0;
 }
 
-int check_if_values_adv(string x)//to check if the input is matrix values or operations
+int check_if_values_adv(string x)
 {
     x=x.substr(x.find('=')+1);
     string exceptions[] ={"sin(","cos(","tan(","cot(","csc(","sec(","log(","exp(","sqrt("};
@@ -293,20 +294,6 @@ int check_if_number(string x)
         if(x[j]==i) {flag=0;}
       }
     }
-   return flag;
-}
-int check_if_blank(string x)
-{
-    int flag=1;
-
-    for(int i=33;i<127;i++)
-    {
-      for(int j=0;j<x.length();j++)
-      {
-        if(x[j]==i) {flag=0;}
-      }
-    }
-
    return flag;
 }
 int get_number_of_open_br (string x)
@@ -406,6 +393,7 @@ string normal_operation(string s)
             s.insert(i,sin_out_str);
             i+=sin_out_str.length()-1;
         }
+        break;
 
         case 'e':
 
@@ -418,6 +406,7 @@ string normal_operation(string s)
             s.insert(i,sin_out_str);
             i+=sin_out_str.length()-1;
         }
+        break;
 
     case 'c':
         if(s[i+1]=='o')
@@ -450,6 +439,7 @@ string normal_operation(string s)
             s.insert(i,sin_out_str);
             i+=sin_out_str.length()-1;
         }
+        break;
     case 't':
         if(s[i+1]=='a')
         {
@@ -460,6 +450,7 @@ string normal_operation(string s)
             s.insert(i,sin_out_str);
             i+=sin_out_str.length()-1;
         }
+        break;
     case 'l':
         if(s[i+1]=='o')
         {
@@ -470,6 +461,7 @@ string normal_operation(string s)
             s.insert(i,sin_out_str);
             i+=sin_out_str.length()-1;
         }
+        break;
 
     }
     }
@@ -585,6 +577,8 @@ string Find_First_Number(string s, int index)
 }
 
 
+
+
 double string_operation(string s)
 {
     string final_result;
@@ -594,16 +588,23 @@ double string_operation(string s)
                    final_result.erase(final_result.find("--",0),2);
     return atof(final_result.c_str());
 }
-
-int FindStart(string s, int index)
+int FindLimit(string s, int index,int select)
 {
     int i=index;
-    string s_num="";
-    while((s[i]<=57 && s[i]>=48) || (s[i]=='.') || (s[i]==' ')|| (s[i]=='-'&&s[i-1]=='e') || (s[i]=='e' && ( (s[i+1]<=57 && s[i+1]>=48)||s[i+1]=='-' ) ))
+    if(select==0)
+    {
+        while(!(s[i]=='+' ||s[i]=='-' || s[i]=='*'||s[i]=='/' ||s[i]=='%' || s[i]=='^' || s[i]==')' ))
         i--;
-    if(s[i]=='-' && (s[i-1]=='+' || s[i-1]=='-' || s[i-1]=='*' || s[i-1]=='/' || s[i-1]=='%' || s[i-1]=='^'))
+        if(s[i]=='-' && (s[i-1]=='+' || s[i-1]=='-' || s[i-1]=='*' || s[i-1]=='/' || s[i-1]=='%' || s[i-1]=='^'))
         i--;
-    return i+1;
+        return i+1;
+    }
+    else if(select==1)
+    {
+        while(!(s[i]=='+' ||s[i]=='-' || s[i]=='*'||s[i]=='/' ||s[i]=='%' || s[i]=='^' || s[i]==')' ))
+        i++;
+        return i-1;
+    }
 }
 
 void LimitsIndex(string s,int oprtr, int& start, int& finish)
@@ -616,8 +617,8 @@ void LimitsIndex(string s,int oprtr, int& start, int& finish)
     case '/':
     case '%':
     case '^':
-        start=FindStart(s,oprtr-1);
-        finish=oprtr+Find_First_Number(s, oprtr+1).length();
+        start=FindLimit(s,oprtr-1,0);
+        finish=FindLimit(s,oprtr+1,1);
         break;
     default:
         start=oprtr;
@@ -626,8 +627,6 @@ void LimitsIndex(string s,int oprtr, int& start, int& finish)
 
     }
 }
-
-
 
 //needs includesstrem statement
 string to_string(double value)
@@ -650,33 +649,10 @@ string putMatrixInString (string x , Matrix &m ,int index1 , int index2)
     Count++;
     return x ;
 }
-int* index_finder (string s, string s1, int &count)
 
-{
-    int* pos;
-string t = s;    count = 0;
-    int pos1 ;
- do {  pos1 = t.find (s1);
-  t=t.substr(pos1+1);
-  if ( pos1 >= 0 )
-    count ++ ;
- }
- while (pos1 >= 0);
-     pos = new int [count];
-int base = 0;
-for ( int i=0; i<count;i++)
-{
-int pos2 = s.find (s1);
-if (i!=0)
-base=base+pos2+1;
-else base=base+pos2;
-pos[i]=base;
 
-s=s.substr(pos2+1);
-}
-return pos ;
-}
-
+<<<<<<< HEAD
+=======
 int* minus_index_finder (string s, int&c)
 {
     c=0;
@@ -737,3 +713,4 @@ string  first_operation(string s/*,int opened_parentheses,int closed_parentheses
                 continue;
             }
 }
+>>>>>>> 08c04671f29c9e0f554246e4454fdb123f56794b
