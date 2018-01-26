@@ -620,3 +620,24 @@ s=s.substr(pos2+1);
 return pos ;
 }
 
+int* minus_index_finder (string s, int&c)
+{
+    c=0;
+    for(int i=0;i<s.length();i++)
+    {
+    if (i!=0&& s[i]=='-' && s[i+1]==' ' && s[i-1]==' ')
+        c++;
+    else if (i!=0&& s[i]=='-' && s[i+1]!=' ' && s[i-1]!=' ')
+        c++;
+    }
+    int* p=new int[c];
+    int j=0;
+    for(int i=0;i<s.length();i++)
+    {
+      if (s[i]=='-' && s[i+1]==' ' && s[i-1]==' ')
+        {p[j]=i; j++;}
+    else if ((s[i]=='-' && s[i+1]!=' ' && s[i-1]!=' ')
+        {p[j]=i; j++;}
+    }
+    return p;
+}

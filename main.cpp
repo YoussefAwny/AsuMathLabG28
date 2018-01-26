@@ -199,6 +199,26 @@ int main (int argc, char *argv[]){
       }
      else //if operation
      {
+          int no_open_brac,no_close_brac;
+          int* pos_open_brac=index_finder(user_input,"(",no_open_brac);
+          int* pos_close_brac=index_finder(user_input,")",no_open_brac);
+          int no_sin,no_cos,no_tan,no_cot,no_csc,no_sec,no_pow,no_sqrt,no_log,no_exp,no_multi,no_div,no_minus,no_plus;
+          int* pos_sin=index_finder(user_input,"sin(",no_sin);
+          int* pos_cos=index_finder(user_input,"cos(",no_cos);
+          int* pos_tan=index_finder(user_input,"tan(",no_tan);
+          int* pos_cot=index_finder(user_input,"cot(",no_cot);
+          int* pos_csc=index_finder(user_input,"csc(",no_csc);
+          int* pos_sec=index_finder(user_input,"sec(",no_sec);
+          int* pos_pow=index_finder(user_input,"^",no_pow);
+          int* pos_sqrt=index_finder(user_input,"sqrt(",no_sqrt);
+          int* pos_log=index_finder(user_input,"log(",no_log;
+          int* pos_exp=index_finder(user_input,"exp(",no_exp);
+          int* pos_multi=index_finder(user_input,"*",no_multi);
+          int* pos_div=index_finder(user_input,"/",no_div);
+          int* pos_plus=index_finder(user_input,"+",no_plus);
+          int* pos_minus=minus_index_finder(user_input,no_minus);
+
+
          if(!(user_input.find('+')==-1))
          {
              if(user_input[user_input.find('+')-1]=='.')user_input.erase(user_input.find('+')-1,1);
