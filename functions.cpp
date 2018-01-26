@@ -571,6 +571,39 @@ double string_operation(string s)
     return atof(final_result.c_str());
 }
 
+int FindStart(string s, int index)
+{
+    int i=index;
+    string s_num="";
+    while((s[i]<=57 && s[i]>=48) || (s[i]=='.') || (s[i]==' ')|| (s[i]=='-'&&s[i-1]=='e') || (s[i]=='e' && ( (s[i+1]<=57 && s[i+1]>=48)||s[i+1]=='-' ) ))
+        i--;
+    if(s[i]=='-' && (s[i-1]=='+' || s[i-1]=='-' || s[i-1]=='*' || s[i-1]=='/' || s[i-1]=='%' || s[i-1]=='^'))
+        i--;
+    return i+1;
+}
+
+void LimitsIndex(string s,int oprtr, int& start, int& finish)
+{
+    switch(s[oprtr])
+    {
+    case '+':
+    case '-':
+    case '*':
+    case '/':
+    case '%':
+    case '^':
+        start=FindStart(s,oprtr-1);
+        finish=oprtr+Find_First_Number(s, oprtr+1).length();
+        break;
+    default:
+        start=oprtr;
+        finish=s.find(')',oprtr);
+        break;
+
+    }
+}
+
+
 
 //needs includesstrem statement
 string to_string(double value)
