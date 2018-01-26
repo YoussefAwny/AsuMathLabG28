@@ -110,3 +110,5 @@ string bracket_operation(string s);
  int check_if_math_op (string x);
 //endif // !MATRIX_H
 int* index_finder (string s, string s1, int &count);
+string first_operation(string s/*,int* opened_parentheses,int* closed_parentheses*/ );
+string modify(char* s);
