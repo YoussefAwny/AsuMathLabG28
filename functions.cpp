@@ -615,6 +615,7 @@ int FindLimit(string s, int index,int select)
 
 void LimitsIndex(string s,int oprtr, int& start, int& finish)
 {
+    if(oprtr==0){start=0;finish=0;return;}
     switch(s[oprtr])
     {
     case '+':

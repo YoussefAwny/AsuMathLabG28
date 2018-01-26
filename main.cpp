@@ -232,12 +232,12 @@ int main (int argc, char *argv[]){
              int current_operator_index,current_operator,first,last;
              do{cout<<current_brackets<<endl;
              Operation(current_brackets,current_operator_index,current_operator);
+             if(current_brackets[current_operator_index-1]=='.'){current_brackets.erase(current_operator_index-1,1);}
              LimitsIndex(current_brackets,current_operator_index,first,last);
              cout<<current_brackets<<" "<<current_operator_index<<" "<<current_operator<<" "<<first<<" "<<last<<endl;
              string in1,in2;
              int int_flag1=0,int_flag2=0,in1_index,in2_index,temp_flag1=0,temp_flag2=0;
-             if(current_brackets[current_operator_index-1]=='.'){current_brackets.erase(current_operator_index-1,1);}
-             in1=space_remover(current_brackets.substr(first,current_operator_index-first));
+            in1=space_remover(current_brackets.substr(first,current_operator_index-first));
              in2=space_remover(current_brackets.substr(current_operator_index+1,last-current_operator_index));
 
              if(get_matrix_number(in1,matrix_names)!=-1){in1_index=get_matrix_number(in1,matrix_names);temp_flag1=0;int_flag1=0;}
