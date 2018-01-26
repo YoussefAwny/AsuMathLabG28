@@ -84,6 +84,28 @@ string matrix_conc(string MatOne)
 }
 
 
+void Operation(string x, int& index, int& flag)
+{ 
+    bool pow, mult, div, plus, minus;
+    int powIndex, mulltIndex, divIndex, plusIndex, minusIndex;
+    for (int i = 0; i < x.length; i++)
+    {
+        if (x[i] == '^') { pow = true; powIndex = i; }
+        else if (x[i] == '*') { mult = true; mulltIndex = i; }
+        else if (x[i] == '/') { div = true; divIndex = i; }
+        else if (x[i] == '+') { plus = true; plusIndex = i; }
+        else if (x[i] == '-') { minus = true; minusIndex=i; }
+    }
+
+    if (pow) { flag = 1; index = powIndex; return; }
+    else if (mult) { flag = 2; index = mulltIndex; return; }
+    else if (div) { flag = 3; index = divIndex; return; }
+    else if (plus) { flag = 4; index = plusIndex; return; }
+    else if (minus) { flag = 5; index = minusIndex; return; }
+
+}
+
+
 string Remove (string x, string r)
 {
 	int l=r.length();
@@ -570,6 +592,39 @@ double string_operation(string s)
                    final_result.erase(final_result.find("--",0),2);
     return atof(final_result.c_str());
 }
+
+int FindStart(string s, int index)
+{
+    int i=index;
+    string s_num="";
+    while((s[i]<=57 && s[i]>=48) || (s[i]=='.') || (s[i]==' ')|| (s[i]=='-'&&s[i-1]=='e') || (s[i]=='e' && ( (s[i+1]<=57 && s[i+1]>=48)||s[i+1]=='-' ) ))
+        i--;
+    if(s[i]=='-' && (s[i-1]=='+' || s[i-1]=='-' || s[i-1]=='*' || s[i-1]=='/' || s[i-1]=='%' || s[i-1]=='^'))
+        i--;
+    return i+1;
+}
+
+void LimitsIndex(string s,int oprtr, int& start, int& finish)
+{
+    switch(s[oprtr])
+    {
+    case '+':
+    case '-':
+    case '*':
+    case '/':
+    case '%':
+    case '^':
+        start=FindStart(s,oprtr-1);
+        finish=oprtr+Find_First_Number(s, oprtr+1).length();
+        break;
+    default:
+        start=oprtr;
+        finish=s.find(')',oprtr);
+        break;
+
+    }
+}
+
 
 
 //needs includesstrem statement
