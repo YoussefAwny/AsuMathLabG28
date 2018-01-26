@@ -85,6 +85,30 @@ string matrix_conc(string MatOne)
 }
 
 
+void Operation(string x, int& index, int& flag)
+{
+    bool pow, mult, div, plus, minus;
+    int powIndex, mulltIndex, divIndex, plusIndex, minusIndex;
+    int flag2=0;
+    for (int i = 0; i < x.length(); i++)
+    {
+        if (x[i] == '^') { pow = true; powIndex = i;flag2=1;}
+        else if (x[i] == '*') { mult = true; mulltIndex = i;flag2=1; }
+        else if (x[i] == '/') { div = true; divIndex = i;flag2=1; }
+        else if (x[i] == '+') { plus = true; plusIndex = i;flag2=1; }
+        else if (x[i] == '-') { minus = true; minusIndex=i;flag2=1; }
+    }
+
+    if (pow) { flag = 1; index = powIndex; return; }
+    else if (mult) { flag = 2; index = mulltIndex; return; }
+    else if (div) { flag = 3; index = divIndex; return; }
+    else if (plus) { flag = 4; index = plusIndex; return; }
+    else if (minus) { flag = 5; index = minusIndex; return; }
+    else if (!flag2) {flag=0;index=-1;return;}
+
+}
+
+
 string Remove (string x, string r)
 {
 	int l=r.length();
@@ -612,18 +636,81 @@ string to_string(double value)
     return sstr.str();
 }
 
-vector <string> names ;
-vector <Matrix> matrices ;
+vector <string> temp_names ;
+vector <Matrix> temp_matrices ;
 
 string putMatrixInString (string x , Matrix &m ,int index1 , int index2)
 {
     static int Count = 0 ;
-    matrices.push_back(m);
-    names.push_back("temp"+to_string(Count));
+    temp_matrices.push_back(m);
+    temp_names.push_back("temp"+to_string(Count));
     x.erase(index1,index2-index1);
-    x.insert(index1,names[Count]);
+    x.insert(index1,temp_names[Count]);
     Count++;
     return x ;
 }
 
 
+<<<<<<< HEAD
+=======
+int* minus_index_finder (string s, int&c)
+{
+    c=0;
+    for(int i=0;i<s.length();i++)
+    {
+    if (i!=0&& s[i]=='-' && s[i+1]==' ' && s[i-1]==' ')
+        c++;
+    else if (i!=0&& s[i]=='-' && s[i+1]!=' ' && s[i-1]!=' ')
+        c++;
+    }
+    int* p=new int[c];
+    int j=0;
+    for(int i=0;i<s.length();i++)
+    {
+      if (s[i]=='-' && s[i+1]==' ' && s[i-1]==' ')
+        {p[j]=i; j++;}
+    else if ((s[i]=='-' && s[i+1]!=' ' && s[i-1]!=' '))
+        {p[j]=i; j++;}
+    }
+    return p;
+}
+
+/*	string modify_space(char* s)
+{
+    if( s == NULL) return (string)s;
+    char * modified_s=new double [strlen(s)+1];
+    for(int i=0;s[i]!= "\0" ;i++)
+    {
+      if (s[i]== " ")
+      {   if(s[i-1] == "+" ||s[i-1] == "-" ||s[i-1] == "^" ||s[i-1] == "*" ||s[i-1] == "/")
+                continue;
+          if((s[i+1] == "+" ||s[i+1] == "-" ||s[i+1] == "^" ||s[i+1] == "*" ||s[i+1] == "/") && (s[i+2]== " "))
+                continue;
+      }
+        modified_s[i]=s[i];
+
+    }
+    return (string)modified_s;
+}*/
+
+string  first_operation(string s/*,int opened_parentheses,int closed_parentheses*/)
+    {
+         int opened_parenthese_location;
+        char* mystring = new char[s.length()+1];
+        strcpy(mystring,s.c_str());
+      /* if(opened_parentheses != closed_parentheses )
+            {
+             throw("please enter same number of opened and closed parentheses in the matrix. \n ");
+             return (string) s;
+            }*/
+        for(int i=0;i<s.length()+1;i++)
+            {
+            if(mystring[i] == '(')
+                opened_parenthese_location = i ;
+            else if(mystring[i] == ')')
+                return s.substr((opened_parenthese_location+1),(i-(opened_parenthese_location+1)));
+            else
+                continue;
+            }
+}
+>>>>>>> 08c04671f29c9e0f554246e4454fdb123f56794b

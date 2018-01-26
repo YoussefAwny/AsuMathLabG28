@@ -8,6 +8,8 @@ vector<string> matrix_names;
 vector<Matrix> matrix;
 int vector_counter=0;
 
+
+
 int main (int argc, char *argv[]){
     int x,y;
     string user_input,file_path;
@@ -199,6 +201,8 @@ int main (int argc, char *argv[]){
       }
      else //if operation
      {
+        if(user_input[user_input.length()-1]==13||user_input[user_input.length()-1]==10||user_input[user_input.length()-1]==12)user_input.erase(user_input.length()-1);
+
           int no_open_brac,no_close_brac;
           int* pos_open_brac=index_finder(user_input,"(",no_open_brac);
           int* pos_close_brac=index_finder(user_input,")",no_open_brac);
@@ -211,12 +215,66 @@ int main (int argc, char *argv[]){
           int* pos_sec=index_finder(user_input,"sec(",no_sec);
           int* pos_pow=index_finder(user_input,"^",no_pow);
           int* pos_sqrt=index_finder(user_input,"sqrt(",no_sqrt);
-          int* pos_log=index_finder(user_input,"log(",no_log;
+          int* pos_log=index_finder(user_input,"log(",no_log);
           int* pos_exp=index_finder(user_input,"exp(",no_exp);
           int* pos_multi=index_finder(user_input,"*",no_multi);
           int* pos_div=index_finder(user_input,"/",no_div);
           int* pos_plus=index_finder(user_input,"+",no_plus);
           int* pos_minus=minus_index_finder(user_input,no_minus);
+
+          string out=name_from_input(user_input);
+          user_input=user_input.substr(user_input.find("=")+1);
+          while(no_open_brac!=1 && no_close_brac!=1)
+          {
+             string current_brackets=first_operation(user_input);
+             int current_operator_index,current_operator,first,last;
+             do{
+             Operation(current_brackets,current_operator_index,current_operator);
+             LimitsIndex(current_brackets,current_operator_index,first,last);
+             cout<<current_brackets<<" "<<current_operator_index<<" "<<current_operator<<" "<<first<<" "<<last<<endl;
+             string in1,in2;
+             int int_flag1=0,int_flag2=0,in1_index,in2_index,temp_flag1=0,temp_flag2=0;
+             if(current_brackets[current_operator_index-1]=='.'){current_brackets.erase(current_operator_index-1,1);}
+             in1=space_remover(current_brackets.substr(first,current_operator_index-first));
+             in2=space_remover(current_brackets.substr(current_operator_index+1,last-current_operator_index));
+
+             if(get_matrix_number(in1,matrix_names)!=-1){in1_index=get_matrix_number(in1,matrix_names);}
+             else if (get_matrix_number(in1,temp_names)!=-1){in1_index=get_matrix_number(in1,temp_names);temp_flag1=1;}
+             else if (check_if_number(in1)){int_flag1=1;}
+             else throw("Matrix Not Defined");
+
+             if(get_matrix_number(in2,matrix_names)!=-1){in2_index=get_matrix_number(in2,matrix_names);}
+             else if (get_matrix_number(in2,temp_names)!=-1){in2_index=get_matrix_number(in2,temp_names);temp_flag2=1;}
+             else if (check_if_number(in2)){int_flag2=1;}
+             else throw("Matrix Not Defined");
+
+             switch(current_operator)
+             {case 1:
+                 {
+
+
+                 }
+             case 2:
+                 {
+
+                 }
+             case 3:
+                 {
+
+                 }
+             case 4:
+                 {
+
+                 }
+             case 5:
+                 {
+
+                 }}
+
+             } while(current_operator!=0);
+
+break;
+          }
 
 
          if(!(user_input.find('+')==-1))

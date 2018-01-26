@@ -55,7 +55,7 @@ public:
 	static Matrix mul2(Matrix& m1,Matrix& m2);
 	static Matrix mul2(Matrix& m1,double d);
 	static Matrix mul2(double d,Matrix& m2);
-	static Matrix power2(Matrix& m1, Matrix& m2);
+	static Matrix power(Matrix& m1, Matrix& m2);
 	static Matrix power (Matrix&m ,double d);
 	static Matrix IMatrix (Matrix& m);
 	static Matrix squareRoot (Matrix& m);
@@ -106,5 +106,16 @@ string bracket_operation(string s);
  string to_string(double value);
  double string_operation(string s);
 //endif // !MATRIX_H
+<<<<<<< HEAD
 void LimitsIndex(string s,int oprtr, int& start, int& finish);
 int FindLimit(string s, int index,int select);
+=======
+int* index_finder (string s, string s1, int &count);
+int* minus_index_finder (string s, int&c);
+string first_operation(string s);//,int opened_parentheses,int closed_parentheses);
+//string modify_space(char* s);
+void Operation(string x, int& index, int& flag);
+
+extern vector <string> temp_names ;
+extern vector <Matrix> temp_matrices ;
+>>>>>>> 08c04671f29c9e0f554246e4454fdb123f56794b
