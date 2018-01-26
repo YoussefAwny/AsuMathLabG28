@@ -8,6 +8,8 @@ vector<string> matrix_names;
 vector<Matrix> matrix;
 int vector_counter=0;
 
+
+
 int main (int argc, char *argv[]){
     int x,y;
     string user_input,file_path;
@@ -16,7 +18,7 @@ int main (int argc, char *argv[]){
       infile.open(file_path.data());}
     while(argc==1||argc==2){ try{
     if(argc==2){if(!getline(infile, user_input)){break;}}
-	if(argc==1) getline(cin,user_input);cout<<first_operation(user_input)<<endl;
+	if(argc==1) getline(cin,user_input);
     if(user_input.find('=')==-1)
         { if(user_input.find(';')==-1)
             {
@@ -226,9 +228,52 @@ int main (int argc, char *argv[]){
           {
              string current_brackets=first_operation(user_input);
              int current_operator_index,current_operator,first,last;
-             (current_brackets);
-             (current_brackets,first,last);
+             do{
+             Operation(current_brackets,current_operator_index,current_operator);
+             LimitsIndex(current_brackets,current_operator_index,first,last);
+             cout<<current_brackets<<" "<<current_operator_index<<" "<<current_operator<<" "<<first<<" "<<last<<endl;
+             string in1,in2;
+             int int_flag1=0,int_flag2=0,in1_index,in2_index,temp_flag1=0,temp_flag2=0;
+             if(current_brackets[current_operator_index-1]=='.'){current_brackets.erase(current_operator_index-1,1);}
+             in1=space_remover(current_brackets.substr(first,current_operator_index-first));
+             in2=space_remover(current_brackets.substr(current_operator_index+1,last-current_operator_index));
 
+             if(get_matrix_number(in1,matrix_names)!=-1){in1_index=get_matrix_number(in1,matrix_names);}
+             else if (get_matrix_number(in1,temp_names)!=-1){in1_index=get_matrix_number(in1,temp_names);temp_flag1=1;}
+             else if (check_if_number(in1)){int_flag1=1;}
+             else throw("Matrix Not Defined");
+
+             if(get_matrix_number(in2,matrix_names)!=-1){in2_index=get_matrix_number(in2,matrix_names);}
+             else if (get_matrix_number(in2,temp_names)!=-1){in2_index=get_matrix_number(in2,temp_names);temp_flag2=1;}
+             else if (check_if_number(in2)){int_flag2=1;}
+             else throw("Matrix Not Defined");
+
+             switch(current_operator)
+             {case 1:
+                 {
+
+
+                 }
+             case 2:
+                 {
+
+                 }
+             case 3:
+                 {
+
+                 }
+             case 4:
+                 {
+
+                 }
+             case 5:
+                 {
+
+                 }}
+
+             } while(current_operator!=0);
+
+break;
           }
 
 

@@ -55,7 +55,7 @@ public:
 	static Matrix mul2(Matrix& m1,Matrix& m2);
 	static Matrix mul2(Matrix& m1,double d);
 	static Matrix mul2(double d,Matrix& m2);
-	static Matrix power2(Matrix& m1, Matrix& m2);
+	static Matrix power(Matrix& m1, Matrix& m2);
 	static Matrix power (Matrix&m ,double d);
 	static Matrix IMatrix (Matrix& m);
 	static Matrix squareRoot (Matrix& m);
@@ -117,5 +117,7 @@ int* index_finder (string s, string s1, int &count);
 int* minus_index_finder (string s, int&c);
 string first_operation(string s);//,int opened_parentheses,int closed_parentheses);
 //string modify_space(char* s);
+void Operation(string x, int& index, int& flag);
 
-
+extern vector <string> temp_names ;
+extern vector <Matrix> temp_matrices ;

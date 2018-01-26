@@ -85,16 +85,17 @@ string matrix_conc(string MatOne)
 
 
 void Operation(string x, int& index, int& flag)
-{ 
+{
     bool pow, mult, div, plus, minus;
     int powIndex, mulltIndex, divIndex, plusIndex, minusIndex;
-    for (int i = 0; i < x.length; i++)
+    int flag2=0;
+    for (int i = 0; i < x.length(); i++)
     {
-        if (x[i] == '^') { pow = true; powIndex = i; }
-        else if (x[i] == '*') { mult = true; mulltIndex = i; }
-        else if (x[i] == '/') { div = true; divIndex = i; }
-        else if (x[i] == '+') { plus = true; plusIndex = i; }
-        else if (x[i] == '-') { minus = true; minusIndex=i; }
+        if (x[i] == '^') { pow = true; powIndex = i;flag2=1;}
+        else if (x[i] == '*') { mult = true; mulltIndex = i;flag2=1; }
+        else if (x[i] == '/') { div = true; divIndex = i;flag2=1; }
+        else if (x[i] == '+') { plus = true; plusIndex = i;flag2=1; }
+        else if (x[i] == '-') { minus = true; minusIndex=i;flag2=1; }
     }
 
     if (pow) { flag = 1; index = powIndex; return; }
@@ -102,6 +103,7 @@ void Operation(string x, int& index, int& flag)
     else if (div) { flag = 3; index = divIndex; return; }
     else if (plus) { flag = 4; index = plusIndex; return; }
     else if (minus) { flag = 5; index = minusIndex; return; }
+    else if (!flag2) {flag=0;index=-1;return;}
 
 }
 

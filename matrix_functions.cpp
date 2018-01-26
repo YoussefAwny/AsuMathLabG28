@@ -265,7 +265,7 @@ using namespace std;
 		return m1;
 	}
 
-   Matrix Matrix :: power2 (Matrix& m1 ,Matrix& m2)
+   Matrix Matrix :: power (Matrix& m1 ,Matrix& m2)
     {
         if(m1.rows != m2.rows && m1.columns !=m2.columns)
             throw("Invalid matrix dimension");
