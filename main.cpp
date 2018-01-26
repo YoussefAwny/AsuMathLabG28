@@ -203,7 +203,7 @@ int main (int argc, char *argv[]){
      {
         if(user_input[user_input.length()-1]==13||user_input[user_input.length()-1]==10||user_input[user_input.length()-1]==12)user_input.erase(user_input.length()-1);
 
-          int no_open_brac,no_close_brac;
+          int no_open_brac,no_close_brac,operations_count=0;
           int* pos_open_brac=index_finder(user_input,"(",no_open_brac);
           int* pos_close_brac=index_finder(user_input,")",no_open_brac);
           int no_sin,no_cos,no_tan,no_cot,no_csc,no_sec,no_pow,no_sqrt,no_log,no_exp,no_multi,no_div,no_minus,no_plus;
@@ -221,7 +221,7 @@ int main (int argc, char *argv[]){
           int* pos_div=index_finder(user_input,"/",no_div);
           int* pos_plus=index_finder(user_input,"+",no_plus);
           int* pos_minus=minus_index_finder(user_input,no_minus);
-
+          operations_count=no_sin+no_cos+no_tan+no_cot+no_csc+no_sec+no_pow+no_sqrt+no_log+no_exp+no_multi+no_div+no_minus+no_plus;
           string out=name_from_input(user_input);
           user_input=user_input.substr(user_input.find("=")+1);
           while(no_open_brac!=1 && no_close_brac!=1)
@@ -238,46 +238,201 @@ int main (int argc, char *argv[]){
              in1=space_remover(current_brackets.substr(first,current_operator_index-first));
              in2=space_remover(current_brackets.substr(current_operator_index+1,last-current_operator_index));
 
-             if(get_matrix_number(in1,matrix_names)!=-1){in1_index=get_matrix_number(in1,matrix_names);}
-             else if (get_matrix_number(in1,temp_names)!=-1){in1_index=get_matrix_number(in1,temp_names);temp_flag1=1;}
+             if(get_matrix_number(in1,matrix_names)!=-1){in1_index=get_matrix_number(in1,matrix_names);temp_flag1=0;int_flag1=0;}
+             else if (get_matrix_number(in1,temp_names)!=-1){in1_index=get_matrix_number(in1,temp_names);temp_flag1=1;int_flag1=0;}
              else if (check_if_number(in1)){int_flag1=1;}
              else throw("Matrix Not Defined");
 
-             if(get_matrix_number(in2,matrix_names)!=-1){in2_index=get_matrix_number(in2,matrix_names);}
-             else if (get_matrix_number(in2,temp_names)!=-1){in2_index=get_matrix_number(in2,temp_names);temp_flag2=1;}
+             if(get_matrix_number(in2,matrix_names)!=-1){in2_index=get_matrix_number(in2,matrix_names);temp_flag2=0;int_flag2=0;}
+             else if (get_matrix_number(in2,temp_names)!=-1){in2_index=get_matrix_number(in2,temp_names);temp_flag2=1;int_flag2=0;}
              else if (check_if_number(in2)){int_flag2=1;}
              else throw("Matrix Not Defined");
 
+             Matrix temp(1,1,0,0);
+
              switch(current_operator)
-             {case 1:
+             {case 1://^
                  {
-
-
-                 }
-             case 2:
+                     if(int_flag1) throw("Can't power a variable by a matrix");
+                     if(temp_flag1)
+                     {
+                       if(int_flag2)
+                       temp=Matrix::power(temp_matrices[in1_index],atof(in2.data()));
+                       else
+                       {
+                           if(temp_flag2)temp=Matrix::power(temp_matrices[in1_index],temp_matrices[in2_index]);
+                           else temp=Matrix::power(temp_matrices[in1_index],matrix[in2_index]);
+                       }
+                     }
+                     else
+                     {
+                       if(int_flag2)
+                       temp=Matrix::power(matrix[in1_index],atof(in2.data()));
+                       else
+                       {
+                           if(temp_flag2)temp=Matrix::power(matrix[in1_index],temp_matrices[in2_index]);
+                           else temp=Matrix::power(matrix[in1_index],matrix[in2_index]);
+                       }
+                     }
+                    operations_count--;
+                 }break;
+             case 2://*
                  {
+                     if(int_flag1)
+                     {
+                        if(int_flag2)
+                       temp=atof(in1.data())*atof(in1.data());
+                       else
+                       {
+                           if(temp_flag2)temp=Matrix::mul2(atof(in1.data()),temp_matrices[in2_index]);
+                           else temp=Matrix::mul2(atof(in1.data()),matrix[in2_index]);
+                       }
+                     }
+                     else{
+                     if(temp_flag1)
+                     {
+                       if(int_flag2)
+                       temp=Matrix::mul2(temp_matrices[in1_index],atof(in2.data()));
+                       else
+                       {
+                           if(temp_flag2)temp=temp_matrices[in1_index]*temp_matrices[in2_index];
+                           else temp=temp_matrices[in1_index]*matrix[in2_index];
+                       }
+                     }
+                     else
+                     {
+                       if(int_flag2)
+                       temp=Matrix::mul2(matrix[in1_index],atof(in2.data()));
+                       else
+                       {
+                           if(temp_flag2)temp=matrix[in1_index]*temp_matrices[in2_index];
+                           else temp=matrix[in1_index]*matrix[in2_index];
+                       }
+                     }}
 
-                 }
-             case 3:
+                    operations_count--;
+
+                 }break;
+             case 3:// /
                  {
+                     if(int_flag1)
+                     {
+                        if(int_flag2)
+                       temp=atof(in1.data())/atof(in1.data());
+                       else
+                       {
+                           if(temp_flag2)temp=Matrix::div2(atof(in1.data()),temp_matrices[in2_index]);
+                           else temp=Matrix::div2(atof(in1.data()),matrix[in2_index]);
+                       }
+                     }
+                     else{
+                     if(temp_flag1)
+                     {
+                       if(int_flag2)
+                       temp=Matrix::div2(temp_matrices[in1_index],atof(in2.data()));
+                       else
+                       {
+                           if(temp_flag2)temp=temp_matrices[in1_index]/temp_matrices[in2_index];
+                           else temp=temp_matrices[in1_index]/matrix[in2_index];
+                       }
+                     }
+                     else
+                     {
+                       if(int_flag2)
+                       temp=Matrix::div2(matrix[in1_index],atof(in2.data()));
+                       else
+                       {
+                           if(temp_flag2)temp=matrix[in1_index]/temp_matrices[in2_index];
+                           else temp=matrix[in1_index]/matrix[in2_index];
+                       }
+                     }}
 
-                 }
-             case 4:
+                    operations_count--;
+
+                 }break;
+             case 4://+
                  {
+                    if(int_flag1)
+                     {
+                        if(int_flag2)
+                       temp=atof(in1.data())+atof(in1.data());
+                       else
+                       {
+           if(temp_flag2)temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.data()))+temp_matrices[in2_index];
+            else temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.data()))+matrix[in2_index];
+                       }
+                     }
+                     else{
+                     if(temp_flag1)
+                     {
+                       if(int_flag2)
+                       temp=temp_matrices[in1_index]+atof(in2.data());
+                       else
+                       {
+                           if(temp_flag2)temp=temp_matrices[in1_index]+temp_matrices[in2_index];
+                           else temp=temp_matrices[in1_index]+matrix[in2_index];
+                       }
+                     }
+                     else
+                     {
+                       if(int_flag2)
+                       temp=matrix[in1_index]+atof(in2.data());
+                       else
+                       {
+                           if(temp_flag2)temp=matrix[in1_index]+temp_matrices[in2_index];
+                           else temp=matrix[in1_index]+matrix[in2_index];
+                       }
+                     }}
 
-                 }
-             case 5:
+                    operations_count--;
+
+                 }break;
+             case 5://-
                  {
+                     if(int_flag1)
+                     {
+                        if(int_flag2)
+                       temp=atof(in1.data())-atof(in1.data());
+                       else
+                       {
+           if(temp_flag2)temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.data()))-temp_matrices[in2_index];
+            else temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.data()))-matrix[in2_index];
+                       }
+                     }
+                     else{
+                     if(temp_flag1)
+                     {
+                       if(int_flag2)
+                       temp=temp_matrices[in1_index]-atof(in2.data());
+                       else
+                       {
+                           if(temp_flag2)temp=temp_matrices[in1_index]-temp_matrices[in2_index];
+                           else temp=temp_matrices[in1_index]-matrix[in2_index];
+                       }
+                     }
+                     else
+                     {
+                       if(int_flag2)
+                       temp=matrix[in1_index]-atof(in2.data());
+                       else
+                       {
+                           if(temp_flag2)temp=matrix[in1_index]-temp_matrices[in2_index];
+                           else temp=matrix[in1_index]-matrix[in2_index];
+                       }
+                     }}
 
-                 }}
+                    operations_count--;
 
+                 }break;}
+
+            int_flag1=0;int_flag2=0;temp_flag1=0;temp_flag2=0;
              } while(current_operator!=0);
 
 break;
           }
 
-
-         if(!(user_input.find('+')==-1))
+if(0){
+         /*if(!(user_input.find('+')==-1))
          {
              if(user_input[user_input.find('+')-1]=='.')user_input.erase(user_input.find('+')-1,1);
              string out,in1,in2;
@@ -687,7 +842,7 @@ break;
                 cout<<matrix_names[get_matrix_number(out,matrix_names)]<<"="<<endl;
                 matrix[get_matrix_number(out,matrix_names)].print();}
              }
-         }
+         }*/}
 
      }
         }//try
