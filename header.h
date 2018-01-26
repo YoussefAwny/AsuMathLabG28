@@ -105,8 +105,9 @@ string bracket_operation(string s);
  string Find_First_Number(string s, int index);
  string to_string(double value);
  /////Paula//////
- double string_operation(string s);
- void LimitsIndex(string s,int oprtr, int& start, int& finish);
+void LimitsIndex(string s,int oprtr, int& start, int& finish);
+int FindLimit(string s, int index,int select);
+double string_operation(string s);
  ////////////////
  int FindStart(string s, int index);
  string putMatrixInString (string x , Matrix &m ,int index1 , int index2);

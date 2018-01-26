@@ -485,7 +485,6 @@ string normal_operation(string s)
             s.erase(i,s_sub_num.length()+s_sub_num_2.length());
             s.insert(i,sin_out_str);
             i+=s_sub_num.length()-1;
-
     }*/
     string s_sub_num="";
     string s_sub_num_2="";
@@ -595,15 +594,23 @@ double string_operation(string s)
     return atof(final_result.c_str());
 }
 
-int FindStart(string s, int index)
+int FindLimit(string s, int index,int select)
 {
     int i=index;
-    string s_num="";
-    while((s[i]<=57 && s[i]>=48) || (s[i]=='.') || (s[i]==' ')|| (s[i]=='-'&&s[i-1]=='e') || (s[i]=='e' && ( (s[i+1]<=57 && s[i+1]>=48)||s[i+1]=='-' ) ))
+    if(select==0)
+    {
+        while(!(s[i]=='+' ||s[i]=='-' || s[i]=='*'||s[i]=='/' ||s[i]=='%' || s[i]=='^' || s[i]==')' ))
         i--;
-    if(s[i]=='-' && (s[i-1]=='+' || s[i-1]=='-' || s[i-1]=='*' || s[i-1]=='/' || s[i-1]=='%' || s[i-1]=='^'))
+        if(s[i]=='-' && (s[i-1]=='+' || s[i-1]=='-' || s[i-1]=='*' || s[i-1]=='/' || s[i-1]=='%' || s[i-1]=='^'))
         i--;
-    return i+1;
+        return i+1;
+    }
+    else if(select==1)
+    {
+        while(!(s[i]=='+' ||s[i]=='-' || s[i]=='*'||s[i]=='/' ||s[i]=='%' || s[i]=='^' || s[i]==')' ))
+        i++;
+        return i-1;
+    }
 }
 
 void LimitsIndex(string s,int oprtr, int& start, int& finish)
@@ -616,8 +623,8 @@ void LimitsIndex(string s,int oprtr, int& start, int& finish)
     case '/':
     case '%':
     case '^':
-        start=FindStart(s,oprtr-1);
-        finish=oprtr+Find_First_Number(s, oprtr+1).length();
+        start=FindLimit(s,oprtr-1,0);
+        finish=FindLimit(s,oprtr+1,1);
         break;
     default:
         start=oprtr;
@@ -712,7 +719,6 @@ int* minus_index_finder (string s, int&c)
                 continue;
       }
         modified_s[i]=s[i];
-
     }
     return (string)modified_s;
 }*/
