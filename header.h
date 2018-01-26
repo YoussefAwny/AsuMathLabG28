@@ -111,3 +111,6 @@ string bracket_operation(string s);
 //endif // !MATRIX_H
 int* index_finder (string s, string s1, int &count);
 int* minus_index_finder (string s, int&c);
+string first_operation(string s/*,int* opened_parentheses,int* closed_parentheses*/ );
+string modify(char* s);
+
