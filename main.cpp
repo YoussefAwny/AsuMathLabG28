@@ -205,7 +205,7 @@ int main (int argc, char *argv[]){
 
           int no_open_brac,no_close_brac,operations_count=0;
           int* pos_open_brac=index_finder(user_input,"(",no_open_brac);
-          int* pos_close_brac=index_finder(user_input,")",no_open_brac);
+          int* pos_close_brac=index_finder(user_input,")",no_close_brac);
           int no_sin,no_cos,no_tan,no_cot,no_csc,no_sec,no_pow,no_sqrt,no_log,no_exp,no_multi,no_div,no_minus,no_plus;
           int* pos_sin=index_finder(user_input,"sin(",no_sin);
           int* pos_cos=index_finder(user_input,"cos(",no_cos);
@@ -221,10 +221,11 @@ int main (int argc, char *argv[]){
           int* pos_div=index_finder(user_input,"/",no_div);
           int* pos_plus=index_finder(user_input,"+",no_plus);
           int* pos_minus=minus_index_finder(user_input,no_minus);
+          int brackets_finished_flag=0;
           operations_count=no_sin+no_cos+no_tan+no_cot+no_csc+no_sec+no_pow+no_sqrt+no_log+no_exp+no_multi+no_div+no_minus+no_plus;
           string out=name_from_input(user_input);
           user_input=user_input.substr(user_input.find("=")+1);
-          while(no_open_brac!=1 && no_close_brac!=1)
+          while((no_open_brac!=0 && no_close_brac!=0)||(brackets_finished_flag==0))
           {
              string current_brackets=first_operation(user_input);
              int current_brackets_index=user_input.find(current_brackets);
@@ -571,7 +572,16 @@ int main (int argc, char *argv[]){
     user_input=putMatrixInString(user_input, temp, current_brackets_index-1, current_brackets_index+current_brackets_length+1);
 
               }
+              index_finder(user_input,"(",no_open_brac);
+              index_finder(user_input,")",no_close_brac);
+              if(no_open_brac==0 && no_close_brac==0)
+              {
+                  brackets_finished_flag=1;
+              }
+
           }//all brackets is done
+
+
 
 if(0){
          /*if(!(user_input.find('+')==-1))
