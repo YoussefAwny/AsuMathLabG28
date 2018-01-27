@@ -8,6 +8,7 @@
 #include <sstream>
 #include<math.h>
 #include <cstdlib>
+#include <conio.h>
 //#ifndef MATRIX_H
 //#define MATRIX_H
 #define Lower 13
