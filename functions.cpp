@@ -599,7 +599,7 @@ int FindLimit(string s, int index,int select)
     int i=index;
     if(select==0)
     {
-        while(!(s[i]=='+' ||s[i]=='-' || s[i]=='*'||s[i]=='/' ||s[i]=='%' || s[i]=='^' || s[i]==')' ))
+        while(!(s[i]=='+' ||s[i]=='-' || s[i]=='*'||s[i]=='/' ||s[i]=='%' || s[i]=='^' || s[i]=='(' || i==-1))
         i--;
         if(s[i]=='-' && (s[i-1]=='+' || s[i-1]=='-' || s[i-1]=='*' || s[i-1]=='/' || s[i-1]=='%' || s[i-1]=='^'))
         i--;
@@ -607,7 +607,7 @@ int FindLimit(string s, int index,int select)
     }
     else if(select==1)
     {
-        while(!(s[i]=='+' ||s[i]=='-' || s[i]=='*'||s[i]=='/' ||s[i]=='%' || s[i]=='^' || s[i]==')' ))
+        while(!(s[i]=='+' ||s[i]=='-' || s[i]=='*'||s[i]=='/' ||s[i]=='%' || s[i]=='^' || s[i]==')' || (s[i]='.' && (s[i+1]=='+' ||s[i+1]=='-' || s[i+1]=='*'||s[i+1]=='/' ||s[i+1]=='%' || s[i+1]=='^') )) || i==s.length())
         i++;
         return i-1;
     }
