@@ -125,8 +125,8 @@ int main (int argc, char *argv[]){
                 temp.insert(x,matrix[i].get_string());
             }
         }
-        if(check_if_values_adv(temp.substr(temp.find("[")+1,temp.find("]")-temp.find("[")-1))) throw("Undefined Matrix");
-        if(vector_counter==0 && check_if_values_adv(user_input.substr(user_input.find("[")+1))==0) throw("Undefined Matrix");
+        //if(check_if_values_adv(temp.substr(temp.find("[")+1,temp.find("]")-temp.find("[")-1))) throw("Undefined Matrix1");
+        //if(vector_counter==0 && check_if_values_adv(user_input.substr(user_input.find("[")+1))==0) throw("Undefined Matrix2");
         user_input.erase(user_input.find("=")+1);
         user_input+=temp;
 
@@ -194,7 +194,7 @@ int main (int argc, char *argv[]){
 
                 matrix[i]=Matrix(x,y,dpointer);
 
-                if(user_input[user_input.length()-1]!=';'){
+                if(user_input[user_input.length()]!=';'){///////////////-1
                 cout<<matrix_names[i]<<"="<<endl;
                 matrix[i].print();}
         }
@@ -225,16 +225,23 @@ int main (int argc, char *argv[]){
           operations_count=no_sin+no_cos+no_tan+no_cot+no_csc+no_sec+no_pow+no_sqrt+no_log+no_exp+no_multi+no_div+no_minus+no_plus;
           string out=name_from_input(user_input);
           user_input=user_input.substr(user_input.find("=")+1);
+          if(no_open_brac!=no_close_brac)throw("bracket not closed");
           while((no_open_brac!=0 && no_close_brac!=0)||(brackets_finished_flag==0))
           {
-             string current_brackets=first_operation(user_input);
+             string current_brackets;
+             if(no_open_brac==0 && no_close_brac==0)
+             {current_brackets=user_input;}
+             else
+             {current_brackets=first_operation(user_input);}
+
              int current_brackets_index=user_input.find(current_brackets);
              int current_brackets_length=current_brackets.length();
              int current_operator_index,current_operator,first,last;
              do{cout<<current_brackets<<endl;
              Operation(current_brackets,current_operator_index,current_operator);
-             if(current_brackets[current_operator_index-1]=='.'){current_brackets.erase(current_operator_index-1,1);}
-             LimitsIndex(current_brackets,current_operator_index,first,last);
+             cout<<current_operator_index<<endl<<current_operator<<endl;
+             if(current_brackets[current_operator_index-1]=='.'){current_brackets.erase(current_operator_index-1,1);}cout<<"ok1"<<endl;
+             LimitsIndex(current_brackets,current_operator_index,first,last);cout<<"ok2"<<endl;
              cout<<current_brackets<<" "<<current_operator_index<<" "<<current_operator<<" "<<first<<" "<<last<<endl;
              string in1,in2;
              int int_flag1=0,int_flag2=0,in1_index,in2_index,temp_flag1=0,temp_flag2=0;

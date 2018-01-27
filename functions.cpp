@@ -86,13 +86,13 @@ string matrix_conc(string MatOne)
 
 void Operation(string x, int& index, int& flag)
 {
-    bool pow, mult, div, plus, minus;
+    bool pow=0, mult=0, div=0, plus=0, minus=0;
     int powIndex, mulltIndex, divIndex, plusIndex, minusIndex;
     int flag2=0;
     for (int i = 0; i < x.length(); i++)
     {
         if (x[i] == '^') { pow = true; powIndex = i;flag2=1;}
-        else if (x[i] == '*') { mult = true; mulltIndex = i;flag2=1; }
+        else if (x[i] == '*') {mult = true; mulltIndex = i;flag2=1; }
         else if (x[i] == '/') { div = true; divIndex = i;flag2=1; }
         else if (x[i] == '+') { plus = true; plusIndex = i;flag2=1; }
         else if (x[i] == '-') { minus = true; minusIndex=i;flag2=1; }
