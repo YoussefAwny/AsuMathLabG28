@@ -201,8 +201,9 @@ int main (int argc, char *argv[]){
       }
      else //if operation
      {
+         int semicolon_flag=0;
         if(user_input[user_input.length()-1]==13||user_input[user_input.length()-1]==10||user_input[user_input.length()-1]==12)user_input.erase(user_input.length()-1);
-
+        if(user_input[user_input.length()-1]==';'){semicolon_flag=1;user_input.erase(user_input.length()-1);}
           int no_open_brac,no_close_brac,operations_count=0;
           int* pos_open_brac=index_finder(user_input,"(",no_open_brac);
           int* pos_close_brac=index_finder(user_input,")",no_close_brac);
@@ -229,20 +230,26 @@ int main (int argc, char *argv[]){
           while((no_open_brac!=0 && no_close_brac!=0)||(brackets_finished_flag==0))
           {
              string current_brackets;
+             int current_brackets_index,current_brackets_length;
              if(no_open_brac==0 && no_close_brac==0)
-             {current_brackets=user_input;}
+             {current_brackets=user_input;
+              current_brackets_index=0;
+              current_brackets_length=current_brackets.length();
+             }
              else
-             {current_brackets=first_operation(user_input);}
+             {current_brackets=first_operation(user_input);
+              current_brackets_index=user_input.find(current_brackets);
+              current_brackets_length=current_brackets.length();
+             }
 
-             int current_brackets_index=user_input.find(current_brackets);
-             int current_brackets_length=current_brackets.length();
              int current_operator_index,current_operator,first,last;
-             do{cout<<current_brackets<<endl;
+             do{
              Operation(current_brackets,current_operator_index,current_operator);
-             if(current_brackets[current_operator_index-1]=='.'){current_brackets.erase(current_operator_index-1,1);}
+             if(current_operator==0)break;
+             if(current_brackets[current_operator_index-1]=='.'){current_brackets.erase(current_operator_index-1,1);current_operator_index--;}
              LimitsIndex(current_brackets,current_operator_index,first,last);
-             cout<<current_brackets<<" "<<current_operator_index<<" "<<current_operator<<" "<<first<<" "<<last<<endl;
-             string in1,in2;getch();
+
+             string in1,in2;
              int int_flag1=0,int_flag2=0,in1_index,in2_index,temp_flag1=0,temp_flag2=0;
             in1=space_remover(current_brackets.substr(first,current_operator_index-first));
              in2=space_remover(current_brackets.substr(current_operator_index+1,last-current_operator_index));
@@ -269,7 +276,7 @@ int main (int argc, char *argv[]){
                          }
                          else if(get_matrix_number(current_brackets,temp_names)!=-1)
                          {
-                             temp=matrix[get_matrix_number(current_brackets,temp_names)];
+                             temp=temp_matrices[get_matrix_number(current_brackets,temp_names)];
                          }
                          else throw("Matrix Not Defined");
                      }
@@ -446,7 +453,6 @@ int main (int argc, char *argv[]){
                     operations_count--;
 
                  }break;}
-
              current_brackets=putMatrixInString(current_brackets, temp, first, last);
 
              int_flag1=0;int_flag2=0;temp_flag1=0;temp_flag2=0;
@@ -463,9 +469,9 @@ int main (int argc, char *argv[]){
                          }
                  else if(get_matrix_number(current_brackets,temp_names)!=-1)
                          {
-                             temp=Matrix::sinm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                             temp=Matrix::sinm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
 
               }
               else if(user_input[current_brackets_index-4]=='c'&&user_input[current_brackets_index-3]=='o'&&user_input[current_brackets_index-2]=='s')
@@ -476,9 +482,9 @@ int main (int argc, char *argv[]){
                          }
                  else if(get_matrix_number(current_brackets,temp_names)!=-1)
                          {
-                             temp=Matrix::cosm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                             temp=Matrix::cosm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
               else if(user_input[current_brackets_index-4]=='t'&&user_input[current_brackets_index-3]=='a'&&user_input[current_brackets_index-2]=='n')
               {
@@ -488,9 +494,9 @@ int main (int argc, char *argv[]){
                          }
                  else if(get_matrix_number(current_brackets,temp_names)!=-1)
                          {
-                             temp=Matrix::tanm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                             temp=Matrix::tanm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
               else if(user_input[current_brackets_index-4]=='s'&&user_input[current_brackets_index-3]=='e'&&user_input[current_brackets_index-2]=='c')
               {
@@ -500,9 +506,9 @@ int main (int argc, char *argv[]){
                          }
                  else if(get_matrix_number(current_brackets,temp_names)!=-1)
                          {
-                             temp=Matrix::secm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                             temp=Matrix::secm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
               else if(user_input[current_brackets_index-4]=='c'&&user_input[current_brackets_index-3]=='s'&&user_input[current_brackets_index-2]=='c')
               {
@@ -512,9 +518,9 @@ int main (int argc, char *argv[]){
                          }
                  else if(get_matrix_number(current_brackets,temp_names)!=-1)
                          {
-                             temp=Matrix::cosecm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                             temp=Matrix::cosecm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
               else if(user_input[current_brackets_index-4]=='c'&&user_input[current_brackets_index-3]=='o'&&user_input[current_brackets_index-2]=='t')
               {
@@ -524,9 +530,9 @@ int main (int argc, char *argv[]){
                          }
                  else if(get_matrix_number(current_brackets,temp_names)!=-1)
                          {
-                             temp=Matrix::cotanm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                             temp=Matrix::cotanm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
               else if(user_input[current_brackets_index-4]=='l'&&user_input[current_brackets_index-3]=='o'&&user_input[current_brackets_index-2]=='g')
               {
@@ -536,9 +542,9 @@ int main (int argc, char *argv[]){
                          }
                  else if(get_matrix_number(current_brackets,temp_names)!=-1)
                          {
-                             temp=Matrix::logm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                             temp=Matrix::logm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
               else if(user_input[current_brackets_index-4]=='e'&&user_input[current_brackets_index-3]=='x'&&user_input[current_brackets_index-2]=='p')
               {
@@ -548,11 +554,11 @@ int main (int argc, char *argv[]){
                          }
                  else if(get_matrix_number(current_brackets,temp_names)!=-1)
                          {
-                             temp=Matrix::expm(matrix[get_matrix_number(current_brackets,temp_names)]);
+                             temp=Matrix::expm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length+1);
-              }}
-              else if((current_brackets_index>4)){
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
+              }
+             else if((current_brackets_index>4)){
                if(user_input[current_brackets_index-5]=='s'&&user_input[current_brackets_index-4]=='q'&&user_input[current_brackets_index-3]=='r'&&user_input[current_brackets_index-2]=='t')
               {
                   if(get_matrix_number(current_brackets,matrix_names)!=-1)
@@ -561,10 +567,12 @@ int main (int argc, char *argv[]){
                          }
                  else if(get_matrix_number(current_brackets,temp_names)!=-1)
                          {
-                             temp=Matrix::squareRoot(matrix[get_matrix_number(current_brackets,temp_names)]);
+                             temp=Matrix::squareRoot(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-5, current_brackets_index+current_brackets_length+1);
+       user_input=putMatrixInString(user_input, temp, current_brackets_index-5, current_brackets_index+current_brackets_length);
               }}
+              }
+
               else
               {
                   if(get_matrix_number(current_brackets,matrix_names)!=-1)
@@ -573,21 +581,38 @@ int main (int argc, char *argv[]){
                          }
                  else if(get_matrix_number(current_brackets,temp_names)!=-1)
                          {
-                             temp=matrix[get_matrix_number(current_brackets,temp_names)];
-                         }
-    user_input=putMatrixInString(user_input, temp, current_brackets_index-1, current_brackets_index+current_brackets_length+1);
+                             temp=temp_matrices[get_matrix_number(current_brackets,temp_names)];
 
+                             }temp.print();
+ if(no_open_brac==0 && no_close_brac==0)
+ user_input=putMatrixInString(user_input, temp, current_brackets_index, current_brackets_index+current_brackets_length+1);
+else user_input=putMatrixInString(user_input, temp, current_brackets_index-1, current_brackets_index+current_brackets_length);
               }
-              index_finder(user_input,"(",no_open_brac);
-              index_finder(user_input,")",no_close_brac);
               if(no_open_brac==0 && no_close_brac==0)
               {
                   brackets_finished_flag=1;
               }
-
+              index_finder(user_input,"(",no_open_brac);
+              index_finder(user_input,")",no_close_brac);
+              cout<<user_input<<endl<<no_open_brac<<" "<<no_close_brac<<endl;
           }//all brackets is done
-
-
+         if(get_matrix_number(out,matrix_names)==-1)
+             {
+                 matrix_names.push_back(out);
+                 vector_counter++;
+                 matrix.push_back(temp_matrices[get_matrix_number(user_input,temp_names)]);
+                 if(!semicolon_flag){
+                 cout<<matrix_names[vector_counter-1]<<"="<<endl;
+                 matrix[vector_counter-1].print();}
+             }
+        else
+        {
+            matrix[get_matrix_number(out,matrix_names)]=temp_matrices[get_matrix_number(user_input,temp_names)];
+            if(!semicolon_flag){
+                 cout<<matrix_names[get_matrix_number(out,matrix_names)]<<"="<<endl;
+                 matrix[get_matrix_number(out,matrix_names)].print();}
+        }
+        semicolon_flag=0;
 
 if(0){
          /*if(!(user_input.find('+')==-1))

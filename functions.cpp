@@ -608,7 +608,7 @@ int FindLimit(string s, int index,int select)
     }
     else if(select==1)
     {
-        while(!(s[i]=='+' ||s[i]=='-' || s[i]==' '||s[i]=='/' ||s[i]=='%' || s[i]=='^' || s[i]==')' || (s[i]='.' && (s[i+1]=='+' ||s[i+1]=='-' || s[i+1]==' '||s[i+1]=='/' ||s[i+1]=='%' || s[i+1]=='^') )|| i==s.length()-1) )
+        while(!(s[i]=='+' ||s[i]=='-' || s[i]=='*'||s[i]=='/' ||s[i]=='%' || s[i]=='^' || s[i]==')' || (s[i]='.' && (s[i+1]=='+' ||s[i+1]=='-' || s[i+1]=='*'||s[i+1]=='/' ||s[i+1]=='%' || s[i+1]=='^') )|| i==s.length()-1) )
         i++;
         i=(i==s.length()-1)?i+1:i;
         return i-1;
@@ -655,7 +655,7 @@ string putMatrixInString (string x , Matrix &m ,int index1 , int index2)
     static int Count = 0 ;
     temp_matrices.push_back(m);
     temp_names.push_back("temp"+to_string(Count));
-    x.erase(index1,index2-index1);
+    x.erase(index1,index2-index1+1);
     x.insert(index1,temp_names[Count]);
     Count++;
     return x ;
