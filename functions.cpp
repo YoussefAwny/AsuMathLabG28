@@ -331,8 +331,8 @@ int get_number_of_close_br (string x)
 int check_if_math_op (string x)
 {
     int flag=0;
-    string r[]={"+","-","*","/","sin(","cos(","tan(","cot(","csc(","sec(","sqrt(","log(","exp("};
-    for(int i=0;i<13;i++)
+    string r[]={"^","+","-","*","/","sin(","cos(","tan(","cot(","csc(","sec(","sqrt(","log(","exp("};
+    for(int i=0;i<14;i++)
     {
         if((x.find(r[i]))!=-1) flag=1;
     }

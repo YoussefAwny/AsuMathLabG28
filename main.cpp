@@ -149,7 +149,7 @@ int main (int argc, char *argv[]){
              to_merge=matrix_conc(to_merge);
              if(!semicolon_flag)to_merge+=";";
              user_input.insert(pos_of_first_brc ,to_merge);
-         }
+         }cout<<user_input<<endl;
          if(get_matrix_number(name_from_input(user_input),matrix_names)==-1)   //if new matrix
             {
                 matrix_names.push_back(name_from_input(user_input));
@@ -251,7 +251,7 @@ int main (int argc, char *argv[]){
 
              string in1,in2;
              int int_flag1=0,int_flag2=0,in1_index,in2_index,temp_flag1=0,temp_flag2=0;
-            in1=space_remover(current_brackets.substr(first,current_operator_index-first));
+             in1=space_remover(current_brackets.substr(first,current_operator_index-first));
              in2=space_remover(current_brackets.substr(current_operator_index+1,last-current_operator_index));
 
              if(get_matrix_number(in1,matrix_names)!=-1){in1_index=get_matrix_number(in1,matrix_names);temp_flag1=0;int_flag1=0;}
@@ -594,7 +594,7 @@ else user_input=putMatrixInString(user_input, temp, current_brackets_index-1, cu
               }
               index_finder(user_input,"(",no_open_brac);
               index_finder(user_input,")",no_close_brac);
-              cout<<user_input<<endl<<no_open_brac<<" "<<no_close_brac<<endl;
+              cout<<user_input<<endl;getch();
           }//all brackets is done
          if(get_matrix_number(out,matrix_names)==-1)
              {
