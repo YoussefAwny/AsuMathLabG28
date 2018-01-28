@@ -169,6 +169,7 @@ int main (int argc, char *argv[]){
                     dpointer[i]=new double[y];
                     for(int j=0;j<y;j++)
                     {
+                        if(dpointer_s[i][j].empty())throw("Missing Input");
                         if(check_if_math_op((dpointer_s[i][j])))
                           dpointer[i][j]=string_operation((dpointer_s[i][j]));
 
@@ -190,7 +191,21 @@ int main (int argc, char *argv[]){
                 user_input=user_input.substr(user_input.find('[')+1,user_input.find(']')-user_input.find('[')-1);
                 char* input_to_split= new char[user_input.length()];
                 strcpy(input_to_split, user_input.c_str());
-                double ** dpointer = split(x,y,input_to_split);
+
+                double ** dpointer=new double*[x] ;
+                string ** dpointer_s = split_string(x,y,input_to_split);
+                for(int i=0;i<x;i++)
+                {
+                    dpointer[i]=new double[y];
+                    for(int j=0;j<y;j++)
+                    {
+                        if(dpointer_s[i][j].empty())throw("Missing Input");
+                        if(check_if_math_op((dpointer_s[i][j])))
+                          dpointer[i][j]=string_operation((dpointer_s[i][j]));
+
+                         else dpointer[i][j]=atof((dpointer_s[i][j]).data());
+                    }
+                }
 
                 matrix[i]=Matrix(x,y,dpointer);
 
@@ -230,7 +245,7 @@ int main (int argc, char *argv[]){
           while((no_open_brac!=0 && no_close_brac!=0)||(brackets_finished_flag==0))
           {
              string current_brackets;
-             int current_brackets_index,current_brackets_length,pure_int_flag=0;
+             int current_brackets_index,current_brackets_length,pure_int_flag=0;//if the whole bracket is int
              if(no_open_brac==0 && no_close_brac==0)
              {current_brackets=user_input;
               current_brackets_index=0;
@@ -266,15 +281,16 @@ int main (int argc, char *argv[]){
 
              Matrix temp(1,1,0,0);
 
+             int pure_int_flag2=0;//if the operation is int
              switch(current_operator)
              {
-                 case 0:
+                case 0:
                      {
                          if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
                              temp=matrix[get_matrix_number(current_brackets,matrix_names)];
                          }
-                         else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                          else if(get_matrix_number(current_brackets,temp_names)!=-1)
                          {
                              temp=temp_matrices[get_matrix_number(current_brackets,temp_names)];
                          }
@@ -282,7 +298,15 @@ int main (int argc, char *argv[]){
                      }
                  case 1://^
                  {
-                     if(int_flag1) throw("Can't power a variable by a matrix");
+                     if(int_flag1)
+                     {
+                         if(!int_flag2)throw("Can't power a variable by a matrix");
+                         else
+                         {
+                             temp=pow(atof(in1.data()),atof(in2.data()));pure_int_flag2=1;
+                         }
+                     }
+                     else{
                      if(temp_flag1)
                      {
                        if(int_flag2)
@@ -302,7 +326,7 @@ int main (int argc, char *argv[]){
                            if(temp_flag2)temp=Matrix::power(matrix[in1_index],temp_matrices[in2_index]);
                            else temp=Matrix::power(matrix[in1_index],matrix[in2_index]);
                        }
-                     }
+                     }}
                     operations_count--;
                  }break;
              case 2://*
@@ -310,7 +334,7 @@ int main (int argc, char *argv[]){
                      if(int_flag1)
                      {
                         if(int_flag2)
-                       temp=atof(in1.data())*atof(in1.data());
+                       {temp=atof(in1.data())*atof(in1.data());pure_int_flag2=1;}
                        else
                        {
                            if(temp_flag2)temp=Matrix::mul2(atof(in1.data()),temp_matrices[in2_index]);
@@ -347,7 +371,7 @@ int main (int argc, char *argv[]){
                      if(int_flag1)
                      {
                         if(int_flag2)
-                       temp=atof(in1.data())/atof(in1.data());
+                       {temp=atof(in1.data())/atof(in1.data());pure_int_flag2=1;}
                        else
                        {
                            if(temp_flag2)temp=Matrix::div2(atof(in1.data()),temp_matrices[in2_index]);
@@ -384,7 +408,7 @@ int main (int argc, char *argv[]){
                     if(int_flag1)
                      {
                         if(int_flag2)
-                       temp=atof(in1.data())+atof(in1.data());
+                       {temp=atof(in1.data())+atof(in1.data());pure_int_flag2=1;}
                        else
                        {
            if(temp_flag2)temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.data()))+temp_matrices[in2_index];
@@ -421,7 +445,7 @@ int main (int argc, char *argv[]){
                      if(int_flag1)
                      {
                         if(int_flag2)
-                       temp=atof(in1.data())-atof(in1.data());
+                       {temp=atof(in1.data())-atof(in1.data());pure_int_flag2=1;}
                        else
                        {
            if(temp_flag2)temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.data()))-temp_matrices[in2_index];
@@ -453,10 +477,30 @@ int main (int argc, char *argv[]){
                     operations_count--;
 
                  }break;}
-             current_brackets=putMatrixInString(current_brackets, temp, first, last);
+             if(pure_int_flag2)
+             {
+                 current_brackets.erase(first,last-first+1);
+                 current_brackets.insert(first,temp.get_string());
+             }
+             else {current_brackets=putMatrixInString(current_brackets, temp, first, last);}
 
-             int_flag1=0;int_flag2=0;temp_flag1=0;temp_flag2=0;
+             int_flag1=0;int_flag2=0;temp_flag1=0;temp_flag2=0,pure_int_flag2=0;
              } while(current_operator!=0);//bracket finished
+
+             if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                         {
+if(matrix[get_matrix_number(current_brackets,matrix_names)].get_rows()==1&&matrix[get_matrix_number(current_brackets,matrix_names)].get_columns()==1)
+{
+    current_brackets=matrix[get_matrix_number(current_brackets,matrix_names)].get_string();
+}
+                         }
+             else if(get_matrix_number(current_brackets,temp_names)!=-1)
+                         {
+if(temp_matrices[get_matrix_number(current_brackets,temp_names)].get_rows()==1&&temp_matrices[get_matrix_number(current_brackets,temp_names)].get_columns()==1)
+{
+    current_brackets=temp_matrices[get_matrix_number(current_brackets,temp_names)].get_string();
+}
+                         }
 
              Matrix temp(1,1,0,0);
 
@@ -464,7 +508,16 @@ int main (int argc, char *argv[]){
 
               if(user_input[current_brackets_index-4]=='s'&&user_input[current_brackets_index-3]=='i'&&user_input[current_brackets_index-2]=='n')
               {
-                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                  if(check_if_number(current_brackets))
+                  {
+                     pure_int_flag=1;
+                      user_input.erase(current_brackets_index-4,current_brackets_length+5);
+                      char* x;
+                      sprintf(x,"%f",sin(atof(current_brackets.data())));
+                      user_input.insert(current_brackets_index-4,x);
+
+                  }
+                  else if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
                              temp=Matrix::sinm(matrix[get_matrix_number(current_brackets,matrix_names)]);
                          }
@@ -472,12 +525,21 @@ int main (int argc, char *argv[]){
                          {
                              temp=Matrix::sinm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
+   if(pure_int_flag==0)
+        user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
 
               }
               else if(user_input[current_brackets_index-4]=='c'&&user_input[current_brackets_index-3]=='o'&&user_input[current_brackets_index-2]=='s')
               {
-                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                  if(check_if_number(current_brackets))
+                  {
+                     pure_int_flag=1;
+                      user_input.erase(current_brackets_index-4,current_brackets_length+5);
+                      char* x;
+                      sprintf(x,"%f",cos(atof(current_brackets.data())));
+                      user_input.insert(current_brackets_index-4,x);
+                  }
+                  else if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
                              temp=Matrix::cosm(matrix[get_matrix_number(current_brackets,matrix_names)]);
                          }
@@ -485,11 +547,20 @@ int main (int argc, char *argv[]){
                          {
                              temp=Matrix::cosm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
+   if(pure_int_flag==0)
+        user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
               else if(user_input[current_brackets_index-4]=='t'&&user_input[current_brackets_index-3]=='a'&&user_input[current_brackets_index-2]=='n')
               {
-                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                  if(check_if_number(current_brackets))
+                  {
+                     pure_int_flag=1;
+                      user_input.erase(current_brackets_index-4,current_brackets_length+5);
+                      char* x;
+                      sprintf(x,"%f",tan(atof(current_brackets.data())));
+                      user_input.insert(current_brackets_index-4,x);
+                  }
+                  else if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
                              temp=Matrix::tanm(matrix[get_matrix_number(current_brackets,matrix_names)]);
                          }
@@ -497,11 +568,20 @@ int main (int argc, char *argv[]){
                          {
                              temp=Matrix::tanm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
+   if(pure_int_flag==0)
+        user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
               else if(user_input[current_brackets_index-4]=='s'&&user_input[current_brackets_index-3]=='e'&&user_input[current_brackets_index-2]=='c')
               {
-                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                  if(check_if_number(current_brackets))
+                  {
+                     pure_int_flag=1;
+                      user_input.erase(current_brackets_index-4,current_brackets_length+5);
+                      char* x;
+                      sprintf(x,"%f",1.0/cos(atof(current_brackets.data())));
+                      user_input.insert(current_brackets_index-4,x);
+                  }
+                  else if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
                              temp=Matrix::secm(matrix[get_matrix_number(current_brackets,matrix_names)]);
                          }
@@ -509,11 +589,21 @@ int main (int argc, char *argv[]){
                          {
                              temp=Matrix::secm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
+   if(pure_int_flag==0)
+        user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
               else if(user_input[current_brackets_index-4]=='c'&&user_input[current_brackets_index-3]=='s'&&user_input[current_brackets_index-2]=='c')
               {
-                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                  if(check_if_number(current_brackets))
+                  {
+                     pure_int_flag=1;
+                      user_input.erase(current_brackets_index-4,current_brackets_length+5);
+                      char* x;
+                      sprintf(x,"%f",1/sin(atof(current_brackets.data())));
+                      user_input.insert(current_brackets_index-4,x);
+
+                  }
+                  else if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
                              temp=Matrix::cosecm(matrix[get_matrix_number(current_brackets,matrix_names)]);
                          }
@@ -521,11 +611,21 @@ int main (int argc, char *argv[]){
                          {
                              temp=Matrix::cosecm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
+   if(pure_int_flag==0)
+        user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
               else if(user_input[current_brackets_index-4]=='c'&&user_input[current_brackets_index-3]=='o'&&user_input[current_brackets_index-2]=='t')
               {
-                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                  if(check_if_number(current_brackets))
+                  {
+                     pure_int_flag=1;
+                      user_input.erase(current_brackets_index-4,current_brackets_length+5);
+                      char* x;
+                      sprintf(x,"%f",1/tan(atof(current_brackets.data())));
+                      user_input.insert(current_brackets_index-4,x);
+
+                  }
+                  else if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
                              temp=Matrix::cotanm(matrix[get_matrix_number(current_brackets,matrix_names)]);
                          }
@@ -533,11 +633,21 @@ int main (int argc, char *argv[]){
                          {
                              temp=Matrix::cotanm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
+ if(pure_int_flag==0)
+        user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
               else if(user_input[current_brackets_index-4]=='l'&&user_input[current_brackets_index-3]=='o'&&user_input[current_brackets_index-2]=='g')
               {
-                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                  if(check_if_number(current_brackets))
+                  {
+                     pure_int_flag=1;
+                     user_input.erase(current_brackets_index-4,current_brackets_length+5);
+                      char* x;
+                      sprintf(x,"%f",log(atof(current_brackets.data())));
+                      user_input.insert(current_brackets_index-4,x);
+
+                  }
+                  else if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
                              temp=Matrix::logm(matrix[get_matrix_number(current_brackets,matrix_names)]);
                          }
@@ -545,11 +655,21 @@ int main (int argc, char *argv[]){
                          {
                              temp=Matrix::logm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
+    if(pure_int_flag==0)
+        user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
               else if(user_input[current_brackets_index-4]=='e'&&user_input[current_brackets_index-3]=='x'&&user_input[current_brackets_index-2]=='p')
               {
-                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                  if(check_if_number(current_brackets))
+                  {
+                     pure_int_flag=1;
+                      user_input.erase(current_brackets_index-4,current_brackets_length+5);
+                      char* x;
+                      sprintf(x,"%f",exp(atof(current_brackets.data())));
+                      user_input.insert(current_brackets_index-4,x);
+
+                  }
+                  else if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
                              temp=Matrix::expm(matrix[get_matrix_number(current_brackets,matrix_names)]);
                          }
@@ -557,12 +677,22 @@ int main (int argc, char *argv[]){
                          {
                              temp=Matrix::expm(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
+  if(pure_int_flag==0)
+        user_input=putMatrixInString(user_input, temp, current_brackets_index-4, current_brackets_index+current_brackets_length);
               }
             else if((current_brackets_index>4)&&user_input[current_brackets_index-4]=='q'&&user_input[current_brackets_index-3]=='r'&&user_input[current_brackets_index-2]=='t'){
                if(user_input[current_brackets_index-5]=='s')
               {
-                  if(get_matrix_number(current_brackets,matrix_names)!=-1)
+                  if(check_if_number(current_brackets))
+                  {
+                     pure_int_flag=1;
+                      user_input.erase(current_brackets_index-5,current_brackets_length+6);
+                      char* x;
+                      sprintf(x,"%f",sqrt(atof(current_brackets.data())));
+                      user_input.insert(current_brackets_index-5,x);
+
+                  }
+                  else if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
                              temp=Matrix::squareRoot(matrix[get_matrix_number(current_brackets,matrix_names)]);
                          }
@@ -570,15 +700,17 @@ int main (int argc, char *argv[]){
                          {
                              temp=Matrix::squareRoot(temp_matrices[get_matrix_number(current_brackets,temp_names)]);
                          }
-       user_input=putMatrixInString(user_input, temp, current_brackets_index-5, current_brackets_index+current_brackets_length);
+ if(pure_int_flag==0)
+        user_input=putMatrixInString(user_input, temp, current_brackets_index-5, current_brackets_index+current_brackets_length);
               }}
             else
               {
                   if(check_if_number(current_brackets))
                   {
-                    pure_int_flag=1;
-                    user_input.erase(user_input.find("(",current_brackets_index-1),1);
-                    user_input.erase(user_input.find(")",current_brackets_index),1);
+                     pure_int_flag=1;
+                      user_input.erase(current_brackets_index-1,current_brackets_length+2);
+                      user_input.insert(current_brackets_index-1,current_brackets);
+
                   }
                   else if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
@@ -600,9 +732,16 @@ else if(pure_int_flag==0)
               {
                   if(check_if_number(current_brackets))
                   {
-                    pure_int_flag=1;
-                    user_input.erase(current_brackets_index-1,1);
-                    user_input.erase(current_brackets_index+current_brackets_length,1);
+                     pure_int_flag=1;
+                     if(current_brackets_index==0)
+                     {
+                      user_input.erase(current_brackets_index,current_brackets_length);
+                      user_input.insert(current_brackets_index,current_brackets);
+                     }
+                     else {
+                      user_input.erase(current_brackets_index-1,current_brackets_length+2);
+                      user_input.insert(current_brackets_index-1,current_brackets);}
+
                   }
                   else if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
@@ -628,17 +767,23 @@ else if(pure_int_flag==0)
               pure_int_flag=0;
               cout<<user_input<<endl<<no_open_brac<<" "<<no_close_brac<<endl;getch();
           }//all brackets is done
-         if(get_matrix_number(out,matrix_names)==-1)
+
+        if(get_matrix_number(out,matrix_names)==-1)
              {
                  matrix_names.push_back(out);
                  vector_counter++;
-                 matrix.push_back(temp_matrices[get_matrix_number(user_input,temp_names)]);
+                 if(check_if_number(user_input)&&!(check_if_math_op(user_input)))
+                 matrix.push_back(Matrix(1,1,4,atof(user_input.data())));
+                 else matrix.push_back(temp_matrices[get_matrix_number(user_input,temp_names)]);
                  if(!semicolon_flag){
                  cout<<matrix_names[vector_counter-1]<<"="<<endl;
                  matrix[vector_counter-1].print();}
              }
         else
         {
+            if(check_if_number(user_input)&&!(check_if_math_op(user_input)))
+            matrix[get_matrix_number(out,matrix_names)]=atof(user_input.data());
+            else
             matrix[get_matrix_number(out,matrix_names)]=temp_matrices[get_matrix_number(user_input,temp_names)];
             if(!semicolon_flag){
                  cout<<matrix_names[get_matrix_number(out,matrix_names)]<<"="<<endl;
@@ -646,418 +791,6 @@ else if(pure_int_flag==0)
         }
         semicolon_flag=0;
 
-if(0){
-         /*if(!(user_input.find('+')==-1))
-         {
-             if(user_input[user_input.find('+')-1]=='.')user_input.erase(user_input.find('+')-1,1);
-             string out,in1,in2;
-             out=name_from_input(user_input);
-             in1=space_remover(user_input.substr(user_input.find('=')+1,user_input.find('+')-user_input.find('=')-1));
-             in2=space_remover(user_input.substr(user_input.find('+')+1));
-             if(in2[in2.length()-1]==13||in2[in2.length()-1]==10||in2[in2.length()-1]==12)in2.erase(in2.length()-1);
-             if(in2[in2.length()-1]==';')in2.erase(in2.length()-1);
-             if(get_matrix_number(out,matrix_names)==-1)
-             {
-                 matrix_names.push_back(out);
-                 vector_counter++;
-                 if(check_if_number(in1))
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in2,matrix_names)]));
-                     matrix[vector_counter-1]+=atof(in1.data());
-                 }
-
-                 else if(check_if_number(in2))
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)]));
-                     matrix[vector_counter-1]+=atof(in2.data());
-                 }
-                 else
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)]));
-                     matrix[vector_counter-1].add(matrix[get_matrix_number(in2,matrix_names)]);
-                 }
-
-                if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[vector_counter-1]<<"="<<endl;
-                matrix[vector_counter-1].print();}
-            }
-             else //
-             {
-                 if(check_if_number(in1))
-                 {
-                     matrix[get_matrix_number(out,matrix_names)]=matrix[get_matrix_number(in2,matrix_names)];
-                     matrix[get_matrix_number(out,matrix_names)]+=atof(in1.data());
-                 }
-
-                 else if(check_if_number(in2))
-                 {
-                     matrix[get_matrix_number(out,matrix_names)]=matrix[get_matrix_number(in1,matrix_names)];
-                     matrix[get_matrix_number(out,matrix_names)]+=atof(in2.data());
-                 }
-                 else
-                 {
-                     matrix[get_matrix_number(out,matrix_names)]=matrix[get_matrix_number(in1,matrix_names)];
-                     matrix[get_matrix_number(out,matrix_names)]+=matrix[get_matrix_number(in2,matrix_names)];
-                 }
-
-                 if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[get_matrix_number(out,matrix_names)]<<"="<<endl;
-                matrix[get_matrix_number(out,matrix_names)].print();}
-             }
-         }
-         else if(!(user_input.find('-')==-1))
-         {if(user_input[user_input.find('-')-1]=='.')user_input.erase(user_input.find('-')-1,1);
-             string out,in1,in2;
-             out=name_from_input(user_input);
-             in1=space_remover(user_input.substr(user_input.find('=')+1,user_input.find('-')-user_input.find('=')-1));
-             in2=space_remover(user_input.substr(user_input.find('-')+1));
-             if(in2[in2.length()-1]==13||in2[in2.length()-1]==10||in2[in2.length()-1]==12)in2.erase(in2.length()-1);
-             if(in2[in2.length()-1]==';')in2.erase(in2.length()-1);
-             if(get_matrix_number(out,matrix_names)==-1)
-             {
-                 matrix_names.push_back(out);
-                 vector_counter++;
-                 if(check_if_number(in1))
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in2,matrix_names)].get_rows(),matrix[get_matrix_number(in2,matrix_names)].get_columns(),4,atof(in1.data())));
-                     matrix[vector_counter-1]-=matrix[get_matrix_number(in2,matrix_names)];
-                 }
-
-                 else if(check_if_number(in2))
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)]));
-                     matrix[vector_counter-1]-=atof(in2.data());
-                 }
-                 else
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)]));
-                     matrix[vector_counter-1].sub(matrix[get_matrix_number(in2,matrix_names)]);
-                 }
-                if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[vector_counter-1]<<"="<<endl;
-                matrix[vector_counter-1].print();}
-            }
-             else
-             {
-                 if(check_if_number(in1))
-                 {
-                     matrix[get_matrix_number(out,matrix_names)]=atof(in1.data());
-                     matrix[get_matrix_number(out,matrix_names)]-=matrix[get_matrix_number(in2,matrix_names)];
-                 }
-
-                 else if(check_if_number(in2))
-                 {
-                     matrix[get_matrix_number(out,matrix_names)]=matrix[get_matrix_number(in1,matrix_names)];
-                     matrix[get_matrix_number(out,matrix_names)]-=atof(in2.data());
-                 }
-                 else
-                 {
-                     matrix[get_matrix_number(out,matrix_names)]=matrix[get_matrix_number(in1,matrix_names)];
-                     matrix[get_matrix_number(out,matrix_names)]-=matrix[get_matrix_number(in2,matrix_names)];
-                 }
-
-                 if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[get_matrix_number(out,matrix_names)]<<"="<<endl;
-                matrix[get_matrix_number(out,matrix_names)].print();}
-
-             }
-
-         }
-         else if(!(user_input.find('\'')==-1))
-         {if(user_input[user_input.find('\'')-1]=='.')user_input.erase(user_input.find('\'')-1,1);
-             string out,in1;
-             out=name_from_input(user_input);
-             in1=space_remover(user_input.substr(user_input.find('=')+1,user_input.find('\'')-user_input.find('=')-1));
-             if(in1[in1.length()-1]==13||in1[in1.length()-1]==10||in1[in1.length()-1]==12)in1.erase(in1.length()-1);
-             if(in1[in1.length()-1]==';')in1.erase(in1.length()-1);
-
-             if(get_matrix_number(out,matrix_names)==-1)
-             {
-                 matrix_names.push_back(out);
-                 vector_counter++;
-                 matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)].getTranspose()));
-                  if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[vector_counter-1]<<"="<<endl;
-                matrix[vector_counter-1].print();}
-
-             }
-             else
-             {
-                 matrix[get_matrix_number(out,matrix_names)]=matrix[get_matrix_number(in1,matrix_names)].getTranspose();
-                 if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[get_matrix_number(out,matrix_names)]<<"="<<endl;
-                matrix[get_matrix_number(out,matrix_names)].print();}
-             }
-         }
-         else if(!(user_input.find("./")==-1))
-         {
-             string out,in1,in2;
-             out=name_from_input(user_input);
-             in1=space_remover(user_input.substr(user_input.find('=')+1,user_input.find("./")-user_input.find('=')-1));
-             in2=space_remover(user_input.substr(user_input.find("./")+2));
-             if(in2[in2.length()-1]==13||in2[in2.length()-1]==10||in2[in2.length()-1]==12)in2.erase(in2.length()-1);
-             if(in2[in2.length()-1]==';')in2.erase(in2.length()-1);
-
-             if(get_matrix_number(out,matrix_names)==-1)
-             {
-                 matrix_names.push_back(out);
-                 vector_counter++;
-
-                 if(check_if_number(in1))
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in2,matrix_names)].get_rows(),matrix[get_matrix_number(in2,matrix_names)].get_columns(),0,0));
-                     matrix[vector_counter-1]=Matrix::div2(atof(in1.data()),matrix[get_matrix_number(in2,matrix_names)]);
-
-                 }
-                 else if(check_if_number(in2))
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)].get_rows(),matrix[get_matrix_number(in1,matrix_names)].get_columns(),0,0));
-                     matrix[vector_counter-1]=Matrix::div2(matrix[get_matrix_number(in1,matrix_names)],atof(in2.data()));
-
-                 }
-                 else
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)].get_rows(),matrix[get_matrix_number(in1,matrix_names)].get_columns(),0,0));
-                     matrix[vector_counter-1]=Matrix::div2(matrix[get_matrix_number(in1,matrix_names)],matrix[get_matrix_number(in2,matrix_names)]);
-
-                 }
-
-                if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[vector_counter-1]<<"="<<endl;
-                matrix[vector_counter-1].print();}
-            }
-
-            else
-            {
-                if(check_if_number(in1))
-                 {
-                    matrix[get_matrix_number(out,matrix_names)]=Matrix::div2(atof(in1.data()),matrix[get_matrix_number(in2,matrix_names)]);
-
-                 }
-                 else if(check_if_number(in2))
-                 {
-                   matrix[get_matrix_number(out,matrix_names)]=Matrix::div2(matrix[get_matrix_number(in1,matrix_names)],atof(in2.data()));
-
-                 }
-                 else
-                 {
-                    matrix[get_matrix_number(out,matrix_names)]=Matrix::div2(matrix[get_matrix_number(in1,matrix_names)],matrix[get_matrix_number(in2,matrix_names)]);
-
-                 }
-
-                 if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[get_matrix_number(out,matrix_names)]<<"="<<endl;
-                matrix[get_matrix_number(out,matrix_names)].print();}
-            }
-
-            }
-            else if(!(user_input.find(".*")==-1))
-         {
-             string out,in1,in2;
-             out=name_from_input(user_input);
-             in1=space_remover(user_input.substr(user_input.find('=')+1,user_input.find(".*")-user_input.find('=')-1));
-             in2=space_remover(user_input.substr(user_input.find(".*")+2));
-             if(in2[in2.length()-1]==13||in2[in2.length()-1]==10||in2[in2.length()-1]==12)in2.erase(in2.length()-1);
-             if(in2[in2.length()-1]==';')in2.erase(in2.length()-1);
-
-             if(get_matrix_number(out,matrix_names)==-1)
-             {
-                 matrix_names.push_back(out);
-                 vector_counter++;
-
-                 if(check_if_number(in1))
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in2,matrix_names)].get_rows(),matrix[get_matrix_number(in2,matrix_names)].get_columns(),0,0));
-                     matrix[vector_counter-1]=Matrix::mul2(atof(in1.data()),matrix[get_matrix_number(in2,matrix_names)]);
-
-                 }
-                 else if(check_if_number(in2))
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)].get_rows(),matrix[get_matrix_number(in1,matrix_names)].get_columns(),0,0));
-                     matrix[vector_counter-1]=Matrix::mul2(matrix[get_matrix_number(in1,matrix_names)],atof(in2.data()));
-
-                 }
-                 else
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)].get_rows(),matrix[get_matrix_number(in1,matrix_names)].get_columns(),0,0));
-                     matrix[vector_counter-1]=Matrix::mul2(matrix[get_matrix_number(in1,matrix_names)],matrix[get_matrix_number(in2,matrix_names)]);
-
-                 }
-
-                if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[vector_counter-1]<<"="<<endl;
-                matrix[vector_counter-1].print();}
-            }
-
-            else
-            {
-                if(check_if_number(in1))
-                 {
-                    matrix[get_matrix_number(out,matrix_names)]=Matrix::mul2(atof(in1.data()),matrix[get_matrix_number(in2,matrix_names)]);
-
-                 }
-                 else if(check_if_number(in2))
-                 {
-                   matrix[get_matrix_number(out,matrix_names)]=Matrix::mul2(matrix[get_matrix_number(in1,matrix_names)],atof(in2.data()));
-
-                 }
-                 else
-                 {
-                    matrix[get_matrix_number(out,matrix_names)]=Matrix::mul2(matrix[get_matrix_number(in1,matrix_names)],matrix[get_matrix_number(in2,matrix_names)]);
-
-                 }
-
-                 if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[get_matrix_number(out,matrix_names)]<<"="<<endl;
-                matrix[get_matrix_number(out,matrix_names)].print();}
-            }
-
-            }
-
-      else if(!(user_input.find("inv(")==-1))
-       {
-           string out,in1;
-             out=name_from_input(user_input);
-             in1=space_remover(user_input.substr(user_input.find('(')+1,user_input.find(")")-user_input.find('(')-1));
-             if(in1[in1.length()-1]==13||in1[in1.length()-1]==10||in1[in1.length()-1]==12)in1.erase(in1.length()-1);
-             if(in1[in1.length()-1]==';')in1.erase(in1.length()-1);
-
-             if(get_matrix_number(out,matrix_names)==-1)
-             {
-                 matrix_names.push_back(out);
-                 matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)].getInverse()));
-                 vector_counter++;
-                //cout<<matrix[vector_counter-1].getDeterminant()<<endl;
-                if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[vector_counter-1]<<"="<<endl;
-                matrix[vector_counter-1].print();}
-
-             }
-             else
-             {
-                matrix[get_matrix_number(out,matrix_names)]=matrix[get_matrix_number(in1,matrix_names)].getInverse();
-                if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[get_matrix_number(out,matrix_names)]<<"="<<endl;
-                matrix[get_matrix_number(out,matrix_names)].print();}
-             }
-
-       }
-       if((!(user_input.find('*')==-1)&&(user_input.find('.')==-1)))
-         {
-             string out,in1,in2;
-             out=name_from_input(user_input);
-             in1=space_remover(user_input.substr(user_input.find('=')+1,user_input.find('*')-user_input.find('=')-1));
-             in2=space_remover(user_input.substr(user_input.find('*')+1));
-             if(in2[in2.length()-1]==13||in2[in2.length()-1]==10||in2[in2.length()-1]==12)in2.erase(in2.length()-1);
-             if(in2[in2.length()-1]==';')in2.erase(in2.length()-1);
-             if(get_matrix_number(out,matrix_names)==-1)
-             {
-                 matrix_names.push_back(out);
-                 vector_counter++;
-                 if(check_if_number(in1))
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in2,matrix_names)]));
-                     matrix[vector_counter-1]*=atof(in1.data());
-                 }
-
-                 else if(check_if_number(in2))
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)]));
-                     matrix[vector_counter-1]*=atof(in2.data());
-                 }
-                 else
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)]));
-                     matrix[vector_counter-1].mul(matrix[get_matrix_number(in2,matrix_names)]);
-                 }
-
-                if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[vector_counter-1]<<"="<<endl;
-                matrix[vector_counter-1].print();}
-            }
-             else //
-             {
-                 if(check_if_number(in1))
-                 {
-                     matrix[get_matrix_number(out,matrix_names)]=matrix[get_matrix_number(in2,matrix_names)];
-                     matrix[get_matrix_number(out,matrix_names)]*=atof(in1.data());
-                 }
-
-                 else if(check_if_number(in2))
-                 {
-                     matrix[get_matrix_number(out,matrix_names)]=matrix[get_matrix_number(in1,matrix_names)];
-                     matrix[get_matrix_number(out,matrix_names)]*=atof(in2.data());
-                 }
-                 else
-                 {
-                     matrix[get_matrix_number(out,matrix_names)]=matrix[get_matrix_number(in1,matrix_names)];
-                     matrix[get_matrix_number(out,matrix_names)]*=matrix[get_matrix_number(in2,matrix_names)];
-                 }
-
-                if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[get_matrix_number(out,matrix_names)]<<"="<<endl;
-                matrix[get_matrix_number(out,matrix_names)].print();}
-             }
-         }
-
-         if((!(user_input.find('/')==-1))&&(user_input.find('.')==-1))
-         {
-             string out,in1,in2;
-             out=name_from_input(user_input);
-             in1=space_remover(user_input.substr(user_input.find('=')+1,user_input.find('/')-user_input.find('=')-1));
-             in2=space_remover(user_input.substr(user_input.find('/')+1));
-             if(in2[in2.length()-1]==13||in2[in2.length()-1]==10||in2[in2.length()-1]==12)in2.erase(in2.length()-1);
-             if(in2[in2.length()-1]==';')in2.erase(in2.length()-1);
-             if(get_matrix_number(out,matrix_names)==-1)
-             {
-                 matrix_names.push_back(out);
-                 vector_counter++;
-                 if(check_if_number(in1))
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in2,matrix_names)].get_rows(),matrix[get_matrix_number(in2,matrix_names)].get_columns(),4,atof(in1.data())));
-                     matrix[vector_counter-1]/=matrix[get_matrix_number(in2,matrix_names)];
-                 }
-
-                 else if(check_if_number(in2))
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)]));
-                     matrix[vector_counter-1]/=atof(in2.data());
-                 }
-                 else
-                 {
-                     matrix.push_back(Matrix(matrix[get_matrix_number(in1,matrix_names)]));
-                     matrix[vector_counter-1].div(matrix[get_matrix_number(in2,matrix_names)]);
-                 }
-
-                if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[vector_counter-1]<<"="<<endl;
-                matrix[vector_counter-1].print();}
-            }
-             else //
-             {
-                 if(check_if_number(in1))
-                 {
-                     matrix[get_matrix_number(out,matrix_names)]=atof(in1.data());
-                     matrix[get_matrix_number(out,matrix_names)]/=matrix[get_matrix_number(in2,matrix_names)];
-                 }
-
-
-                 else if(check_if_number(in2))
-                 {
-                     matrix[get_matrix_number(out,matrix_names)]=matrix[get_matrix_number(in1,matrix_names)];
-                     matrix[get_matrix_number(out,matrix_names)]/=atof(in2.data());
-                 }
-                 else
-                 {
-                     matrix[get_matrix_number(out,matrix_names)]=matrix[get_matrix_number(in1,matrix_names)];
-                     matrix[get_matrix_number(out,matrix_names)]/=matrix[get_matrix_number(in2,matrix_names)];
-                 }
-
-                if(user_input[user_input.length()-1]!=';'){
-                cout<<matrix_names[get_matrix_number(out,matrix_names)]<<"="<<endl;
-                matrix[get_matrix_number(out,matrix_names)].print();}
-             }
-         }*/}
 }
         }//try
       catch(char const* x){cout<<x<<endl;}
