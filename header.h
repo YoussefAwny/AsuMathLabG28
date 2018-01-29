@@ -119,7 +119,7 @@ int* index_finder (string s, string s1, int &count);
 int* minus_index_finder (string s, int&c);
 string first_operation(string s);//,int opened_parentheses,int closed_parentheses);
 //string modify_space(char* s);
-void Operation(string x, int& index, int& flag);
-
+void Operation(string x, int& index, int& flag, int* arr,int arrc);
+int check_if_in_array(int a,int* b, int c);
 extern vector <string> temp_names ;
 extern vector <Matrix> temp_matrices ;

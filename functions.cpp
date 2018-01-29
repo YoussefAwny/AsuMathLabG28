@@ -83,9 +83,19 @@ string matrix_conc(string MatOne)
 
 }
 
+int check_if_in_array(int a,int* b, int c)
+{
+    if(b==NULL)return 0;
+    for(int i=0;i<c;i++)
+    {
+       if(b[i]==a)
+        return 1;
+    }
+   return 0;
+}
 
-void Operation(string x, int& index, int& flag)
-{ 
+void Operation(string x, int& index, int& flag, int* arr,int arrc)
+{
     bool pow, mult, div, plus, minus;
     pow = false;
     mult = false;
@@ -99,7 +109,7 @@ void Operation(string x, int& index, int& flag)
         else if (x[i] == '*' && mult==false) { mult = true; mulltIndex = i; }
         else if (x[i] == '/' && div==false) { div = true; divIndex = i; }
         else if (x[i] == '+' && plus==false) { plus = true; plusIndex = i; }
-        else if (x[i] == '-' && minus==false) { minus = true; minusIndex=i; }
+        else if (x[i] == '-' && minus==false&&check_if_in_array(i,arr,arrc)) { minus = true; minusIndex=i; }
     }
 
     if (pow) { flag = 1; index = powIndex; return; }
@@ -107,14 +117,14 @@ void Operation(string x, int& index, int& flag)
     {
         if (mulltIndex < divIndex)
         {
-            flag = 2; 
-            index = mulltIndex; 
+            flag = 2;
+            index = mulltIndex;
             return;
         }
         else
         {
-            flag = 3; 
-            index = divIndex; 
+            flag = 3;
+            index = divIndex;
             return;
         }
     }
@@ -125,7 +135,7 @@ void Operation(string x, int& index, int& flag)
     {
         if (plusIndex < minusIndex)
         {
-            flag = 4; 
+            flag = 4;
             index = plusIndex;
             return;
         }
@@ -139,7 +149,7 @@ void Operation(string x, int& index, int& flag)
     }
     else if (plus) { flag = 4; index = plusIndex; return; }
     else if (minus) { flag = 5; index = minusIndex; return; }
-    else { flag = 0; index = NULL; }
+    else { flag = 0; index = 0; }
 }
 
 
@@ -469,6 +479,15 @@ string normal_operation(string s)
             else if(s[i+2]=='t')
             {
                 string s_sub_num=Find_First_Number(s,i+3);
+                /*double angle=atof(s_sub_num.c_str());
+                while(angle>2*3.1415)
+                    angle-=2*3.1415;
+                while(angle<0)
+                    angle+=2*3.1415;
+                if(angle==0 || (angle>3.1415-0.01 && angle<3.1415+0.01) || (angle>2*(3.1415-0.01) && angle<2*(3.1415+0.01)))
+                throw("Math Error: cot");*/
+                if(atof(s_sub_num.c_str())==0)
+                    throw("Math error: cot");
                 double sin_out_d=1/tan(atof(s_sub_num.c_str()));
                 string sin_out_str=to_string(sin_out_d);
                 s.erase(i,3+s_sub_num.length());
@@ -489,6 +508,15 @@ string normal_operation(string s)
         if(s[i+1]=='a')
         {
             string s_sub_num=Find_First_Number(s,i+3);
+            /*double angle=atof(s_sub_num.c_str());
+                while(angle>2*3.1415)
+                    angle-=2*3.1415;
+                while(angle<0)
+                    angle+=2*3.1415;
+                if((angle>(3.1415-0.01)/2 && angle<(3.1415+0.01)/2)|| (angle>3*(3.1415-0.01)/2 && angle<3*(3.1415+0.01)/2))
+                throw("Math Error: tan");*/
+            if(atof(s_sub_num.c_str())>(3.1415-0.01)/2 && atof(s_sub_num.c_str())<(3.1415+0.01)/2)
+                throw("Math Error: tan");
             double sin_out_d=tan(atof(s_sub_num.c_str()));
             string sin_out_str=to_string(sin_out_d);
             s.erase(i,3+s_sub_num.length());
@@ -557,6 +585,8 @@ string normal_operation(string s)
         else if(s[i+s_sub_num.length()]=='/')
         {
             s_sub_num_2=Find_First_Number(s,i+s_sub_num.length()+1);
+            if(atof(s_sub_num_2.c_str())==0)
+                throw("Math Error: /");
             result_d=atof(s_sub_num.c_str())/atof(s_sub_num_2.c_str());
             string result_str=to_string(result_d);
             s.erase(i,s_sub_num.length()+s_sub_num_2.length()+1);
@@ -732,13 +762,19 @@ int* minus_index_finder (string s, int&c)
     else if (i!=0&& s[i]=='-' && s[i+1]!=' ' && s[i-1]!=' ')
         c++;
     }
+    if(c==0)
+    {
+        int* p=NULL;
+
+        return p;
+    }
     int* p=new int[c];
     int j=0;
     for(int i=0;i<s.length();i++)
     {
-      if (s[i]=='-' && s[i+1]==' ' && s[i-1]==' ')
+      if (i!=0&&s[i]=='-' && s[i+1]==' ' && s[i-1]==' ')
         {p[j]=i; j++;}
-    else if ((s[i]=='-' && s[i+1]!=' ' && s[i-1]!=' '))
+    else if (i!=0&&(s[i]=='-' && s[i+1]!=' ' && s[i-1]!=' '))
         {p[j]=i; j++;}
     }
     return p;

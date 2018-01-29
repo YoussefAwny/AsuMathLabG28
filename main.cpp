@@ -15,7 +15,7 @@ int main (int argc, char *argv[]){
     string user_input,file_path;
     ifstream infile;
     if(argc==2){file_path=argv[1];
-      infile.open(file_path.data());}
+      infile.open(file_path.c_str());}
     while(argc==1||argc==2){ try{
     if(argc==2){if(!getline(infile, user_input)){break;}}
 	if(argc==1) getline(cin,user_input);
@@ -33,8 +33,8 @@ int main (int argc, char *argv[]){
             {
                 matrix_names.push_back(name_from_input(user_input));
                 vector_counter++;
-                int x =atof(user_input.substr(user_input.find('(')+1,user_input.find(',')-user_input.find('(')-1).data());
-                int y =atof(user_input.substr(user_input.find(',')+1,user_input.find(')')-user_input.find(',')-1).data());
+                int x =atof(user_input.substr(user_input.find('(')+1,user_input.find(',')-user_input.find('(')-1).c_str());
+                int y =atof(user_input.substr(user_input.find(',')+1,user_input.find(')')-user_input.find(',')-1).c_str());
                 if(user_input.find("rand(")!=-1)
                 matrix.push_back(Matrix(x,y,3,0));
                 else if(user_input.find("eye(")!=-1)
@@ -51,8 +51,8 @@ int main (int argc, char *argv[]){
         else
         {
                 int i=get_matrix_number(name_from_input(user_input),matrix_names);
-                int x =atof(user_input.substr(user_input.find('(')+1,user_input.find(',')-user_input.find('(')-1).data());
-                int y =atof(user_input.substr(user_input.find(',')+1,user_input.find(')')-user_input.find(',')-1).data());
+                int x =atof(user_input.substr(user_input.find('(')+1,user_input.find(',')-user_input.find('(')-1).c_str());
+                int y =atof(user_input.substr(user_input.find(',')+1,user_input.find(')')-user_input.find(',')-1).c_str());
 
                 if(user_input.find("rand(")!=-1)
                 matrix[i]=Matrix(x,y,3,0);
@@ -173,7 +173,7 @@ int main (int argc, char *argv[]){
                         if(check_if_math_op((dpointer_s[i][j])))
                           dpointer[i][j]=string_operation((dpointer_s[i][j]));
 
-                         else dpointer[i][j]=atof((dpointer_s[i][j]).data());
+                         else dpointer[i][j]=atof((dpointer_s[i][j]).c_str());
                     }
                 }
 
@@ -203,7 +203,7 @@ int main (int argc, char *argv[]){
                         if(check_if_math_op((dpointer_s[i][j])))
                           dpointer[i][j]=string_operation((dpointer_s[i][j]));
 
-                         else dpointer[i][j]=atof((dpointer_s[i][j]).data());
+                         else dpointer[i][j]=atof((dpointer_s[i][j]).c_str());
                     }
                 }
 
@@ -256,16 +256,21 @@ int main (int argc, char *argv[]){
               current_brackets_index=user_input.find(current_brackets);
               current_brackets_length=current_brackets.length();
              }
-
              int current_operator_index,current_operator,first,last;
-             do{cout<<current_brackets<<endl;
-             Operation(current_brackets,current_operator_index,current_operator);
-             if(current_operator==0)break;
-             if(current_brackets[current_operator_index-1]=='.'){current_brackets.erase(current_operator_index-1,1);current_operator_index--;}
+             do{
+             cout<<current_brackets<<endl;
+             int dot_flag=0;
+             int no_minus_b;
+
+             int* pos_minus_b=minus_index_finder(current_brackets,no_minus_b);
+
+             Operation(current_brackets,current_operator_index,current_operator,pos_minus_b,no_minus_b);cout<<"c p "<<current_operator_index<<" "<<current_operator<<endl;
+             if(current_operator==0){break;}
+             if(current_brackets[current_operator_index-1]=='.'){current_brackets.erase(current_operator_index-1,1);current_operator_index--;dot_flag=1;}
              LimitsIndex(current_brackets,current_operator_index,first,last);
 
              string in1,in2;
-             int int_flag1=0,int_flag2=0,in1_index,in2_index,temp_flag1=0,temp_flag2=0;
+             int int_flag1=0,int_flag2=0,in1_index,in2_index,temp_flag1=0,temp_flag2=0;cout<<"ok2"<<endl;
              in1=space_remover(current_brackets.substr(first,current_operator_index-first));
              in2=space_remover(current_brackets.substr(current_operator_index+1,last-current_operator_index));
 
@@ -282,6 +287,7 @@ int main (int argc, char *argv[]){
              Matrix temp(1,1,0,0);
 
              int pure_int_flag2=0;//if the operation is int
+             cout<<"before switch"<<endl;
              switch(current_operator)
              {
                 case 0:
@@ -303,14 +309,21 @@ int main (int argc, char *argv[]){
                          if(!int_flag2)throw("Can't power a variable by a matrix");
                          else
                          {
-                             temp=pow(atof(in1.data()),atof(in2.data()));pure_int_flag2=1;
+                             temp=pow(atof(in1.c_str()),atof(in2.c_str()));pure_int_flag2=1;
                          }
                      }
                      else{
                      if(temp_flag1)
                      {
                        if(int_flag2)
-                       temp=Matrix::power(temp_matrices[in1_index],atof(in2.data()));
+                      {
+                          if(dot_flag)
+                          {
+                              Matrix temp2(temp_matrices[in1_index].get_rows(),temp_matrices[in1_index].get_columns(),4,atof(in2.c_str()));
+                              temp=Matrix::power(temp_matrices[in1_index],temp2);
+                          }
+                          else
+                          temp=Matrix::power(temp_matrices[in1_index],atof(in2.c_str()));}
                        else
                        {
                            if(temp_flag2)temp=Matrix::power(temp_matrices[in1_index],temp_matrices[in2_index]);
@@ -320,7 +333,14 @@ int main (int argc, char *argv[]){
                      else
                      {
                        if(int_flag2)
-                       temp=Matrix::power(matrix[in1_index],atof(in2.data()));
+                       {
+                           if(dot_flag)
+                          {
+                              Matrix temp2(matrix[in1_index].get_rows(),matrix[in1_index].get_columns(),4,atof(in2.c_str()));
+                              temp=Matrix::power(matrix[in1_index],temp2);
+                          }
+                          else
+                           temp=Matrix::power(matrix[in1_index],atof(in2.c_str()));}
                        else
                        {
                            if(temp_flag2)temp=Matrix::power(matrix[in1_index],temp_matrices[in2_index]);
@@ -334,32 +354,48 @@ int main (int argc, char *argv[]){
                      if(int_flag1)
                      {
                         if(int_flag2)
-                       {temp=atof(in1.data())*atof(in1.data());pure_int_flag2=1;}
+                       {temp=atof(in1.c_str())*atof(in2.c_str());pure_int_flag2=1;}
                        else
                        {
-                           if(temp_flag2)temp=Matrix::mul2(atof(in1.data()),temp_matrices[in2_index]);
-                           else temp=Matrix::mul2(atof(in1.data()),matrix[in2_index]);
+                           if(temp_flag2)temp=Matrix::mul2(atof(in1.c_str()),temp_matrices[in2_index]);
+                           else temp=Matrix::mul2(atof(in1.c_str()),matrix[in2_index]);
                        }
                      }
                      else{
                      if(temp_flag1)
                      {
                        if(int_flag2)
-                       temp=Matrix::mul2(temp_matrices[in1_index],atof(in2.data()));
+                       temp=Matrix::mul2(temp_matrices[in1_index],atof(in2.c_str()));
                        else
                        {
-                           if(temp_flag2)temp=temp_matrices[in1_index]*temp_matrices[in2_index];
-                           else temp=temp_matrices[in1_index]*matrix[in2_index];
+                           if(temp_flag2)
+                           {
+                               if(dot_flag)
+                               {
+                                   temp=Matrix::mul2(temp_matrices[in1_index],temp_matrices[in2_index]);
+                               }
+                               else temp=temp_matrices[in1_index]*temp_matrices[in2_index];
+                            }
+                           else {
+                                if(dot_flag)temp=Matrix::mul2(temp_matrices[in1_index],matrix[in2_index]);
+                                else temp=temp_matrices[in1_index]*matrix[in2_index];
+                           }
                        }
                      }
                      else
                      {
                        if(int_flag2)
-                       temp=Matrix::mul2(matrix[in1_index],atof(in2.data()));
+                       temp=Matrix::mul2(matrix[in1_index],atof(in2.c_str()));
                        else
                        {
-                           if(temp_flag2)temp=matrix[in1_index]*temp_matrices[in2_index];
-                           else temp=matrix[in1_index]*matrix[in2_index];
+                           if(temp_flag2){
+                                if(dot_flag)temp=Matrix::mul2(matrix[in1_index],temp_matrices[in2_index]);
+                                else temp=matrix[in1_index]*temp_matrices[in2_index];
+                           }
+                           else {
+                                if(dot_flag)temp=Matrix::mul2(matrix[in1_index],matrix[in2_index]);
+                               else temp=matrix[in1_index]*matrix[in2_index];
+                           }
                        }
                      }}
 
@@ -371,32 +407,40 @@ int main (int argc, char *argv[]){
                      if(int_flag1)
                      {
                         if(int_flag2)
-                       {temp=atof(in1.data())/atof(in1.data());pure_int_flag2=1;}
+                       {temp=atof(in1.c_str())/atof(in2.c_str());pure_int_flag2=1;}
                        else
                        {
-                           if(temp_flag2)temp=Matrix::div2(atof(in1.data()),temp_matrices[in2_index]);
-                           else temp=Matrix::div2(atof(in1.data()),matrix[in2_index]);
+                           if(temp_flag2)temp=Matrix::div2(atof(in1.c_str()),temp_matrices[in2_index]);
+                           else temp=Matrix::div2(atof(in1.c_str()),matrix[in2_index]);
                        }
                      }
                      else{
                      if(temp_flag1)
                      {
                        if(int_flag2)
-                       temp=Matrix::div2(temp_matrices[in1_index],atof(in2.data()));
+                       temp=Matrix::div2(temp_matrices[in1_index],atof(in2.c_str()));
                        else
                        {
-                           if(temp_flag2)temp=temp_matrices[in1_index]/temp_matrices[in2_index];
-                           else temp=temp_matrices[in1_index]/matrix[in2_index];
+                           if(temp_flag2){
+                               if(dot_flag)temp=Matrix::div2(temp_matrices[in1_index],temp_matrices[in2_index]);
+                                else temp=temp_matrices[in1_index]/temp_matrices[in2_index];}
+                           else {
+                               if(dot_flag)temp=Matrix::div2(temp_matrices[in1_index],matrix[in2_index]);
+                              else temp=temp_matrices[in1_index]/matrix[in2_index];}
                        }
                      }
                      else
                      {
                        if(int_flag2)
-                       temp=Matrix::div2(matrix[in1_index],atof(in2.data()));
+                       temp=Matrix::div2(matrix[in1_index],atof(in2.c_str()));
                        else
                        {
-                           if(temp_flag2)temp=matrix[in1_index]/temp_matrices[in2_index];
-                           else temp=matrix[in1_index]/matrix[in2_index];
+                           if(temp_flag2){
+                                if(dot_flag)temp=Matrix::div2(matrix[in1_index],temp_matrices[in2_index]);
+                                else temp=matrix[in1_index]/temp_matrices[in2_index];}
+                           else {
+                               if(dot_flag)temp=Matrix::div2(matrix[in1_index],matrix[in2_index]);
+                               else temp=matrix[in1_index]/matrix[in2_index];}
                        }
                      }}
 
@@ -408,18 +452,19 @@ int main (int argc, char *argv[]){
                     if(int_flag1)
                      {
                         if(int_flag2)
-                       {temp=atof(in1.data())+atof(in1.data());pure_int_flag2=1;}
+                       {temp=atof(in1.c_str())+atof(in2.c_str());pure_int_flag2=1;
+                       }
                        else
                        {
-           if(temp_flag2)temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.data()))+temp_matrices[in2_index];
-            else temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.data()))+matrix[in2_index];
+           if(temp_flag2)temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.c_str()))+temp_matrices[in2_index];
+            else temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.c_str()))+matrix[in2_index];
                        }
                      }
                      else{
                      if(temp_flag1)
                      {
                        if(int_flag2)
-                       temp=temp_matrices[in1_index]+atof(in2.data());
+                       temp=temp_matrices[in1_index]+atof(in2.c_str());
                        else
                        {
                            if(temp_flag2)temp=temp_matrices[in1_index]+temp_matrices[in2_index];
@@ -429,7 +474,7 @@ int main (int argc, char *argv[]){
                      else
                      {
                        if(int_flag2)
-                       temp=matrix[in1_index]+atof(in2.data());
+                       temp=matrix[in1_index]+atof(in2.c_str());
                        else
                        {
                            if(temp_flag2)temp=matrix[in1_index]+temp_matrices[in2_index];
@@ -445,18 +490,18 @@ int main (int argc, char *argv[]){
                      if(int_flag1)
                      {
                         if(int_flag2)
-                       {temp=atof(in1.data())-atof(in1.data());pure_int_flag2=1;}
+                       {temp=atof(in1.c_str())-atof(in2.c_str());pure_int_flag2=1;}
                        else
                        {
-           if(temp_flag2)temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.data()))-temp_matrices[in2_index];
-            else temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.data()))-matrix[in2_index];
+           if(temp_flag2)temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.c_str()))-temp_matrices[in2_index];
+            else temp=Matrix(temp_matrices[in2_index].get_rows(),temp_matrices[in2_index].get_columns(),4,atof(in1.c_str()))-matrix[in2_index];
                        }
                      }
                      else{
                      if(temp_flag1)
                      {
                        if(int_flag2)
-                       temp=temp_matrices[in1_index]-atof(in2.data());
+                       temp=temp_matrices[in1_index]-atof(in2.c_str());
                        else
                        {
                            if(temp_flag2)temp=temp_matrices[in1_index]-temp_matrices[in2_index];
@@ -466,7 +511,7 @@ int main (int argc, char *argv[]){
                      else
                      {
                        if(int_flag2)
-                       temp=matrix[in1_index]-atof(in2.data());
+                       temp=matrix[in1_index]-atof(in2.c_str());
                        else
                        {
                            if(temp_flag2)temp=matrix[in1_index]-temp_matrices[in2_index];
@@ -477,6 +522,8 @@ int main (int argc, char *argv[]){
                     operations_count--;
 
                  }break;}
+             cout<<"after switch"<<endl;
+             if(temp.get_columns()==1&&temp.get_rows()==1) pure_int_flag2=1;
              if(pure_int_flag2)
              {
                  current_brackets.erase(first,last-first+1);
@@ -484,8 +531,8 @@ int main (int argc, char *argv[]){
              }
              else {current_brackets=putMatrixInString(current_brackets, temp, first, last);}
 
-             int_flag1=0;int_flag2=0;temp_flag1=0;temp_flag2=0,pure_int_flag2=0;
-             } while(current_operator!=0);//bracket finished
+             int_flag1=0;int_flag2=0;temp_flag1=0;temp_flag2=0,pure_int_flag2=0,dot_flag=0;cout<<"done"<<endl;
+             }while(current_operator!=0);//bracket finished
 
              if(get_matrix_number(current_brackets,matrix_names)!=-1)
                          {
@@ -512,8 +559,8 @@ if(temp_matrices[get_matrix_number(current_brackets,temp_names)].get_rows()==1&&
                   {
                      pure_int_flag=1;
                       user_input.erase(current_brackets_index-4,current_brackets_length+5);
-                      char* x;
-                      sprintf(x,"%f",sin(atof(current_brackets.data())));
+                      char x[current_brackets.length()];
+                      sprintf(x,"%f",sin(atof(current_brackets.c_str())));
                       user_input.insert(current_brackets_index-4,x);
 
                   }
@@ -536,7 +583,7 @@ if(temp_matrices[get_matrix_number(current_brackets,temp_names)].get_rows()==1&&
                      pure_int_flag=1;
                       user_input.erase(current_brackets_index-4,current_brackets_length+5);
                       char* x;
-                      sprintf(x,"%f",cos(atof(current_brackets.data())));
+                      sprintf(x,"%f",cos(atof(current_brackets.c_str())));
                       user_input.insert(current_brackets_index-4,x);
                   }
                   else if(get_matrix_number(current_brackets,matrix_names)!=-1)
@@ -557,7 +604,7 @@ if(temp_matrices[get_matrix_number(current_brackets,temp_names)].get_rows()==1&&
                      pure_int_flag=1;
                       user_input.erase(current_brackets_index-4,current_brackets_length+5);
                       char* x;
-                      sprintf(x,"%f",tan(atof(current_brackets.data())));
+                      sprintf(x,"%f",tan(atof(current_brackets.c_str())));
                       user_input.insert(current_brackets_index-4,x);
                   }
                   else if(get_matrix_number(current_brackets,matrix_names)!=-1)
@@ -578,7 +625,7 @@ if(temp_matrices[get_matrix_number(current_brackets,temp_names)].get_rows()==1&&
                      pure_int_flag=1;
                       user_input.erase(current_brackets_index-4,current_brackets_length+5);
                       char* x;
-                      sprintf(x,"%f",1.0/cos(atof(current_brackets.data())));
+                      sprintf(x,"%f",1.0/cos(atof(current_brackets.c_str())));
                       user_input.insert(current_brackets_index-4,x);
                   }
                   else if(get_matrix_number(current_brackets,matrix_names)!=-1)
@@ -599,7 +646,7 @@ if(temp_matrices[get_matrix_number(current_brackets,temp_names)].get_rows()==1&&
                      pure_int_flag=1;
                       user_input.erase(current_brackets_index-4,current_brackets_length+5);
                       char* x;
-                      sprintf(x,"%f",1/sin(atof(current_brackets.data())));
+                      sprintf(x,"%f",1/sin(atof(current_brackets.c_str())));
                       user_input.insert(current_brackets_index-4,x);
 
                   }
@@ -621,7 +668,7 @@ if(temp_matrices[get_matrix_number(current_brackets,temp_names)].get_rows()==1&&
                      pure_int_flag=1;
                       user_input.erase(current_brackets_index-4,current_brackets_length+5);
                       char* x;
-                      sprintf(x,"%f",1/tan(atof(current_brackets.data())));
+                      sprintf(x,"%f",1/tan(atof(current_brackets.c_str())));
                       user_input.insert(current_brackets_index-4,x);
 
                   }
@@ -643,7 +690,7 @@ if(temp_matrices[get_matrix_number(current_brackets,temp_names)].get_rows()==1&&
                      pure_int_flag=1;
                      user_input.erase(current_brackets_index-4,current_brackets_length+5);
                       char* x;
-                      sprintf(x,"%f",log(atof(current_brackets.data())));
+                      sprintf(x,"%f",log(atof(current_brackets.c_str())));
                       user_input.insert(current_brackets_index-4,x);
 
                   }
@@ -665,7 +712,7 @@ if(temp_matrices[get_matrix_number(current_brackets,temp_names)].get_rows()==1&&
                      pure_int_flag=1;
                       user_input.erase(current_brackets_index-4,current_brackets_length+5);
                       char* x;
-                      sprintf(x,"%f",exp(atof(current_brackets.data())));
+                      sprintf(x,"%f",exp(atof(current_brackets.c_str())));
                       user_input.insert(current_brackets_index-4,x);
 
                   }
@@ -688,7 +735,7 @@ if(temp_matrices[get_matrix_number(current_brackets,temp_names)].get_rows()==1&&
                      pure_int_flag=1;
                       user_input.erase(current_brackets_index-5,current_brackets_length+6);
                       char* x;
-                      sprintf(x,"%f",sqrt(atof(current_brackets.data())));
+                      sprintf(x,"%f",sqrt(atof(current_brackets.c_str())));
                       user_input.insert(current_brackets_index-5,x);
 
                   }
@@ -751,7 +798,7 @@ else if(pure_int_flag==0)
                          {
                              temp=temp_matrices[get_matrix_number(current_brackets,temp_names)];
 
-                             }
+                             }temp.print();
  if(no_open_brac==0 && no_close_brac==0&&pure_int_flag==0)
  user_input=putMatrixInString(user_input, temp, current_brackets_index, current_brackets_index+current_brackets_length+1);
 else if(pure_int_flag==0)
@@ -765,7 +812,7 @@ else if(pure_int_flag==0)
               index_finder(user_input,"(",no_open_brac);
               index_finder(user_input,")",no_close_brac);
               pure_int_flag=0;
-              cout<<user_input<<endl<<no_open_brac<<" "<<no_close_brac<<endl;getch();
+              cout<<user_input<<endl<<no_open_brac<<" "<<no_close_brac<<endl;
           }//all brackets is done
 
         if(get_matrix_number(out,matrix_names)==-1)
@@ -773,7 +820,7 @@ else if(pure_int_flag==0)
                  matrix_names.push_back(out);
                  vector_counter++;
                  if(check_if_number(user_input)&&!(check_if_math_op(user_input)))
-                 matrix.push_back(Matrix(1,1,4,atof(user_input.data())));
+                 matrix.push_back(Matrix(1,1,4,atof(user_input.c_str())));
                  else matrix.push_back(temp_matrices[get_matrix_number(user_input,temp_names)]);
                  if(!semicolon_flag){
                  cout<<matrix_names[vector_counter-1]<<"="<<endl;
@@ -782,7 +829,7 @@ else if(pure_int_flag==0)
         else
         {
             if(check_if_number(user_input)&&!(check_if_math_op(user_input)))
-            matrix[get_matrix_number(out,matrix_names)]=atof(user_input.data());
+            matrix[get_matrix_number(out,matrix_names)]=atof(user_input.c_str());
             else
             matrix[get_matrix_number(out,matrix_names)]=temp_matrices[get_matrix_number(user_input,temp_names)];
             if(!semicolon_flag){
