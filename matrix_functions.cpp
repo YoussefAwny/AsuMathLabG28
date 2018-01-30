@@ -56,7 +56,7 @@ using namespace std;
 				case MI_ZEROS: values[iR][iC] = 0; break;
 				case MI_ONES: values[iR][iC] = 1; break;
 				case MI_EYE: values[iR][iC] = (iR == iC) ? 1 : 0; break;
-				case MI_RAND: values[iR][iC] = (rand() % 1000000) / 1000000.0; break;
+				case MI_RAND: values[iR][iC] = (rand() % 1000) / 1000.0; break;
 				case MI_VALUE: values[iR][iC] = initializationValue; break;
 				}
 			}
@@ -265,7 +265,7 @@ using namespace std;
 		return m1;
 	}
 
-   Matrix Matrix :: power2 (Matrix& m1 ,Matrix& m2)
+   Matrix Matrix :: power (Matrix& m1 ,Matrix& m2)
     {
         if(m1.rows != m2.rows && m1.columns !=m2.columns)
             throw("Invalid matrix dimension");
@@ -358,81 +358,6 @@ using namespace std;
         return c ;
     }
 
-/*
-//old inverse
-double Matrix:: getDeterminant()
-	{
-		if(this->rows==2 && this->columns==2)
-			return (values[0][0]*values[1][1]-values[0][1]*values[1][0]);
-		else
-		{
-			double sum=0;
-			int sign=1;
-			for(int i=0;i< this->columns;i++)
-			{
-				sum+=(sign*values[0][i]*((this->getMinor(0,i)).getDeterminant()));
-				sign*=-1;
-			}
-			return sum;
-		}
-	}
-	Matrix Matrix:: getMinor(int r, int c)     //Parameters are the index of the element to which we calculate the minor
-	{
-		Matrix Minor((this->rows)-1,(this->columns)-1, 0,0);
-		int i_Minor=0;
-		int j_Minor=0;
-		for(int i=0; i<this->rows; i++)
-		{
-			if(i==r) continue;
-			else
-			{
-			    for(int j=0;j<this->columns;j++)
-		        {
-					if(j==c) continue;
-					if(j_Minor>(this->columns)-1 || i_Minor>(this->rows)-1) throw("index exceeded array size");
-					 Minor.values[i_Minor][j_Minor]=values[i][j];   j_Minor++;
-			    }
-				i_Minor++;
-				j_Minor=0;
-			}
-		}
-		return Minor;
-	}
-	Matrix Matrix:: get_Minors_Cofactor_Matrix()        //to return adjugate
-	{
-			Matrix Minors_Cofactor_Matrix(this->rows,this->columns, 0,0);
-			int sign;
-		for(int i=0; i<this->rows; i++)
-		{
-			if(i%2==0) sign=1;
-			else sign=-1;
-			for(int j=0;j<this->columns;j++)
-			{
-				Minors_Cofactor_Matrix.values[i][j]=sign*((this->getMinor(i,j)).getDeterminant());
-				sign*=-1;
-			}
-		}
-		return Minors_Cofactor_Matrix;
-	}
-	Matrix Matrix:: getInverse()
-	{
-		if(!rows==columns) throw("Invalid Matrix dimensions");
-		if(this->getDeterminant()==0)throw("Invalid Matrix values");
-		return ((this->get_Minors_Cofactor_Matrix()).getTranspose())*(1.0/(this->getDeterminant()));
-	}
-	Matrix Matrix::operator *(double x)
-	{
-		for(int i=0; i<this->rows; i++)
-		{
-			for(int j=0;j<this->columns;j++)
-			{
-				this->values[i][j]*=x;
-			}
-		}
-		return *this;
-	}
-	*/
-
 	Matrix Matrix:: getTranspose()
 {
 	Matrix transpose(this->columns,this->rows,0,0);
@@ -471,7 +396,7 @@ string Matrix::get_string()
             //if(x[x.length()-1]==NULL)x.erase(x.length()-1);
         flag=0;
         }
-       if(!(i==rows-1)) x+=";";
+       if(!(rows==1&&columns==1)) x+=";";
     }
     if(rows!=1&&columns!=1)x+="]";
 
@@ -792,6 +717,81 @@ Matrix Matrix::cotanm(Matrix& m)
 }
 
 
+
+/*
+//old inverse
+double Matrix:: getDeterminant()
+	{
+		if(this->rows==2 && this->columns==2)
+			return (values[0][0]*values[1][1]-values[0][1]*values[1][0]);
+		else
+		{
+			double sum=0;
+			int sign=1;
+			for(int i=0;i< this->columns;i++)
+			{
+				sum+=(sign*values[0][i]*((this->getMinor(0,i)).getDeterminant()));
+				sign*=-1;
+			}
+			return sum;
+		}
+	}
+	Matrix Matrix:: getMinor(int r, int c)     //Parameters are the index of the element to which we calculate the minor
+	{
+		Matrix Minor((this->rows)-1,(this->columns)-1, 0,0);
+		int i_Minor=0;
+		int j_Minor=0;
+		for(int i=0; i<this->rows; i++)
+		{
+			if(i==r) continue;
+			else
+			{
+			    for(int j=0;j<this->columns;j++)
+		        {
+					if(j==c) continue;
+					if(j_Minor>(this->columns)-1 || i_Minor>(this->rows)-1) throw("index exceeded array size");
+					 Minor.values[i_Minor][j_Minor]=values[i][j];   j_Minor++;
+			    }
+				i_Minor++;
+				j_Minor=0;
+			}
+		}
+		return Minor;
+	}
+	Matrix Matrix:: get_Minors_Cofactor_Matrix()        //to return adjugate
+	{
+			Matrix Minors_Cofactor_Matrix(this->rows,this->columns, 0,0);
+			int sign;
+		for(int i=0; i<this->rows; i++)
+		{
+			if(i%2==0) sign=1;
+			else sign=-1;
+			for(int j=0;j<this->columns;j++)
+			{
+				Minors_Cofactor_Matrix.values[i][j]=sign*((this->getMinor(i,j)).getDeterminant());
+				sign*=-1;
+			}
+		}
+		return Minors_Cofactor_Matrix;
+	}
+	Matrix Matrix:: getInverse()
+	{
+		if(!rows==columns) throw("Invalid Matrix dimensions");
+		if(this->getDeterminant()==0)throw("Invalid Matrix values");
+		return ((this->get_Minors_Cofactor_Matrix()).getTranspose())*(1.0/(this->getDeterminant()));
+	}
+	Matrix Matrix::operator *(double x)
+	{
+		for(int i=0; i<this->rows; i++)
+		{
+			for(int j=0;j<this->columns;j++)
+			{
+				this->values[i][j]*=x;
+			}
+		}
+		return *this;
+	}
+	*/
 
 
 

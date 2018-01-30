@@ -7,6 +7,8 @@
 #include <vector>
 #include <sstream>
 #include<math.h>
+#include <cstdlib>
+#include <conio.h>
 //#ifndef MATRIX_H
 //#define MATRIX_H
 #define Lower 13
@@ -14,7 +16,7 @@
 using namespace std;
 
 class Matrix
-{
+{  //
 private:
     int rows, columns;
 
@@ -54,7 +56,7 @@ public:
 	static Matrix mul2(Matrix& m1,Matrix& m2);
 	static Matrix mul2(Matrix& m1,double d);
 	static Matrix mul2(double d,Matrix& m2);
-	static Matrix power2(Matrix& m1, Matrix& m2);
+	static Matrix power(Matrix& m1, Matrix& m2);
 	static Matrix power (Matrix&m ,double d);
 	static Matrix IMatrix (Matrix& m);
 	static Matrix squareRoot (Matrix& m);
@@ -84,7 +86,7 @@ public:
 	static Matrix cotanm(Matrix& m);
     static Matrix logm(Matrix& m);
     static Matrix expm(Matrix& m);
-	};
+   	};
  string Remove (string x, string r);
  double ** split (int nrows , int ncolumns , char* text);
  int no_rows (string input);
@@ -99,5 +101,25 @@ public:
  int get_number_of_close_br (string x);
  string ** split_string (int nrows , int ncolumns , char* text);
 string matrix_conc(string MatOne);
-
+string bracket_operation(string s);
+ string normal_operation(string s);
+ string Find_First_Number(string s, int index);
+ string to_string(double value);
+ /////Paula//////
+void LimitsIndex(string s,int oprtr, int& start, int& finish);
+int FindLimit(string s, int index,int select);
+double string_operation(string s);
+ ////////////////
+ int FindStart(string s, int index);
+ string putMatrixInString (string x , Matrix &m ,int index1 , int index2);
+ int check_if_blank(string x);
+ int check_if_math_op (string x);
 //endif // !MATRIX_H
+int* index_finder (string s, string s1, int &count);
+int* minus_index_finder (string s, int&c);
+string first_operation(string s);//,int opened_parentheses,int closed_parentheses);
+//string modify_space(char* s);
+void Operation(string x, int& index, int& flag, int* arr,int arrc);
+int check_if_in_array(int a,int* b, int c);
+extern vector <string> temp_names ;
+extern vector <Matrix> temp_matrices ;
